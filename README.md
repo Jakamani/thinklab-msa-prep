@@ -1,20 +1,36 @@
-# ThinkLab MSA Prep — Version 2
+# ThinkLab MSA Prep — Version 3
 
-A responsive, standalone English revision website for Berlin MSA practice using the ThinkLab visual identity.
+A static, responsive English examination preparation site for the Berlin MSA, using the ThinkLab identity.
 
 ## Available practice
-- Reading Part 1: matching people to activities, with three levels (6, 10 and 10 questions).
-- Reading Part 2: short text multiple-choice tasks, with three levels (4, 6 and 6 questions).
-- Guided Level 1 clues, independent Level 2 exam-style work, and a more demanding Level 3.
-- Feedback after submission: scores, correct answers, supporting evidence and explanations.
-- Writing, Listening and Reading Part 3 are planned but not yet active.
 
-All practice materials are original and are not copied from the official MSA examination.
+- **Reading Part 1:** Three levels (6, 10 and 10 matching questions).
+- **Reading Part 2:** Three levels (4, 6 and 6 short-text multiple-choice questions).
+- **Reading Part 3:** Three levels (6, 10 and 10 reading comprehension questions).
+  - Level 1: Two original short texts, a model answer, a reading strategy and optional clues.
+  - Level 2: An original educational adaptation about daylight saving time and health.
+  - Level 3: The teacher-supplied adapted Guardian article about restricting social media for under-16s, without the original photograph.
 
-## Technical details
-Static HTML/CSS/JavaScript. No install, backend or student account. Answers, drafts and results are stored in the browser using localStorage. Students can export and import progress JSON files. Progress does not automatically sync between devices; clearing browser data can remove it.
+After completing a level, students receive their marks, correct answers, textual evidence and explanations. Materials are exam-style practice, not official examination papers.
 
-## GitHub Pages
-In this repository select **Settings > Pages > Build and deployment > Deploy from a branch**, select **main** and **/(root)**, then Save. GitHub will publish at https://jakamani.github.io/thinklab-msa-prep/ once Pages deployment completes.
+## Reading Part 3 source credits
 
-The root homepage is `index.html`; linked JS, CSS and assets must remain in their relative locations.
+- Level 1: Original ThinkLab practice texts, 2026.
+- Level 2: Based on VOA Learning English, *How Daylight Saving Time Affects Health*, 6 March 2025. Original AP reporting by Lauran Neergaard; adapted for VOA by John Russell. https://learningenglish.voanews.com/a/how-daylight-savings-time-affects-health/8001173.html
+- Level 3: Adapted from Nicola Slawson and Jane Clinton, *The Guardian*, 29 January 2026. https://www.theguardian.com/media/2026/jan/29/social-media-ban-under-16s-uk-australia-views
+
+Both source credits show the requested date accessed: **14 November 2026**. The Guardian passage reflects the supplied January 2026 article, not a statement about current legislation.
+
+## Student data
+
+No logins or server-side storage. Results and unfinished answers are saved on the device in browser localStorage. The key `thinklab-msa-prep-progress-v1` is unchanged from Version 2, so existing progress normally remains available in the same browser at the same website address. Backup export/import is provided. Clearing browser data can erase saved work.
+
+## Publish
+
+GitHub Pages: Settings → Pages → Deploy from a branch → `main` → `/(root)`.
+
+Homepage: `index.html`. Dependencies: `styles.css`, `data.js`, `reading2-data.js`, `reading3-data.js`, `app.js`, and `assets/`.
+
+Site: https://jakamani.github.io/thinklab-msa-prep/
+
+Only Reading Parts 1–3 are live; Writing and Listening are planned.

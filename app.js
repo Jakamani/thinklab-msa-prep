@@ -8,7 +8,8 @@
   const letters = 'ABCDEFG'.split('');
   const levels = DATA.levels; // Reading Part 1; keep original progress keys unchanged
   const part2Levels = window.THINKLAB_READING2?.levels || [];
-  const allLevels = [...levels, ...part2Levels];
+  const part3Levels = window.THINKLAB_READING3?.levels || [];
+  const allLevels = [...levels, ...part2Levels, ...part3Levels];
   let localSavingAvailable = true;
   let store = loadStore();
 
@@ -32,6 +33,7 @@
   function bestScore(levelId) { return getAttempts(levelId).length ? Math.max(...getAttempts(levelId).map(a => a.score)) : 0; }
   function completedCount() { return levels.filter(l => getAttempts(l.id).length > 0).length; }
   function completedPart2Count() { return part2Levels.filter(l => getAttempts(l.id).length > 0).length; }
+  function completedPart3Count() { return part3Levels.filter(l => getAttempts(l.id).length > 0).length; }
   function completedTotal() { return allLevels.filter(l => getAttempts(l.id).length > 0).length; }
   function scoreLabel(level) { return `${bestScore(level.id)}/${level.questions.length}`; }
   function currentHash() { return (location.hash || '#/home').replace(/^#/, '').replace(/\/+$/, '') || '/home'; }
@@ -65,35 +67,35 @@
     const html=`<section class="hero"><div class="container hero-grid"><div>
       <div class="eyebrow"><span class="accent-dot"></span>Grade 10 · English · MSA Prep</div><h1>Practise smarter.<span>Feel ready.</span></h1>
       <p class="hero-sub">A clear path from guided practice to exam-style challenges. Build confidence in Reading, Writing and Listening—one skill at a time.</p>
-      <div class="hero-buttons"><a class="button primary" href="#/reading/part-1">Start Reading Part 1 <span aria-hidden="true">→</span></a><a class="button secondary" href="#/reading/part-2">Try Reading Part 2 →</a><a class="button subtle-btn" href="#/how">How it works</a></div>
+      <div class="hero-buttons"><a class="button primary" href="#/reading/part-1">Start Reading Part 1 <span aria-hidden="true">→</span></a><a class="button secondary" href="#/reading/part-2">Try Reading Part 2 →</a><a class="button subtle-btn" href="#/reading/part-3">Read Part 3 →</a><a class="button subtle-btn" href="#/how">How it works</a></div>
       <div class="benefit"><strong>✓</strong> No logins, no pressure. Progress and feedback saved on this device.</div>
     </div><div class="journey-wrap"><div class="journey-card"><div class="eyebrow">Your learning journey</div><h3>Learn it. Try it. <em>Own it.</em></h3>
        ${['Learn with clues','Practise like the exam','Take the challenge'].map((s,i)=>`<div class="journey-step"><span class="num">0${i+1}</span><div><strong>${s}</strong><p>${['Short examples + helpful guidance','Fresh tasks with the real exam structure','More demanding practice'][i]}</p></div><span style="margin-left:auto;color:#bad2dd">›</span></div>`).join('')}
        <div class="bottom-note">✓ After each task, get a score, correct answers and an explanation of the evidence.</div>
     </div></div></div></section>
-    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>6</strong> Reading levels live</div></div></div>
-    <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore the skills. Reading Parts 1 and 2 are ready now; the other sections will follow.')}
+    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels live</div></div></div>
+    <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore the skills. All three Reading parts are ready now; Writing and Listening will follow.')}
       <div class="skill-grid">${cards.map(([route,title,parts,desc,items,ico,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon">${ico}</div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':'View the plan'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
     </div></section><section class="section alt"><div class="container">${titleBlock('One simple route','Three levels. Real progress.','Every part follows the same learning path so you always know what comes next.')}
     <div class="path-grid">${levels.map((l,i)=>`<a class="level-card" href="#/reading/part-1/${l.id}"><div class="topline"><span class="level-number">0${i+1}</span><div><div class="tiny muted" style="font-weight:800">LEVEL ${i+1}</div><h3 style="margin:0">${stepTitle(i)}</h3></div></div><p>${e(l.description)}</p><div class="tiny"><span class="pill ${getAttempts(l.id).length?'ready':''}">${getAttempts(l.id).length?'Best '+scoreLabel(l):'Not completed'}</span></div></a>`).join('')}</div>
-    <div class="feedback-ribbon"><strong>New · Reading Part 2:</strong> Six fresh exam-style texts in each of Levels 2 and 3, plus a guided Level 1. <a href="#/reading/part-2" style="font-weight:850;color:#0B2D56;text-decoration:underline">Explore Part 2 →</a></div>
+    <div class="feedback-ribbon"><strong>New · Reading Part 3:</strong> Learn with clues, practise a health article, then take the challenge with an adapted Guardian text. <a href="#/reading/part-3" style="font-weight:850;color:#0B2D56;text-decoration:underline">Explore Part 3 →</a></div>
     </div></section>`;
     shell(html,'home');
   }
   function howPage() {
-    shell(pageHero([['Home','#/home'],['How it works','#/how']],'Your learning path','Learn. Practise. Improve.','Here is how ThinkLab guides you through MSA-style tasks.')+`<section class="section"><div class="container"><div class="path-grid">${levels.map((l,i)=>`<div class="panel"><span class="level-number">0${i+1}</span><h3 style="margin-top:15px">${stepTitle(i)}</h3><p class="muted">${e(l.description)}</p></div>`).join('')}</div><div class="panel" style="margin-top:20px"><h3>How marking works</h3><p>In Reading Part 1, you match activities to people. In Reading Part 2, you pick the one correct statement for each short text. Both earn one point per correct answer and include detailed feedback after submission.</p><p>No account is required. Your attempts stay in this browser; use <strong>My progress</strong> to download a backup if you want to keep a copy.</p><a class="button primary" href="#/reading/part-1">Start Reading Part 1 →</a></div></div></section>`,'home');
+    shell(pageHero([['Home','#/home'],['How it works','#/how']],'Your learning path','Learn. Practise. Improve.','Here is how ThinkLab guides you through MSA-style tasks.')+`<section class="section"><div class="container"><div class="path-grid">${levels.map((l,i)=>`<div class="panel"><span class="level-number">0${i+1}</span><h3 style="margin-top:15px">${stepTitle(i)}</h3><p class="muted">${e(l.description)}</p></div>`).join('')}</div><div class="panel" style="margin-top:20px"><h3>How marking works</h3><p>In Part 1, you match activities to people. In Part 2, you choose the correct statement for a short text. In Part 3, you read longer texts and answer multiple-choice questions. Every correct answer earns one point; detailed feedback appears after submission.</p><p>No account is required. Your attempts stay in this browser; use <strong>My progress</strong> to download a backup if you want to keep a copy.</p><a class="button primary" href="#/reading/part-1">Start Reading Part 1 →</a></div></div></section>`,'home');
   }
   const skills = {
-    reading: [['Reading Part 1','Match people to activities','Ready'],['Reading Part 2','Understand short texts','Ready'],['Reading Part 3','Longer reading comprehension','Planned']],
+    reading: [['Reading Part 1','Match people to activities','Ready'],['Reading Part 2','Understand short texts','Ready'],['Reading Part 3','Longer reading comprehension','Ready']],
     writing: [['Writing Part 1','Photo response','Planned'],['Writing Part 2','Discussion / opinion response','Planned'],['Writing Part 3','Mediation: German → English','Planned']],
     listening: [['Listening Part 1','Voicemail and picture matching','Planned'],['Listening Part 2','Podcast intro matching','Planned'],['Listening Part 3','Information completion','Planned'],['Listening Part 4','Radio programme comprehension','Planned']]
   };
   function subjectPage(skill) {
     const title=skill[0].toUpperCase()+skill.slice(1);
-    const helper={reading:'Choose your reading skill. Practise matching people to activities or understanding short messages and notices.',writing:'The Writing pathway will include task planning, independent writing and feedback against content and language criteria.',listening:'The Listening pathway will include original recordings, two play-throughs and evidence-based explanations.'}[skill];
+    const helper={reading:'Choose any of the three Reading parts: matching, short texts or longer articles.',writing:'The Writing pathway will include task planning, independent writing and feedback against content and language criteria.',listening:'The Listening pathway will include original recordings, two play-throughs and evidence-based explanations.'}[skill];
     const ready=skill==='reading';
     const done=completedTotal();
-    shell(pageHero([['Home','#/home'],[title,'#/'+skill]],'Your practice hub',title,helper)+`<section class="section"><div class="container work-layout"><div><div class="module-parts">${skills[skill].map((part,i)=>`<div class="module-part ${part[2]==='Ready'?'active':''}"><div class="module-part-left"><span class="mini-num">0${i+1}</span><div><h3>${e(part[0])}</h3><p>${e(part[1])}</p>${ready&&i<2?`<div class="tiny muted" style="margin-top:7px">${i===0?completedCount():completedPart2Count()} of 3 levels completed</div>`:''}</div></div>${part[2]==='Ready'?`<a class="button primary small" href="#/reading/part-${i+1}">Open →</a>`:'<span class="pill planned">In development</span>'}</div>`).join('')}</div></div><aside class="path-summary"><div class="label">Live content</div><strong>${ready?'Reading Parts 1 + 2 · 6 levels':'Modules being prepared'}</strong><p style="font-size:.85rem;margin-top:10px">${ready?'Start with clues, then complete an exam-style set and a harder challenge in each part.':'This section is part of the site plan; it is not yet an interactive practice module.'}</p>${ready?`<div class="small-progress"><span style="width:${Math.round(done/6*100)}%"></span></div><p class="tiny" style="margin-top:9px">${done} of 6 levels completed</p>`:''}</aside></div></section>` ,skill);
+    shell(pageHero([['Home','#/home'],[title,'#/'+skill]],'Your practice hub',title,helper)+`<section class="section"><div class="container work-layout"><div><div class="module-parts">${skills[skill].map((part,i)=>`<div class="module-part ${part[2]==='Ready'?'active':''}"><div class="module-part-left"><span class="mini-num">0${i+1}</span><div><h3>${e(part[0])}</h3><p>${e(part[1])}</p>${ready?`<div class="tiny muted" style="margin-top:7px">${[completedCount(),completedPart2Count(),completedPart3Count()][i]} of 3 levels completed</div>`:''}</div></div>${part[2]==='Ready'?`<a class="button primary small" href="#/reading/part-${i+1}">Open →</a>`:'<span class="pill planned">In development</span>'}</div>`).join('')}</div></div><aside class="path-summary"><div class="label">Live content</div><strong>${ready?'Reading Parts 1–3 · 9 levels':'Modules being prepared'}</strong><p style="font-size:.85rem;margin-top:10px">${ready?'Start with clues, then complete an exam-style set and a harder challenge in each part.':'This section is part of the site plan; it is not yet an interactive practice module.'}</p>${ready?`<div class="small-progress"><span style="width:${Math.round(done/9*100)}%"></span></div><p class="tiny" style="margin-top:9px">${done} of 9 levels completed</p>`:''}</aside></div></section>` ,skill);
   }
   function partPage() {
     shell(pageHero([['Home','#/home'],['Reading','#/reading'],['Part 1','#/reading/part-1']],'Reading · Part 1','Match people to activities','Read five people’s wishes and choose matching activities. Practise how to find the meaning behind the words.')+
@@ -279,15 +281,109 @@
       }).join('')}<div class="feedback-actions"><button type="button" class="button secondary" id="r2-retry">Try this level again</button>${next?`<a class="button primary" href="#/reading/part-2/${next.id}">Continue to Level ${idx+2} →</a>`:`<a class="button primary" href="#/progress">See my progress →</a>`}<a class="button subtle-btn" href="#/reading/part-2">All Part 2 levels</a></div></div><aside><div class="path-summary"><div class="label">Your achievement</div><strong>${score} / ${total} correct</strong><p style="font-size:.85rem;margin:12px 0">Best: ${scoreLabel(level)} · ${getAttempts(level.id).length} attempt(s)</p><div class="small-progress"><span style="width:${Math.round(bestScore(level.id)/total*100)}%"></span></div></div><div class="panel" style="margin-top:17px"><h3>What to notice</h3><p class="muted" style="font-size:.88rem">A distractor may reuse the same topic but change the deadline, location, person, or condition. Correct answers often paraphrase rather than repeat the exact wording.</p></div></aside></div></section>`,'reading');
     document.getElementById('r2-retry')?.addEventListener('click',()=>{delete store.drafts[level.id];saveStore();routeTo(`#/reading/part-2/${level.id}`);});
   }
+  // Reading Part 3 — long-form reading: one continuous text beside one question at a time.
+  let r3CurrentIndex = 0;
+  const r3Letters = ['A','B','C','D'];
+  function r3PartPage(){
+    shell(pageHero([['Home','#/home'],['Reading','#/reading'],['Part 3','#/reading/part-3']],'Reading · Part 3','Read longer texts','Read carefully, recognise ideas expressed in different words and choose the one answer fully supported by the article.')+
+      `<section class="section"><div class="container work-layout"><div><div class="r3-part-intro"><span class="eyebrow">A complete three-level pathway</span><p>Begin with two short texts and helpful clues. Then practise with a longer article before taking on a more demanding newspaper text.</p></div><div class="level-list">${part3Levels.map((l,i)=>{
+        const past=latestAttempt(l.id);
+        const source = i===0?'Two original texts':i===1?'VOA-based health article':'Adapted Guardian article';
+        return `<div class="level-choice r3-level-choice"><div class="level-number">0${i+1}</div><div class="level-desc"><div class="eyebrow" style="font-size:.65rem">LEVEL ${i+1} · ${e(l.tag)}</div><h3>${e(l.title)}</h3><p>${e(l.description)}</p><div class="meta"><span>${l.questions.length} questions · ${l.questions.length} marks</span><span>·</span><span>${e(source)}</span><span>·</span><span>About ${l.estimatedMinutes} minutes</span>${past?`<span class="pill ready">Best: ${scoreLabel(l)}</span>`:''}</div><div class="actions" style="margin-top:16px"><a class="button ${i===0?'primary':'secondary'} small" href="#/reading/part-3/${l.id}">${past?'Practise again':'Start level'} →</a>${past?`<a class="button subtle-btn small" href="#/reading/part-3/${l.id}/feedback">Review feedback</a>`:''}</div></div></div>`;
+      }).join('')}</div><div class="privacy-note"><strong>Your learning journey:</strong> Every text is followed by questions. Feedback appears after you submit each level, with short evidence quotations and explanations. Your work stays on this device.</div></div><aside><div class="path-summary"><div class="label">Reading Part 3</div><strong>${completedPart3Count()} / 3 levels completed</strong><p class="tiny" style="margin:12px 0">Clues → independent practice → the challenge</p><div class="small-progress"><span style="width:${Math.round(completedPart3Count()/3*100)}%"></span></div></div><div class="panel" style="margin-top:17px"><h3>Read · Find · Check</h3><p class="muted" style="font-size:.89rem">The correct answer may express the article's meaning in different words. Check the exact evidence before you decide.</p></div></aside></div></section>`,'reading');
+  }
+  function r3ArticleHtml(level){
+    const url=level.source.url;
+    const citation=`${e(level.source.label)}${url?` <a href="${e(url)}" target="_blank" rel="noopener noreferrer">Original article ↗</a>`:''}`;
+    return `<details class="r3-article" open id="r3-article"><summary><span><span class="r3-reader-label">READING TEXT</span><span class="r3-summary-title">${e(level.articleTitle)}</span></span><span class="r3-reader-toggle">Show / hide article</span></summary><div class="r3-article-scroll" id="r3-article-scroll"><div class="r3-paper"><div class="r3-paper-eyebrow">THINKLAB · READING PART 3</div><h2>${e(level.articleTitle)}</h2><div class="r3-article-subtitle">${e(level.articleSubtitle)}</div>${level.passages.map((p,i)=>`${p.heading?`<h3 class="r3-passage-heading" id="r3-para-${i}">${e(p.heading)}</h3>`:''}<p class="r3-paragraph">${e(p.text)}</p>`).join('')}<p class="r3-citation">${citation}</p></div></div></details>`;
+  }
+  function r3Example(){
+    return `<div class="model-example r3-model"><div class="eyebrow">Worked example · Not scored</div><h3>Find what the message really means</h3><div class="r2-mini-source"><strong>AFTER-SCHOOL CLUB</strong><p>The art club normally meets on Wednesdays. This week, however, it will meet on Thursday because the room is being repaired.</p></div><div class="tiny muted" style="margin:12px 0">Which statement is correct?</div><div class="model-choices"><button class="model-choice" type="button" data-r3-model="A"><b>A</b> The art club is cancelled this week.</button><button class="model-choice" type="button" data-r3-model="B"><b>B</b> The art club is meeting on a different day this week.</button></div><div class="tiny muted" id="r3-model-feedback" aria-live="polite">Choose one statement to see how the clue works.</div></div>`;
+  }
+  function r3LevelPage(level){
+    const idx=part3Levels.indexOf(level);
+    r3CurrentIndex=0;
+    const last=latestAttempt(level.id);
+    shell(pageHero([['Home','#/home'],['Reading','#/reading'],['Part 3','#/reading/part-3'],[`Level ${idx+1}`,'#/reading/part-3/'+level.id]],`Reading Part 3 · Level ${idx+1}`,level.title,level.description)+
+      `<section class="section r3-section"><div class="container"><div class="task-topbar"><div><div class="eyebrow">${e(level.tag)} · ${level.questions.length} marks</div><h2>Longer reading comprehension</h2></div><div class="actions">${last?`<a class="button small secondary" href="#/reading/part-3/${level.id}/feedback">Last feedback (${last.score}/${level.questions.length})</a>`:''}<a class="button small secondary" href="#/reading/part-3">All levels</a></div></div>
+      ${idx===0?`<div class="guided-intro r3-strategy"><div class="eyebrow">READ · FIND · CHECK</div><div class="steps"><div class="step"><b>1 · READ</b> Understand what the question is asking.</div><div class="step"><b>2 · FIND</b> Look for evidence in the article.</div><div class="step"><b>3 · CHECK</b> Test all four answers before choosing.</div></div></div>${r3Example()}`:''}
+      <div class="r3-workspace"><div class="r3-topline"><div><span class="eyebrow">${e(level.articleSubtitle)}</span><strong>One correct answer per question</strong><p>${idx===0?'Clues are available if you need them.':'Work independently. The answers and explanations appear after you submit.'}</p></div><div class="r3-score-tag">${level.questions.length} marks</div></div><div class="r3-columns">${r3ArticleHtml(level)}<div class="r3-task-column"><div class="r3-question-head"><div><div class="r3-question-counter" id="r3-counter">Question 1 of ${level.questions.length}</div><div class="tiny muted" id="r3-answered-count">0 of ${level.questions.length} answered</div></div><div class="r3-jumps" id="r3-jumps" aria-label="Question navigation"></div></div><div class="small-progress r3-track"><span id="r3-track-fill" style="width:0%"></span></div><div id="r3-stage" aria-live="polite"></div></div></div></div><div class="privacy-note r3-privacy"><strong>Your answers save automatically</strong> in this browser. You may return to the reading text and change answers until you submit.</div></div></section>`,'reading');
+    if(idx===0){
+      APP.querySelectorAll('[data-r3-model]').forEach(btn=>btn.addEventListener('click',()=>{
+        APP.querySelectorAll('[data-r3-model]').forEach(x=>x.classList.toggle('selected',x===btn));
+        const el=document.getElementById('r3-model-feedback');
+        el.className='model-feedback';
+        el.textContent=btn.dataset.r3Model==='B'?'Correct. “However” introduces an exception: the club still meets, but on Thursday instead of Wednesday.':'This is a tempting mistake. The club is NOT cancelled; the day has changed. Look for “however”.';
+      }));
+    }
+    r3RenderQuestion(level,0);
+  }
+  function r3RefreshIndicators(level){
+    const draft=store.drafts[level.id]||{};
+    const count=level.questions.filter(q=>draft[String(q.id)]).length;
+    document.getElementById('r3-counter').textContent=`Question ${r3CurrentIndex+1} of ${level.questions.length}`;
+    document.getElementById('r3-answered-count').textContent=`${count} of ${level.questions.length} answered`;
+    document.getElementById('r3-track-fill').style.width=`${Math.round(count/level.questions.length*100)}%`;
+    const buttons=level.questions.map((q,i)=>`<button type="button" class="r2-jump-btn ${draft[String(q.id)]?'done':''} ${i===r3CurrentIndex?'current':''}" data-r3-jump="${i}" aria-label="Go to question ${i+1}${draft[String(q.id)]?', answered':''}" ${i===r3CurrentIndex?'aria-current="step"':''}>${i+1}</button>`).join('');
+    document.getElementById('r3-jumps').innerHTML=buttons;
+    APP.querySelectorAll('[data-r3-jump]').forEach(btn=>btn.addEventListener('click',()=>r3RenderQuestion(level,Number(btn.dataset.r3Jump))));
+  }
+  function r3RenderQuestion(level,index){
+    r3CurrentIndex=Math.min(Math.max(index,0),level.questions.length-1);
+    const q=level.questions[r3CurrentIndex];
+    const val=(store.drafts[level.id]||{})[String(q.id)]||'';
+    const idx=part3Levels.indexOf(level);
+    document.getElementById('r3-stage').innerHTML=`<div class="r3-question-content"><div class="r3-question-tag">QUESTION ${q.id} · ${e(q.skill)}</div><h3 id="r3-current-question">${e(q.question)}</h3><fieldset class="r2-options r3-options" aria-labelledby="r3-current-question"><legend class="sr-only">Choose one statement</legend>${r3Letters.map(letter=>`<label class="r2-choice ${val===letter?'is-checked':''}"><input type="radio" name="r3-choice" value="${letter}" ${val===letter?'checked':''}><span class="r2-choice-letter">${letter}</span><span class="r2-choice-text">${e(q.options[letter])}</span></label>`).join('')}</fieldset>
+      ${idx===0?`<div class="r3-hint-wrap"><button type="button" class="button secondary small" id="r3-hint-btn" aria-expanded="false">✦ Need a clue?</button><div class="r3-hint" id="r3-hint" hidden>${e(q.hint)}</div></div>`:''}</div><div class="r3-bottom-actions"><button type="button" class="button secondary" id="r3-prev" ${r3CurrentIndex===0?'disabled':''}>← Previous</button>${r3CurrentIndex===level.questions.length-1?`<button type="button" class="button primary" id="r3-submit">Submit for feedback →</button>`:`<button type="button" class="button primary" id="r3-next">Next question →</button>`}</div><p class="r3-navigation-tip">You can also use the numbered buttons above to revisit a question.</p>`;
+    APP.querySelectorAll('input[name="r3-choice"]').forEach(el=>el.addEventListener('change',()=>{
+      store.drafts[level.id] ||= {};
+      store.drafts[level.id][String(q.id)]=el.value;
+      saveStore();
+      APP.querySelectorAll('.r3-options .r2-choice').forEach(item=>item.classList.toggle('is-checked',item.querySelector('input').checked));
+      r3RefreshIndicators(level);
+    }));
+    document.getElementById('r3-prev')?.addEventListener('click',()=>r3RenderQuestion(level,r3CurrentIndex-1));
+    document.getElementById('r3-next')?.addEventListener('click',()=>r3RenderQuestion(level,r3CurrentIndex+1));
+    document.getElementById('r3-submit')?.addEventListener('click',()=>r3Submit(level));
+    document.getElementById('r3-hint-btn')?.addEventListener('click',()=>{
+      const hint=document.getElementById('r3-hint'),btn=document.getElementById('r3-hint-btn');
+      hint.hidden=!hint.hidden;btn.setAttribute('aria-expanded',String(!hint.hidden));btn.textContent=hint.hidden?'✦ Need a clue?':'✦ Hide clue';
+    });
+    r3RefreshIndicators(level);
+  }
+  function r3Submit(level){
+    const answers={...(store.drafts[level.id]||{})};
+    const answered=level.questions.filter(q=>answers[String(q.id)]).length;
+    if(answered<level.questions.length && !window.confirm(`You answered ${answered} of ${level.questions.length} questions. Blank answers receive zero points. Submit now?`))return;
+    const score=level.questions.reduce((n,q)=>n+(answers[String(q.id)]===q.answer?1:0),0);
+    store.attempts[level.id] ||= [];
+    store.attempts[level.id].push({score,answers,at:new Date().toISOString()});
+    store.attempts[level.id]=store.attempts[level.id].slice(-15);
+    delete store.drafts[level.id];saveStore();
+    routeTo(`#/reading/part-3/${level.id}/feedback`);
+  }
+  function r3FeedbackPage(level){
+    const attempt=latestAttempt(level.id);
+    if(!attempt){routeTo(`#/reading/part-3/${level.id}`);return;}
+    const idx=part3Levels.indexOf(level),next=part3Levels[idx+1],correct=attempt.score,total=level.questions.length;
+    const assessment=correct===total?'Excellent. You found the precise meaning behind every answer.':correct>=Math.ceil(total*.7)?'Good work. Check the explanations of the questions you missed.':'You have useful evidence to learn from. Look for the words that change the meaning of tempting incorrect answers.';
+    shell(pageHero([['Home','#/home'],['Reading','#/reading'],['Part 3','#/reading/part-3'],[`Level ${idx+1}`,'#/reading/part-3/'+level.id],['Feedback','#/reading/part-3/'+level.id+'/feedback']],'Reading Part 3 · Feedback',`Level ${idx+1} · Your results`,'Review your choices, the textual evidence and why the tempting alternatives are not supported.')+
+      `<section class="section" style="padding-top:32px"><div class="container work-layout"><div class="panel"><div class="feedback-header"><div><div class="eyebrow">Latest attempt · ${e(dateText(attempt.at))}</div><h2 style="margin-top:8px">${e(level.title)}</h2><p class="muted" style="font-size:.9rem">${e(assessment)}</p></div><div><div class="score-big">${correct}<small> / ${total}</small></div><div class="tiny muted">${Math.round(correct/total*100)}% correct</div></div></div><div class="small-progress"><span style="width:${Math.round(correct/total*100)}%"></span></div><h3 style="margin:25px 0 12px">Question-by-question feedback</h3>${level.questions.map(q=>{
+        const your=attempt.answers?.[String(q.id)]||'',ok=your===q.answer;
+        return `<article class="feedback-item r3-feedback-item"><div class="mini-meta"><span class="qnum" style="min-width:26px;padding:5px">${q.id}</span><span class="r3-skill-chip">${e(q.skill)}</span><span class="${ok?'answer-correct':'answer-incorrect'}">${ok?'✓ Correct':'✕ Review'}</span></div><p class="q-text"><strong>${e(q.question)}</strong></p><p class="r2-feedback-choices">Your answer: <strong>${e(your||'Not answered')}</strong> &nbsp; | &nbsp; Correct: <strong>${e(q.answer)} · ${e(q.options[q.answer])}</strong></p><p class="evidence"><strong>Textual evidence:</strong> ${e(q.evidence)}</p><p class="r2-explain">${e(q.explanation)}</p><p class="r2-trap"><strong>Watch out:</strong> ${e(q.trap)}</p></article>`;
+      }).join('')}<div class="feedback-actions"><button class="button secondary" id="r3-retry">Try this level again</button>${next?`<a class="button primary" href="#/reading/part-3/${next.id}">Continue to Level ${idx+2} →</a>`:`<a class="button primary" href="#/progress">See my progress →</a>`}<a class="button subtle-btn" href="#/reading/part-3">All Part 3 levels</a></div></div><aside><div class="path-summary"><div class="label">Your achievement</div><strong>${correct} / ${total} correct</strong><p style="font-size:.85rem;margin:12px 0">Best: ${scoreLabel(level)} · ${getAttempts(level.id).length} attempt(s)</p><div class="small-progress"><span style="width:${Math.round(bestScore(level.id)/total*100)}%"></span></div></div><div class="panel" style="margin-top:17px"><h3>Three things to check</h3><ol class="r3-feedback-guide"><li>Does the answer express the same meaning as the text?</li><li>Is there a condition, exception or qualifying word?</li><li>Have you confused a person's opinion with a fact?</li></ol><p class="tiny muted">One point for each correct response. This is practice feedback, not an official MSA grade.</p></div></aside></div></section>`,'reading');
+    document.getElementById('r3-retry')?.addEventListener('click',()=>{delete store.drafts[level.id];saveStore();routeTo(`#/reading/part-3/${level.id}`);});
+  }
+
   function progressPage() {
     const done=completedTotal(),totalAttempts=allLevels.reduce((n,l)=>n+getAttempts(l.id).length,0);
     const avg=done?Math.round(allLevels.reduce((sum,l)=>sum+(getAttempts(l.id).length?bestScore(l.id)/l.questions.length:0),0)/done*100):0;
-    const progressSection=(title,part,arr)=>`<div class="panel" style="margin-bottom:18px"><h2>${e(title)}</h2><p class="muted" style="font-size:.87rem">${part===2?'Short-text reading comprehension':'Matching people and activities'} · ${arr.filter(l=>getAttempts(l.id).length).length} of 3 levels completed</p>${arr.map((l,i)=>{
+    const progressSection=(title,part,arr)=>`<div class="panel" style="margin-bottom:18px"><h2>${e(title)}</h2><p class="muted" style="font-size:.87rem">${part===3?'Longer-text reading comprehension':part===2?'Short-text reading comprehension':'Matching people and activities'} · ${arr.filter(l=>getAttempts(l.id).length).length} of 3 levels completed</p>${arr.map((l,i)=>{
       const tries=getAttempts(l.id),last=latestAttempt(l.id),url=`#/reading/part-${part}/${l.id}`;
       return `<div class="attempt-row"><div><strong>Level ${i+1}: ${e(l.title)}</strong><div><span>${tries.length?`${tries.length} attempt${tries.length>1?'s':''} · Latest: ${last.score}/${l.questions.length} · Best: ${scoreLabel(l)}`:'Not started yet'}</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${last?`<a class="button small secondary" href="${url}/feedback">Feedback</a>`:''}<a class="button small primary" href="${url}">${tries.length?'Try again':'Start'} →</a></div></div>`;
     }).join('')}</div>`;
-    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','Review Reading Parts 1 and 2, revisit feedback, or continue where you left off.')+
-      `<section class="section"><div class="container work-layout"><div><div class="progress-stats"><div class="progress-card"><strong>${done}/${allLevels.length}</strong><span>Levels completed</span></div><div class="progress-card"><strong>${totalAttempts}</strong><span>Total attempts</span></div><div class="progress-card"><strong>${avg}%</strong><span>Average best score</span></div></div>${progressSection('Reading Part 1',1,levels)}${progressSection('Reading Part 2',2,part2Levels)}<div class="panel" style="margin-top:18px"><h3>Back up or clear your progress</h3><p class="muted" style="font-size:.87rem">Download a JSON backup of your scores and answers. You can import this on another device, or clear the progress saved here.</p><div style="display:flex;flex-wrap:wrap;gap:10px"><button id="export-progress" class="button secondary">Download progress</button><label class="button secondary" for="import-progress" style="cursor:pointer">Import progress</label><input type="file" id="import-progress" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0"><button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div><p id="progress-notice" class="tiny" aria-live="polite" style="margin:12px 0 0;color:#3d7281"></p></div></div><aside><div class="privacy-note"><strong>Privacy and saving</strong><p style="margin:9px 0 0">ThinkLab requires no student login. Your scores and answers are saved locally in this browser, not sent to a teacher or server. Clearing site data or switching browsers may remove them. Export a backup if needed.</p></div></aside></div></section>`,'progress');
+    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','Review Reading Parts 1–3, revisit feedback, or continue where you left off.')+
+      `<section class="section"><div class="container work-layout"><div><div class="progress-stats"><div class="progress-card"><strong>${done}/${allLevels.length}</strong><span>Levels completed</span></div><div class="progress-card"><strong>${totalAttempts}</strong><span>Total attempts</span></div><div class="progress-card"><strong>${avg}%</strong><span>Average best score</span></div></div>${progressSection('Reading Part 1',1,levels)}${progressSection('Reading Part 2',2,part2Levels)}${progressSection('Reading Part 3',3,part3Levels)}<div class="panel" style="margin-top:18px"><h3>Back up or clear your progress</h3><p class="muted" style="font-size:.87rem">Download a JSON backup of your scores and answers. You can import this on another device, or clear the progress saved here.</p><div style="display:flex;flex-wrap:wrap;gap:10px"><button id="export-progress" class="button secondary">Download progress</button><label class="button secondary" for="import-progress" style="cursor:pointer">Import progress</label><input type="file" id="import-progress" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0"><button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div><p id="progress-notice" class="tiny" aria-live="polite" style="margin:12px 0 0;color:#3d7281"></p></div></div><aside><div class="privacy-note"><strong>Privacy and saving</strong><p style="margin:9px 0 0">ThinkLab requires no student login. Your scores and answers are saved locally in this browser, not sent to a teacher or server. Clearing site data or switching browsers may remove them. Export a backup if needed.</p></div></aside></div></section>`,'progress');
     bindProgress();
   }
   function bindProgress() {
@@ -303,7 +399,7 @@
         if(imported.version!==1 || !imported.attempts || !imported.drafts || typeof imported.attempts!=='object')throw new Error('wrong format');
         const clean={version:1,attempts:{},drafts:{}};
         for(const l of allLevels){
-          const allowedLetters=l.id.startsWith('r2-')?['A','B','C','D']:letters;
+          const allowedLetters=l.id.startsWith('r2-')||l.id.startsWith('r3-')?['A','B','C','D']:letters;
           const arr=imported.attempts[l.id];
           if(Array.isArray(arr))clean.attempts[l.id]=arr.filter(x=>typeof x.score==='number' && x.score>=0 && x.score<=l.questions.length && x.answers && typeof x.answers==='object').slice(-15).map(x=>({score:x.score,answers:Object.fromEntries(Object.entries(x.answers).filter(([k,v])=>/^\d+$/.test(k) && allowedLetters.includes(v))),at:typeof x.at==='string'?x.at:new Date().toISOString()}));
           const drafts=imported.drafts[l.id];if(drafts && typeof drafts==='object' && !Array.isArray(drafts)) clean.drafts[l.id]=Object.fromEntries(Object.entries(drafts).filter(([k,v])=>/^\d+$/.test(k) && allowedLetters.includes(v)));
@@ -327,10 +423,13 @@
     else if(['reading','writing','listening'].includes(p[0]) && p.length===1)subjectPage(p[0]);
     else if(p[0]==='reading'&&p[1]==='part-1'&&p.length===2)partPage();
     else if(p[0]==='reading'&&p[1]==='part-2'&&p.length===2)part2Page();
+    else if(p[0]==='reading'&&p[1]==='part-3'&&p.length===2)r3PartPage();
     else if(p[0]==='reading'&&p[1]==='part-1'&&getLevel(p[2])&&p.length===3)levelPage(getLevel(p[2]));
     else if(p[0]==='reading'&&p[1]==='part-1'&&getLevel(p[2])&&p[3]==='feedback'&&p.length===4)feedbackPage(getLevel(p[2]));
     else if(p[0]==='reading'&&p[1]==='part-2'&&part2Levels.find(x=>x.id===p[2])&&p.length===3)r2LevelPage(part2Levels.find(x=>x.id===p[2]));
     else if(p[0]==='reading'&&p[1]==='part-2'&&part2Levels.find(x=>x.id===p[2])&&p[3]==='feedback'&&p.length===4)r2FeedbackPage(part2Levels.find(x=>x.id===p[2]));
+    else if(p[0]==='reading'&&p[1]==='part-3'&&part3Levels.find(x=>x.id===p[2])&&p.length===3)r3LevelPage(part3Levels.find(x=>x.id===p[2]));
+    else if(p[0]==='reading'&&p[1]==='part-3'&&part3Levels.find(x=>x.id===p[2])&&p[3]==='feedback'&&p.length===4)r3FeedbackPage(part3Levels.find(x=>x.id===p[2]));
     else if(p[0]==='progress')progressPage();
     else notFound();
     window.scrollTo({top:0,behavior:'instant'});
