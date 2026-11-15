@@ -54,14 +54,14 @@
     APP.innerHTML = `<header class="site-header"><div class="container header-inner">
       <a class="brand" href="#/home" aria-label="ThinkLab MSA Prep home"><img src="assets/thinklab-bulb.png" alt=""><div><div class="brand-name">Think<span>Lab</span></div><div class="brand-tag">LEARN · CREATE · EXPLORE · GROW</div></div></a>
       <nav class="nav-links" aria-label="Main navigation">${nav.map(n=>`<a class="nav-link ${active===n[2]?'active':''}" ${active===n[2]?'aria-current="page"':''} href="${n[1]}">${n[0]}</a>`).join('')}</nav>
-      <a href="#/progress" class="header-progress" aria-label="Review your saved progress"><span class="round-indicator">✓</span> ${progress} / ${allLevels.length} levels</a>
+      <a href="#/progress" class="header-progress" aria-label="Review your saved progress"><span class="round-indicator">✓</span> ${progress} / ${allLevels.length} Reading levels</a>
     </div></header><main id="main">${page}</main><footer class="site-footer"><div class="container footer-inner"><div><div class="brand-name">Think<span>Lab</span> · MSA Prep</div><div class="brand-tag">LEARN · CREATE · EXPLORE · GROW</div></div><p>Original practice tasks inspired by the Berlin MSA English format, not official exam questions. ${localSavingAvailable?'Progress is stored on this device only.':'Progress saving may be unavailable in this browser.'}</p></div></footer>`;
     document.title = 'ThinkLab MSA Prep — ' + ({home:'Home',reading:'Reading',writing:'Writing',listening:'Listening',progress:'My progress'}[active] || 'Practice');
   }
   function home() {
     const cards=[
       ['reading','Reading','3 parts','Read to find the meaning, identify evidence and match the right details.',['Match people to activities','Understand short texts','Read a longer article'],'✓','live'],
-      ['writing','Writing','3 parts','Communicate clearly, organise ideas and respond for the right reader.',['Respond to a photo','Write a discussion response','Mediation: German → English'],'✎','planned'],
+      ['writing','Writing','3 parts','Communicate clearly, organise ideas and respond for the right reader.',['Respond to a photo · All 3 levels ready','Write a discussion response','Mediation: German → English'],'✎','live'],
       ['listening','Listening','4 parts','Listen for meaning, follow speakers and recognise the important clues.',['Match messages to pictures','Match podcast intros to titles','Complete notes and tables','Understand a radio discussion'],'◉','planned']
     ];
     const html=`<section class="hero"><div class="container hero-grid"><div>
@@ -71,26 +71,27 @@
       <div class="benefit"><strong>✓</strong> No logins, no pressure. Progress and feedback saved on this device.</div>
     </div><div class="journey-wrap"><div class="journey-card"><div class="eyebrow">Your learning journey</div><h3>Learn it. Try it. <em>Own it.</em></h3>
        ${['Learn with clues','Practise like the exam','Take the challenge'].map((s,i)=>`<div class="journey-step"><span class="num">0${i+1}</span><div><strong>${s}</strong><p>${['Short examples + helpful guidance','Fresh tasks with the real exam structure','More demanding practice'][i]}</p></div><span style="margin-left:auto;color:#bad2dd">›</span></div>`).join('')}
-       <div class="bottom-note">✓ After each task, get a score, correct answers and an explanation of the evidence.</div>
+       <div class="bottom-note">✓ Reading tasks give scores and evidence. Writing tasks give word-count checks and self-review.</div>
     </div></div></div></section>
-    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels live</div></div></div>
-    <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore the skills. All three Reading parts are ready now; Writing and Listening will follow.')}
-      <div class="skill-grid">${cards.map(([route,title,parts,desc,items,ico,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon">${ico}</div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':'View the plan'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
+    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels · 3 Writing levels</div></div></div>
+    <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore the skills. All three Reading parts and all three Writing Part 1 levels are available.')}
+      <div class="skill-grid">${cards.map(([route,title,parts,desc,items,ico,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon">${ico}</div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':route==='writing'?'Start Writing':'View the plan'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
     </div></section><section class="section alt"><div class="container">${titleBlock('One simple route','Three levels. Real progress.','Every part follows the same learning path so you always know what comes next.')}
     <div class="path-grid">${levels.map((l,i)=>`<a class="level-card" href="#/reading/part-1/${l.id}"><div class="topline"><span class="level-number">0${i+1}</span><div><div class="tiny muted" style="font-weight:800">LEVEL ${i+1}</div><h3 style="margin:0">${stepTitle(i)}</h3></div></div><p>${e(l.description)}</p><div class="tiny"><span class="pill ${getAttempts(l.id).length?'ready':''}">${getAttempts(l.id).length?'Best '+scoreLabel(l):'Not completed'}</span></div></a>`).join('')}</div>
-    <div class="feedback-ribbon"><strong>New · Reading Part 3:</strong> Learn with clues, practise a health article, then take the challenge with an adapted Guardian text. <a href="#/reading/part-3" style="font-weight:850;color:#0B2D56;text-decoration:underline">Explore Part 3 →</a></div>
+    <div class="feedback-ribbon"><strong>Writing Part 1 · Three levels ready:</strong> Choose football, a park proposal or a mountain hike. Write 30–50 words and review your response against MSA criteria. <a href="#/writing/part-1" style="font-weight:850;color:#0B2D56;text-decoration:underline">Try the photo task →</a></div>
     </div></section>`;
     shell(html,'home');
   }
   function howPage() {
-    shell(pageHero([['Home','#/home'],['How it works','#/how']],'Your learning path','Learn. Practise. Improve.','Here is how ThinkLab guides you through MSA-style tasks.')+`<section class="section"><div class="container"><div class="path-grid">${levels.map((l,i)=>`<div class="panel"><span class="level-number">0${i+1}</span><h3 style="margin-top:15px">${stepTitle(i)}</h3><p class="muted">${e(l.description)}</p></div>`).join('')}</div><div class="panel" style="margin-top:20px"><h3>How marking works</h3><p>In Part 1, you match activities to people. In Part 2, you choose the correct statement for a short text. In Part 3, you read longer texts and answer multiple-choice questions. Every correct answer earns one point; detailed feedback appears after submission.</p><p>No account is required. Your attempts stay in this browser; use <strong>My progress</strong> to download a backup if you want to keep a copy.</p><a class="button primary" href="#/reading/part-1">Start Reading Part 1 →</a></div></div></section>`,'home');
+    shell(pageHero([['Home','#/home'],['How it works','#/how']],'Your learning path','Learn. Practise. Improve.','Here is how ThinkLab guides you through MSA-style tasks.')+`<section class="section"><div class="container"><div class="path-grid">${levels.map((l,i)=>`<div class="panel"><span class="level-number">0${i+1}</span><h3 style="margin-top:15px">${stepTitle(i)}</h3><p class="muted">${e(l.description)}</p></div>`).join('')}</div><div class="panel" style="margin-top:20px"><h3>How marking works</h3><p>For Reading, choose matching activities or correct statements and receive one point per correct answer, with evidence-based feedback. For Writing Part 1, respond to a photo in 30–50 words and use the MSA criteria to review your writing. Open-ended writing does not receive an automatic exam mark.</p><p>No account is required. Your attempts stay in this browser; use <strong>My progress</strong> to download a backup if you want to keep a copy.</p><a class="button primary" href="#/reading/part-1">Start Reading Part 1 →</a></div></div></section>`,'home');
   }
   const skills = {
     reading: [['Reading Part 1','Match people to activities','Ready'],['Reading Part 2','Understand short texts','Ready'],['Reading Part 3','Longer reading comprehension','Ready']],
-    writing: [['Writing Part 1','Photo response','Planned'],['Writing Part 2','Discussion / opinion response','Planned'],['Writing Part 3','Mediation: German → English','Planned']],
+    writing: [['Writing Part 1','Photo response · Level 1 available','Ready'],['Writing Part 2','Discussion / opinion response','Planned'],['Writing Part 3','Mediation: German → English','Planned']],
     listening: [['Listening Part 1','Voicemail and picture matching','Planned'],['Listening Part 2','Podcast intro matching','Planned'],['Listening Part 3','Information completion','Planned'],['Listening Part 4','Radio programme comprehension','Planned']]
   };
   function subjectPage(skill) {
+    if(skill==='writing')return writingSubjectPage();
     const title=skill[0].toUpperCase()+skill.slice(1);
     const helper={reading:'Choose any of the three Reading parts: matching, short texts or longer articles.',writing:'The Writing pathway will include task planning, independent writing and feedback against content and language criteria.',listening:'The Listening pathway will include original recordings, two play-throughs and evidence-based explanations.'}[skill];
     const ready=skill==='reading';
@@ -375,6 +376,205 @@
     document.getElementById('r3-retry')?.addEventListener('click',()=>{delete store.drafts[level.id];saveStore();routeTo(`#/reading/part-3/${level.id}`);});
   }
 
+  // Writing Part 1, Level 1: student-led photo response practice.
+  // Deliberately no automatic numerical mark: clarity and relevance require human judgement.
+  const W1_ID = 'writing-photo-1';
+  const W1_L2_ID = 'writing-photo-2';
+  const W1_L3_ID = 'writing-photo-3';
+  const W1_ALL_IDS = [W1_ID, W1_L2_ID, W1_L3_ID];
+  const w1ExamPhotos = {
+    2: {
+      id: W1_L2_ID, title: 'A Surprise in the Park', label: 'Practise like the exam',
+      photo: 'assets/park-proposal-chatgpt.jpg',
+      alt: 'A man kneels on one knee in a leafy park holding a ring box towards a surprised woman.',
+      model: "I took this photo in the park near my aunt's house last Sunday. That's my brother Daniel proposing to his girlfriend, Maya. He planned the surprise for weeks and finally asked her to marry him. She looks completely shocked, but very happy.",
+      modelNote: 'The writer identifies a believable location, names the people and clearly explains the proposal. The extra background adds interest without replacing the three required points.'
+    },
+    3: {
+      id: W1_L3_ID, title: 'Up in the Clouds', label: 'Take the challenge',
+      photo: 'assets/mountain-hike-chatgpt.jpg',
+      alt: 'Four young hikers in jackets with backpacks walk along a rocky mountain trail beneath thick grey clouds.',
+      model: 'We took this photo while hiking in the mountains during our holiday. The four hikers are my classmates Nia, Felix, Sara and Ben. Dark clouds were gathering above us, but we continued carefully along the rocky path. We were tired, excited and determined to reach the viewpoint.',
+      modelNote: 'The writer makes the location and the four people clear, describes the hiking and includes believable detail about the cloudy weather without exceeding 50 words.'
+    }
+  };
+  function w1AnyAttempts(id){ return Array.isArray(store.attempts[id]) ? store.attempts[id] : []; }
+  function w1AnyLast(id){ return w1AnyAttempts(id).at(-1); }
+  function w1AnyDraft(id){ const d=store.drafts[id];return (d&&typeof d==='object'&&!Array.isArray(d))?d:{}; }
+  function w1Attempts() { return Array.isArray(store.attempts[W1_ID]) ? store.attempts[W1_ID] : []; }
+  function w1Last() { return w1Attempts().at(-1); }
+  function w1Draft() {
+    const d = store.drafts[W1_ID];
+    return (d && typeof d === 'object' && !Array.isArray(d)) ? d : {};
+  }
+  function w1WordCount(text) { return (String(text||'').match(/[\p{L}\p{N}]+(?:[’'\-][\p{L}\p{N}]+)*/gu) || []).length; }
+  function w1PhotoCaption() {
+    return '<figcaption>Image credit: AI-generated image created with <strong>ChatGPT (OpenAI), 2026</strong>, for ThinkLab MSA Prep. Not taken from an examination paper or a third-party website.</figcaption>';
+  }
+  function w1PhotoHtml() {
+    return `<figure class="w1-photo"><img src="assets/neighbourhood-football-chatgpt.jpg" loading="eager" alt="Three teenagers playing football on a grassy neighbourhood field, with goalposts, trees and houses behind them.">${w1PhotoCaption()}</figure>`;
+  }
+  function writingPartPage() {
+    const cards=[
+      {n:1,id:W1_ID,title:'Learn with clues',tag:'Guided practice',desc:'Notice details, create believable names and use the optional writing frame.',photo:'assets/neighbourhood-football-chatgpt.jpg',alt:'Three teenagers playing football in a neighbourhood field.'},
+      {n:2,id:W1_L2_ID,title:'Practise like the exam',tag:'Independent photo response',desc:'Answer James in 30–50 words, independently, without writing clues.',photo:w1ExamPhotos[2].photo,alt:w1ExamPhotos[2].alt},
+      {n:3,id:W1_L3_ID,title:'Take the challenge',tag:'Independent challenge',desc:'Invent a coherent story and explain the scene clearly in the same 30–50-word exam format.',photo:w1ExamPhotos[3].photo,alt:w1ExamPhotos[3].alt}
+    ];
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 1','#/writing/part-1']],'Writing · Part 1','Your Photo','Three photos. Three levels. One MSA goal: explain where, who and what in 30–50 clear words.')+
+      `<section class="section w1-section"><div class="container"><div class="w1-part-intro"><div><div class="eyebrow">Writing Part 1 · all three levels</div><h2>Look at the photo. Tell James the story.</h2><p>You can invent names, relationships and a believable explanation of the scene. The real MSA assesses the three content points and how clearly you communicate—not whether you guessed a photo's true story.</p><div class="w1-criteria-note" style="margin-top:16px"><strong>Exam reminder:</strong> Where was it taken? Who are the people? What's going on? · <strong>30–50 words · /5 points</strong></div></div>${w1PhotoHtml()}</div>
+      <div class="w1-showcase">${cards.map(c=>{const attempts=w1AnyAttempts(c.id),last=w1AnyLast(c.id); const url='#/writing/part-1/level-'+c.n;return `<article class="w1-showcase-card"><figure class="w1-photo"><img loading="lazy" src="${c.photo}" alt="${e(c.alt)}"><figcaption>${w1PhotoCaption().replace(/<\/?figcaption>/g,'')}</figcaption></figure><div class="w1-showcase-body"><div class="eyebrow">LEVEL ${c.n} · ${e(c.tag)}</div><h3>${e(c.title)}</h3><p>${e(c.desc)}</p><div class="w1-card-meta"><span>30–50 words</span><span>5 marks (exam)</span>${attempts.length?`<span class="pill ready">${attempts.length} review${attempts.length===1?'':'s'}</span>`:''}</div><div class="actions"><a href="${url}" class="button primary small">${attempts.length?'Try again':'Open level'} →</a>${last?`<a href="${url}/feedback" class="button secondary small">View feedback</a>`:''}</div></div></article>`;}).join('')}</div></div></section>`,'writing');
+  }
+  function w1Options(options, selected) {
+    return options.map(o=>`<option value="${e(o[0])}" ${o[0]===selected?'selected':''}>${e(o[1])}</option>`).join('');
+  }
+  function writingLevelPage() {
+    const d=w1Draft();
+    const checks=(d.checks && typeof d.checks==='object') ? d.checks : {};
+    const previous=w1Last();
+    const relationOpts=[['my cousins','My cousins'],['my friends','My friends'],['my classmates','My classmates'],['my neighbours','My neighbours'],['my brothers','My brothers'],['some teenagers from our neighbourhood','People from our neighbourhood']];
+    const timeOpts=[['last Saturday','Last Saturday'],['yesterday afternoon','Yesterday afternoon'],['after school','After school'],['last weekend','Last weekend'],['during the school holidays','During the school holidays']];
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 1','#/writing/part-1'],['Level 1','#/writing/part-1/level-1']],'Writing Part 1 · Level 1','Your Photo: Football at the Field','Learn with clues · Imagine believable details · Write a clear 30–50-word response.')+
+      `<section class="section w1-section"><div class="container"><div class="w1-intro-bar"><div><div class="eyebrow">YOUR GOAL</div><strong>Explain the photo to James in 30–50 words.</strong><p>All three points matter: where · who · what is happening. You can be creative!</p></div><div class="w1-mark-pill">/ 5 marks</div></div>
+      <div class="w1-grid"><aside class="w1-visual-col"><div class="w1-sticky">${w1PhotoHtml()}<div class="w1-chat"><div class="w1-chat-head"><span class="w1-avatar">J</span><div><strong>James</strong><small>Your friend · Messaging you</small></div></div><div class="w1-post">You posted this photo. James wants to know more!</div><div class="w1-bubble">Wow, where did you take that photo?<br><br>Who are they?<br><br>What's going on?</div></div><div class="w1-photo-tip"><strong>Remember:</strong> Nobody knows the real story behind this imagined scene. Make up a sensible one!</div></div></aside>
+      <div class="w1-main-col">
+      <section class="w1-step" id="w1-observe"><div class="w1-step-top"><span class="w1-step-num">01</span><div><div class="eyebrow">LOOK AND NOTICE</div><h2>What can you see?</h2></div></div><p>Look for real clues in the image before you invent details.</p><div class="w1-observations"><div><b>Where?</b><span>A grassy field, houses and a goal</span></div><div><b>Who?</b><span>Three teenagers</span></div><div><b>What?</b><span>Playing football and moving towards the ball</span></div></div><p class="w1-annotation">A photo shows us <strong>what is visible</strong>. You can decide the names, relationships, time and occasion.</p></section>
+      <section class="w1-step" id="w1-create"><div class="w1-step-top"><span class="w1-step-num">02</span><div><div class="eyebrow">MAKE THE PHOTO YOUR STORY</div><h2>Invent believable details</h2></div></div><p>Pick some ideas below, or write something completely different. There is no single correct story.</p><div class="w1-fields"><label>Your relationship to the players<select id="w1-relation">${w1Options(relationOpts,d.relation||'my cousins')}</select></label><label>When did it happen?<select id="w1-time">${w1Options(timeOpts,d.time||'last Saturday')}</select></label><label>Give the players names (optional)<input id="w1-names" type="text" maxlength="80" value="${e(d.names||'')}" placeholder="e.g. Vinie, Matti and Alex"></label><label>Give the place a name (optional)<input id="w1-place" type="text" maxlength="80" value="${e(d.place||'')}" placeholder="e.g. our neighbourhood field"></label></div><div class="w1-builder-bottom"><button type="button" class="button secondary" id="w1-starter">Build an editable starter →</button><span class="tiny muted">You can change or ignore every suggestion.</span></div></section>
+      <section class="w1-step" id="w1-write"><div class="w1-step-top"><span class="w1-step-num">03</span><div><div class="eyebrow">WRITE YOUR RESPONSE</div><h2>Tell James about the picture</h2></div></div><p>Write a short, connected reply. Answer <strong>where, who and what</strong> in your own words. Adding a name or a reason can make your answer more natural.</p><div class="w1-starters"><strong>Need a sentence starter?</strong><details><summary>Show writing clues</summary><ul><li>I took this photo at …</li><li>Those are my …</li><li>The boy in the blue hoodie is …</li><li>They are playing … because …</li></ul><small>These are suggestions, not sentences you must copy.</small></details></div><label class="w1-textarea-label" for="w1-response">Your message to James</label><textarea id="w1-response" rows="8" spellcheck="true" placeholder="I took this photo at our neighbourhood field …">${e(d.text||'')}</textarea><div class="w1-wordrow"><span id="w1-count" aria-live="polite">0 words</span><span class="w1-range" id="w1-range">Aim for 30–50 words</span></div><div class="w1-word-track"><span id="w1-meter"></span></div><p class="w1-autosave">${localSavingAvailable?'Your writing is saved automatically in this browser.':'Browser storage is unavailable here. Copy your writing somewhere safe before closing.'}</p></section>
+      <section class="w1-step" id="w1-check"><div class="w1-step-top"><span class="w1-step-num">04</span><div><div class="eyebrow">SELF-CHECK</div><h2>Have you answered James?</h2></div></div><p>Read your writing once more. Tick only what is <em>actually in your response</em>.</p><div class="w1-checks">${[['where','I explained where the photo was taken.'],['who','I said who the people are.'],['what','I described what is happening.'],['clear','My sentences are understandable and connected.']].map(([k,label])=>`<label class="w1-check"><input type="checkbox" data-w1-check="${k}" ${checks[k]?'checked':''}><span>${e(label)}</span></label>`).join('')}</div><div class="w1-criteria-note"><strong>How the exam awards 5 marks:</strong> The three content points and clear English matter. The official task asks for 30–50 words. Creativity is encouraged, but names and extra details do not earn separate marks.</div><div class="w1-cta"><button type="button" class="button primary" id="w1-review">Review my writing →</button>${previous?'<a class="button secondary" href="#/writing/part-1/level-1/feedback">See previous review</a>':''}<p id="w1-warning" class="tiny" role="alert"></p></div></section>
+      </div></div></div></section>`,'writing');
+    const response=APP.querySelector('#w1-response');
+    const saveField=()=>{
+      store.drafts[W1_ID] ||= {};
+      const p=store.drafts[W1_ID];
+      p.text=response.value;
+      p.relation=APP.querySelector('#w1-relation').value;
+      p.time=APP.querySelector('#w1-time').value;
+      p.names=APP.querySelector('#w1-names').value;
+      p.place=APP.querySelector('#w1-place').value;
+      p.checks={};
+      APP.querySelectorAll('[data-w1-check]').forEach(c=>p.checks[c.dataset.w1Check]=c.checked);
+      saveStore();
+    };
+    const updateWords=()=>{
+      const n=w1WordCount(response.value);
+      APP.querySelector('#w1-count').textContent=n+' word'+(n===1?'':'s');
+      const label=APP.querySelector('#w1-range');
+      const meter=APP.querySelector('#w1-meter');
+      label.className='w1-range '+(n>=30&&n<=50?'good':n?'needs-work':'');
+      label.textContent=n===0?'Aim for 30–50 words':n<20?'Too short: under 20 words':n<30?'Add '+(30-n)+' more word'+(30-n===1?'':'s'):n<=50?'Within the exam word range':(n-50)+' word'+(n-50===1?'':'s')+' over the limit';
+      meter.style.width=Math.min(n/50*100,100)+'%';
+      meter.classList.toggle('good',n>=30&&n<=50);
+      meter.classList.toggle('over',n>50);
+    };
+    APP.querySelectorAll('#w1-names,#w1-place,#w1-time,#w1-relation').forEach(el=>el.addEventListener('input',saveField));
+    response.addEventListener('input',()=>{saveField();updateWords();});
+    APP.querySelectorAll('[data-w1-check]').forEach(el=>el.addEventListener('change',saveField));
+    updateWords();
+    APP.querySelector('#w1-starter').addEventListener('click',()=>{
+      if(response.value.trim() && !window.confirm('Replace your current writing with an editable starter? Your existing draft will be overwritten.'))return;
+      const who=APP.querySelector('#w1-relation').value;
+      const name=APP.querySelector('#w1-names').value.trim().replace(/[.!?]+$/,'');
+      const where=APP.querySelector('#w1-place').value.trim() || 'our neighbourhood field';
+      const when=APP.querySelector('#w1-time').value;
+      response.value=`I took this photo ${when} at ${where}. Those are ${who}${name?' '+name:''}. They are playing a friendly football match. One boy is trying to score while the others are stopping him. We often play here together.`;
+      saveField();updateWords();response.focus();response.scrollIntoView({behavior:'smooth',block:'center'});
+    });
+    APP.querySelector('#w1-review').addEventListener('click',()=>{
+      const text=response.value.trim();
+      if(!text){APP.querySelector('#w1-warning').textContent='Please write your reply first. Then you can review it.';response.focus();return;}
+      saveField();
+      const p=w1Draft();
+      const attempt={at:new Date().toISOString(),text,wordCount:w1WordCount(text),checks:{...p.checks}};
+      store.attempts[W1_ID] ||= [];
+      store.attempts[W1_ID].push(attempt);
+      saveStore();
+      routeTo('#/writing/part-1/level-1/feedback');
+    });
+  }
+  function writingFeedbackPage(){
+    const attempt=w1Last();
+    if(!attempt){routeTo('#/writing/part-1/level-1');return;}
+    const n=attempt.wordCount,checks=attempt.checks||{};
+    const wordMessage=n<20?'Your response is under 20 words. The official rubric includes a 1-mark descriptor for very short writing.':n<30?'Your response is under 30 words. The official rubric includes a 2-mark descriptor for writing shorter than 30 words.':n>50?'Your response is longer than the exam request. Edit it to stay within 30–50 words.':'Your response meets the requested 30–50-word length.';
+    const missing=[['where','where you took the photo'],['who','who the people are'],['what','what is happening']].filter(([k])=>!checks[k]);
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 1','#/writing/part-1'],['Level 1','#/writing/part-1/level-1'],['Feedback','#/writing/part-1/level-1/feedback']],'Writing Part 1 · Feedback','Your writing review','Use your own checklist and the official exam expectations to improve your reply before the next attempt.')+
+      `<section class="section w1-section"><div class="container w1-results-layout"><div>
+      <div class="panel w1-result-panel"><div class="eyebrow">YOUR MOST RECENT RESPONSE · ${e(dateText(attempt.at))}</div><div class="w1-result-head"><h2>My message to James</h2><div class="w1-count-pill ${n>=30&&n<=50?'good':''}">${n} words</div></div><blockquote>${e(attempt.text)}</blockquote><div class="w1-word-feedback ${n>=30&&n<=50?'good':'needs-work'}">${e(wordMessage)}</div><p class="w1-teacher-note"><strong>To receive a score out of 5, share your writing with your teacher.</strong> This website provides practice feedback only.</p></div>
+      <div class="panel w1-result-panel"><div class="eyebrow">SELF-REFLECTION</div><h2>Did you cover all three points?</h2><p class="muted">This feedback is based on <strong>your own ticks</strong>. It does not automatically understand or grade your writing.</p><div class="w1-check-summary">${[['where','Where was the photo taken?'],['who','Who are the people?'],['what','What is happening?'],['clear','Is the language understandable?']].map(([k,label])=>`<div class="w1-check-result"><span class="w1-mini-icon ${checks[k]?'good':''}">${checks[k]?'✓':'!'}</span><span>${e(label)}</span><strong>${checks[k]?'You ticked yes':'Review this'}</strong></div>`).join('')}</div>${missing.length?`<div class="w1-suggestion"><strong>What to add:</strong> Your self-check suggests you may need to explain ${e(missing.map(x=>x[1]).join(', '))}. Return to your draft and add this information.</div>`:`<div class="w1-suggestion"><strong>Next improvement:</strong> You marked all three content points as present. Read your answer again and make each one clear and specific.</div>`}${!checks.clear?'<div class="w1-suggestion"><strong>Clarity tip:</strong> Use short, complete sentences. Present simple and present continuous are both useful: “Those are my cousins. They are playing football.”</div>':''}</div>
+      <div class="panel w1-result-panel"><div class="eyebrow">WHAT A GOOD RESPONSE COULD LOOK LIKE</div><h2>One possible model</h2><p class="w1-model-text">I took this photo last Saturday at our neighbourhood field. Those are my cousins Vinie and Matti, and their friend Alex. They are playing a friendly football match. Vinie is trying to score while Matti is blocking him. We often meet here after school.</p><p class="tiny muted">This is just one believable story. Your names, setting and details can be different.</p></div>
+      <div class="w1-review-actions"><a href="#/writing/part-1/level-1" class="button primary">Improve my response →</a><button type="button" class="button secondary" id="w1-copy">Copy my response</button><a class="button subtle-btn" href="#/writing/part-1">Writing Part 1 overview</a></div><p id="w1-copy-note" class="tiny muted" aria-live="polite"></p>
+      </div><aside><div class="path-summary"><div class="label">Your writing practice</div><strong>${w1Attempts().length} review${w1Attempts().length===1?'':'s'} completed</strong><p class="tiny" style="margin:12px 0">This is formative feedback, not an official exam mark.</p></div><div class="panel w1-rubric"><h3>The 2026 MSA rubric · /5 points</h3><p class="muted">Examiners look for all three required points <strong>and</strong> clarity of expression. The official rubric allows any coherent interpretation of the photo.</p><div class="w1-rubric-row"><b>5</b><span>All three points handled particularly well; consistently clear language.</span></div><div class="w1-rubric-row"><b>4</b><span>All three covered successfully; mostly clear language.</span></div><div class="w1-rubric-row"><b>3</b><span>All three covered but language not always clear; or two points with clear language.</span></div><div class="w1-rubric-row"><b>2</b><span>Two points with mostly unclear language; or text under 30 words.</span></div><div class="w1-rubric-row"><b>1</b><span>One point with unclear language; or text under 20 words.</span></div><div class="w1-rubric-row"><b>0</b><span>No recognisable connection to the task.</span></div><p class="tiny muted" style="margin:13px 0 0">Paraphrased from the Berlin 2026 MSA English marking scheme (Writing Part 1). This panel is guidance, not an automatic score.</p></div></aside></div></section>`,'writing');
+    const btn=document.querySelector('#w1-copy');
+    btn?.addEventListener('click',async()=>{
+      try{await navigator.clipboard.writeText(attempt.text);APP.querySelector('#w1-copy-note').textContent='Your response was copied.';}
+      catch(_){APP.querySelector('#w1-copy-note').textContent='Copy is not available here. Select the writing above and copy it manually.';}
+    });
+  }
+
+  function w1ExamPrompt() {
+    return `<div class="w1-exam-instructions"><h2>Writing Part 1: Your Photo</h2><ul><li>You have posted this photo.</li><li>Your friend James wants to know more.</li><li>Answer his questions.</li><li>Write <strong>30–50 words.</strong></li></ul></div>`;
+  }
+  function w1ExamPhoto(level) {
+    return `<figure class="w1-photo"><img src="${level.photo}" alt="${e(level.alt)}" loading="eager">${w1PhotoCaption()}</figure>`;
+  }
+  function w1ExamLevelPage(n) {
+    const level=w1ExamPhotos[n],draft=w1AnyDraft(level.id),last=w1AnyLast(level.id);
+    if(!level)return notFound();
+    const url=`#/writing/part-1/level-${n}`;
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 1','#/writing/part-1'],[`Level ${n}`,url]],`Writing Part 1 · Level ${n}`,level.title,`${level.label} · One photo · 30–50 words · 5 marks`)+
+      `<section class="section w1-section"><div class="container"><div class="w1-intro-bar"><div><div class="eyebrow">LEVEL ${n} · ${e(level.label).toUpperCase()}</div><strong>Write your own response. No sentence starters.</strong><p>The challenge is to make a believable story, not to write more than the exam requires.</p></div><div class="w1-mark-pill">/ 5 marks</div></div>
+      <div class="w1-grid"><aside class="w1-visual-col"><div class="w1-sticky">${w1ExamPhoto(level)}<div class="w1-chat"><div class="w1-chat-head"><span class="w1-avatar">J</span><div><strong>James</strong><small>Your friend · Messaging you</small></div></div><div class="w1-post">You posted this photo. James wants to know more.</div><div class="w1-bubble">Wow, where did you take that photo?<br><br>Who are they?<br><br>What's going on?</div></div></div></aside>
+      <div class="w1-main-col"><div class="w1-exam-sheet">${w1ExamPrompt()}<div class="w1-exam-writing"><label class="w1-textarea-label" for="w1-exam-response">Your reply to James</label><textarea id="w1-exam-response" spellcheck="true" rows="10" placeholder="Write your 30–50-word response here …">${e(draft.text||'')}</textarea><div class="w1-wordrow"><span id="w1-exam-count" aria-live="polite">0 words</span><span class="w1-range" id="w1-exam-range">Aim for 30–50 words</span></div><div class="w1-word-track"><span id="w1-exam-meter"></span></div><p class="w1-autosave">${localSavingAvailable?'Draft saved on this device as you write.':'Storage is unavailable. Copy your response before closing the tab.'}</p></div><div class="w1-exam-footer"><button type="button" class="button primary" id="w1-exam-submit">Submit and review →</button>${last?`<a href="${url}/feedback" class="button secondary">Previous feedback</a>`:''}<span class="w1-mark-pill">/ 5 P</span></div><p id="w1-exam-warning" class="tiny" role="alert" aria-live="polite"></p></div><div class="w1-photo-tip w1-exam-tip"><strong>After submission:</strong> Compare your answer with the marking criteria and one possible model. The site does not award an automatic writing mark.</div></div></div></div></section>`,'writing');
+    const textarea=APP.querySelector('#w1-exam-response');
+    const save=()=>{store.drafts[level.id]={text:textarea.value};saveStore();};
+    const count=()=>{
+      const n=w1WordCount(textarea.value),meter=APP.querySelector('#w1-exam-meter'),lab=APP.querySelector('#w1-exam-range');
+      APP.querySelector('#w1-exam-count').textContent=`${n} word${n===1?'':'s'}`;
+      meter.style.width=Math.min(100,n/50*100)+'%';meter.className=n>=30&&n<=50?'good':n>50?'over':'';
+      lab.className='w1-range '+(n>=30&&n<=50?'good':'needs-work');
+      lab.textContent=n<30?`${30-n} more word${30-n===1?'':'s'} to reach 30`:n>50?`${n-50} word${n-50===1?'':'s'} over the limit`:'Within the 30–50-word range';
+    };
+    textarea.addEventListener('input',()=>{save();count();});count();
+    APP.querySelector('#w1-exam-submit').addEventListener('click',()=>{
+      const text=textarea.value.trim();
+      if(!text){APP.querySelector('#w1-exam-warning').textContent='Write a reply before submitting.';textarea.focus();return;}
+      save();const attempt={at:new Date().toISOString(),text,wordCount:w1WordCount(text),checks:{where:false,who:false,what:false,clear:false}};
+      store.attempts[level.id] ||= [];store.attempts[level.id].push(attempt);saveStore();routeTo(url+'/feedback');
+    });
+  }
+  function w1ExamFeedback(n) {
+    const level=w1ExamPhotos[n],attempt=w1AnyLast(level.id),url=`#/writing/part-1/level-${n}`;
+    if(!attempt){routeTo(url);return;}
+    const wordCount=attempt.wordCount;
+    const words=wordCount<20?'Your answer is under 20 words. The official rubric gives a very-short-response descriptor at this length.':wordCount<30?'Your answer is under 30 words. The official rubric includes a lower-band descriptor for answers shorter than 30 words.':wordCount>50?'Your answer is over the 50-word limit. Edit it down to the requested length.':'Your answer is within the exam’s 30–50-word range.';
+    const marks=[[5,'All three points especially well covered; consistently clear English.'],[4,'All three points covered well; language mostly clear.'],[3,'All three points covered but meaning sometimes unclear; OR two points clearly covered.'],[2,'Two points covered but language mostly unclear; OR shorter than 30 words.'],[1,'One point covered and unclear; OR much too short (under 20 words).'],[0,'No recognisable link to the task.']];
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 1','#/writing/part-1'],[`Level ${n}`,url],['Feedback',url+'/feedback']],`Writing Part 1 · Level ${n}`,'Review your writing','First check your three content points. Then compare your response with a model and the five-point rubric.')+
+      `<section class="section w1-section"><div class="container w1-results-layout"><div>
+        <div class="panel w1-result-panel"><div class="eyebrow">YOUR RESPONSE · ${e(dateText(attempt.at))}</div><div class="w1-result-head"><h2>My message to James</h2><span class="w1-count-pill ${wordCount>=30&&wordCount<=50?'good':''}">${wordCount} words</span></div><blockquote>${e(attempt.text)}</blockquote><div class="w1-word-feedback ${wordCount>=30&&wordCount<=50?'good':'needs-work'}">${e(words)}</div><p class="w1-teacher-note"><strong>To receive a score out of 5, share your writing with your teacher.</strong> This website provides practice feedback only.</p></div>
+        <div class="panel w1-result-panel"><div class="eyebrow">REFLECT AFTER WRITING</div><h2>How well did you answer James?</h2><p class="muted">Tick a point only if you actually included it. Your answers are not assessed automatically.</p><div class="w1-checks">${[['where','I explained where the photo was taken or where it comes from.'],['who','I identified who the people are.'],['what','I described what is happening in the scene.'],['clear','My English is clear and my details are believable.']].map(([k,label])=>`<label class="w1-check"><input type="checkbox" data-w1-exam-check="${k}" ${attempt.checks?.[k]?'checked':''}><span>${e(label)}</span></label>`).join('')}</div><div id="w1-exam-reflection" class="w1-suggestion" aria-live="polite"></div></div>
+        <div class="panel w1-result-panel"><div class="eyebrow">MODEL RESPONSE</div><h2>One believable version</h2><p class="muted">There is no single correct story. Check your own answer before opening the model.</p><details class="w1-model-disclosure"><summary>Show an example response</summary><div class="w1-model-text">${e(level.model)}</div><p class="tiny muted" style="margin:11px 0 0">${e(level.modelNote)} · ${w1WordCount(level.model)} words</p></details></div>
+        <div class="w1-review-actions"><a href="${url}" class="button primary">Improve my response →</a>${n<3?`<a href="#/writing/part-1/level-${n+1}" class="button secondary">Try Level ${n+1} →</a>`:''}<a href="#/writing/part-1" class="button subtle-btn">All writing levels</a></div>
+        </div><aside><div class="path-summary"><div class="label">Your writing practice</div><strong>${w1AnyAttempts(level.id).length} review${w1AnyAttempts(level.id).length===1?'':'s'} completed</strong><p class="tiny" style="margin:12px 0">This is formative feedback, not an official or AI-generated exam grade.</p></div><div class="panel w1-rubric"><h3>The official 2026 MSA rubric · /5</h3><p class="muted">The three assessed details are <strong>where, who and what</strong>. Any coherent interpretation of a photo is acceptable.</p>${marks.map(([mark,desc])=>`<div class="w1-rubric-row"><b>${mark}</b><span>${e(desc)}</span></div>`).join('')}<p class="tiny muted" style="margin:13px 0 0">Based on Berlin MSA English 2026, Writing Part 1. This rubric requires a human judgement of content and clarity. Word count and self-ticks are not a numerical grade.</p></div></aside></div></section>`,'writing');
+    const feedback=APP.querySelector('#w1-exam-reflection');
+    const updateReflection=()=>{
+      const chk=attempt.checks||{},missing=[['where','where the photo was taken'],['who','who the people are'],['what','what is happening']].filter(([k])=>!chk[k]).map(x=>x[1]);
+      feedback.textContent=missing.length?`To strengthen your response, check whether you explained ${missing.join(', ')}. If a point is already there, tick it above.`:'You have marked all three content points. Now read your answer aloud: is each point clear and believable?';
+    };
+    APP.querySelectorAll('[data-w1-exam-check]').forEach(box=>box.addEventListener('change',()=>{attempt.checks[box.dataset.w1ExamCheck]=box.checked;saveStore();updateReflection();}));
+    updateReflection();
+  }
+  function writingSubjectPage(){
+    const reviews=W1_ALL_IDS.reduce((n,id)=>n+w1AnyAttempts(id).length,0);
+    shell(pageHero([['Home','#/home'],['Writing','#/writing']],'Your practice hub','Writing','Start with guided photo writing, then practise the same 30–50-word task independently.')+
+      `<section class="section"><div class="container work-layout"><div class="module-parts"><div class="module-part active"><div class="module-part-left"><span class="mini-num">01</span><div><h3>Writing Part 1</h3><p>Your Photo · Three levels, three original images, one five-point marking scheme.</p><div class="tiny muted" style="margin-top:7px">30–50 words · where / who / what · 5 marks in the real exam</div></div></div><a class="button primary small" href="#/writing/part-1">Open →</a></div>${[['02','Writing Part 2','Discussion and opinion response'],['03','Writing Part 3','Mediation: German → English']].map(x=>`<div class="module-part"><div class="module-part-left"><span class="mini-num">${x[0]}</span><div><h3>${x[1]}</h3><p>${x[2]}</p></div></div><span class="pill planned">In development</span></div>`).join('')}</div><aside><div class="path-summary"><div class="label">Available now</div><strong>Part 1 · All three levels</strong><p style="font-size:.86rem;margin-top:10px">${reviews?reviews+' self-review'+(reviews===1?'':'s')+' saved': 'Choose your photo task and make it your own story.'}</p><a class="button primary small" style="margin-top:12px" href="#/writing/part-1">Explore levels →</a></div></aside></div></section>`,'writing');
+  }
+  function writingProgressBlock(){
+    const names=['Learn with clues · Football','Practise like the exam · Park proposal','Take the challenge · Mountain hike'];
+    return `<div class="panel" style="margin-bottom:18px"><h2>Writing Part 1</h2><p class="muted" style="font-size:.87rem">Your Photo · Three levels · 30–50 words</p>${W1_ALL_IDS.map((id,i)=>{
+      const tries=w1AnyAttempts(id),draft=w1AnyDraft(id),last=w1AnyLast(id),url=`#/writing/part-1/level-${i+1}`;
+      return `<div class="attempt-row"><div><strong>Level ${i+1}: ${e(names[i])}</strong><div><span>${tries.length?`${tries.length} review${tries.length===1?'':'s'} · Latest: ${last.wordCount} words`:draft.text?`Draft saved · ${w1WordCount(draft.text)} words`:'Not started yet'}</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${last?`<a class="button small secondary" href="${url}/feedback">Feedback</a>`:''}<a class="button small primary" href="${url}">${tries.length?'Try again':draft.text?'Continue':'Start'} →</a></div></div>`;
+    }).join('')}<p class="tiny muted">Open-ended writing is not given an automatic mark. Your drafts and reflections stay on your device.</p></div>`;
+  }
   function progressPage() {
     const done=completedTotal(),totalAttempts=allLevels.reduce((n,l)=>n+getAttempts(l.id).length,0);
     const avg=done?Math.round(allLevels.reduce((sum,l)=>sum+(getAttempts(l.id).length?bestScore(l.id)/l.questions.length:0),0)/done*100):0;
@@ -382,8 +582,8 @@
       const tries=getAttempts(l.id),last=latestAttempt(l.id),url=`#/reading/part-${part}/${l.id}`;
       return `<div class="attempt-row"><div><strong>Level ${i+1}: ${e(l.title)}</strong><div><span>${tries.length?`${tries.length} attempt${tries.length>1?'s':''} · Latest: ${last.score}/${l.questions.length} · Best: ${scoreLabel(l)}`:'Not started yet'}</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${last?`<a class="button small secondary" href="${url}/feedback">Feedback</a>`:''}<a class="button small primary" href="${url}">${tries.length?'Try again':'Start'} →</a></div></div>`;
     }).join('')}</div>`;
-    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','Review Reading Parts 1–3, revisit feedback, or continue where you left off.')+
-      `<section class="section"><div class="container work-layout"><div><div class="progress-stats"><div class="progress-card"><strong>${done}/${allLevels.length}</strong><span>Levels completed</span></div><div class="progress-card"><strong>${totalAttempts}</strong><span>Total attempts</span></div><div class="progress-card"><strong>${avg}%</strong><span>Average best score</span></div></div>${progressSection('Reading Part 1',1,levels)}${progressSection('Reading Part 2',2,part2Levels)}${progressSection('Reading Part 3',3,part3Levels)}<div class="panel" style="margin-top:18px"><h3>Back up or clear your progress</h3><p class="muted" style="font-size:.87rem">Download a JSON backup of your scores and answers. You can import this on another device, or clear the progress saved here.</p><div style="display:flex;flex-wrap:wrap;gap:10px"><button id="export-progress" class="button secondary">Download progress</button><label class="button secondary" for="import-progress" style="cursor:pointer">Import progress</label><input type="file" id="import-progress" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0"><button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div><p id="progress-notice" class="tiny" aria-live="polite" style="margin:12px 0 0;color:#3d7281"></p></div></div><aside><div class="privacy-note"><strong>Privacy and saving</strong><p style="margin:9px 0 0">ThinkLab requires no student login. Your scores and answers are saved locally in this browser, not sent to a teacher or server. Clearing site data or switching browsers may remove them. Export a backup if needed.</p></div></aside></div></section>`,'progress');
+    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','Review Reading Parts 1–3 and your three Writing Part 1 levels, or continue where you left off.')+
+      `<section class="section"><div class="container work-layout"><div><div class="progress-stats"><div class="progress-card"><strong>${done}/${allLevels.length}</strong><span>Reading levels completed</span></div><div class="progress-card"><strong>${totalAttempts}</strong><span>Total attempts</span></div><div class="progress-card"><strong>${avg}%</strong><span>Average best score</span></div></div>${progressSection('Reading Part 1',1,levels)}${progressSection('Reading Part 2',2,part2Levels)}${progressSection('Reading Part 3',3,part3Levels)}${writingProgressBlock()}<div class="panel" style="margin-top:18px"><h3>Back up or clear your progress</h3><p class="muted" style="font-size:.87rem">Download a JSON backup of your scores and answers. You can import this on another device, or clear the progress saved here.</p><div style="display:flex;flex-wrap:wrap;gap:10px"><button id="export-progress" class="button secondary">Download progress</button><label class="button secondary" for="import-progress" style="cursor:pointer">Import progress</label><input type="file" id="import-progress" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0"><button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div><p id="progress-notice" class="tiny" aria-live="polite" style="margin:12px 0 0;color:#3d7281"></p></div></div><aside><div class="privacy-note"><strong>Privacy and saving</strong><p style="margin:9px 0 0">ThinkLab requires no student login. Your scores and answers are saved locally in this browser, not sent to a teacher or server. Clearing site data or switching browsers may remove them. Export a backup if needed.</p></div></aside></div></section>`,'progress');
     bindProgress();
   }
   function bindProgress() {
@@ -403,6 +603,31 @@
           const arr=imported.attempts[l.id];
           if(Array.isArray(arr))clean.attempts[l.id]=arr.filter(x=>typeof x.score==='number' && x.score>=0 && x.score<=l.questions.length && x.answers && typeof x.answers==='object').slice(-15).map(x=>({score:x.score,answers:Object.fromEntries(Object.entries(x.answers).filter(([k,v])=>/^\d+$/.test(k) && allowedLetters.includes(v))),at:typeof x.at==='string'?x.at:new Date().toISOString()}));
           const drafts=imported.drafts[l.id];if(drafts && typeof drafts==='object' && !Array.isArray(drafts)) clean.drafts[l.id]=Object.fromEntries(Object.entries(drafts).filter(([k,v])=>/^\d+$/.test(k) && allowedLetters.includes(v)));
+        }
+        const importedW1Attempts=imported.attempts?.[W1_ID];
+        if(Array.isArray(importedW1Attempts)) clean.attempts[W1_ID]=importedW1Attempts.slice(-15).filter(x=>x && typeof x.text==='string').map(x=>({
+          at:typeof x.at==='string'?x.at:new Date().toISOString(),
+          text:x.text.slice(0,3000),wordCount:w1WordCount(x.text.slice(0,3000)),
+          checks:Object.fromEntries(['where','who','what','clear'].map(k=>[k,x.checks?.[k]===true]))
+        }));
+        const importedW1Draft=imported.drafts?.[W1_ID];
+        if(importedW1Draft && typeof importedW1Draft==='object' && !Array.isArray(importedW1Draft)) clean.drafts[W1_ID]={
+          text:String(importedW1Draft.text||'').slice(0,3000),
+          relation:String(importedW1Draft.relation||'my cousins').slice(0,80),
+          names:String(importedW1Draft.names||'').slice(0,80),
+          time:String(importedW1Draft.time||'last Saturday').slice(0,80),
+          place:String(importedW1Draft.place||'').slice(0,80),
+          checks:Object.fromEntries(['where','who','what','clear'].map(k=>[k,importedW1Draft.checks?.[k]===true]))
+        };
+        for (const id of [W1_L2_ID,W1_L3_ID]) {
+          const arr=imported.attempts?.[id];
+          if(Array.isArray(arr)) clean.attempts[id]=arr.slice(-15).filter(x=>x && typeof x.text==='string').map(x=>({
+            at:typeof x.at==='string'?x.at:new Date().toISOString(),
+            text:x.text.slice(0,3000),wordCount:w1WordCount(x.text.slice(0,3000)),
+            checks:Object.fromEntries(['where','who','what','clear'].map(k=>[k,x.checks?.[k]===true]))
+          }));
+          const draft=imported.drafts?.[id];
+          if(draft && typeof draft==='object' && !Array.isArray(draft)) clean.drafts[id]={text:String(draft.text||'').slice(0,3000)};
         }
         if(!window.confirm('Import this file? It will replace progress currently saved in this browser.')) return;
         store=clean;saveStore();progressPage();
@@ -430,6 +655,11 @@
     else if(p[0]==='reading'&&p[1]==='part-2'&&part2Levels.find(x=>x.id===p[2])&&p[3]==='feedback'&&p.length===4)r2FeedbackPage(part2Levels.find(x=>x.id===p[2]));
     else if(p[0]==='reading'&&p[1]==='part-3'&&part3Levels.find(x=>x.id===p[2])&&p.length===3)r3LevelPage(part3Levels.find(x=>x.id===p[2]));
     else if(p[0]==='reading'&&p[1]==='part-3'&&part3Levels.find(x=>x.id===p[2])&&p[3]==='feedback'&&p.length===4)r3FeedbackPage(part3Levels.find(x=>x.id===p[2]));
+    else if(p[0]==='writing'&&p[1]==='part-1'&&p.length===2)writingPartPage();
+    else if(p[0]==='writing'&&p[1]==='part-1'&&p[2]==='level-1'&&p.length===3)writingLevelPage();
+    else if(p[0]==='writing'&&p[1]==='part-1'&&p[2]==='level-1'&&p[3]==='feedback'&&p.length===4)writingFeedbackPage();
+    else if(p[0]==='writing'&&p[1]==='part-1'&&['level-2','level-3'].includes(p[2])&&p.length===3)w1ExamLevelPage(Number(p[2].slice(-1)));
+    else if(p[0]==='writing'&&p[1]==='part-1'&&['level-2','level-3'].includes(p[2])&&p[3]==='feedback'&&p.length===4)w1ExamFeedback(Number(p[2].slice(-1)));
     else if(p[0]==='progress')progressPage();
     else notFound();
     window.scrollTo({top:0,behavior:'instant'});

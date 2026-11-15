@@ -1,36 +1,29 @@
-# ThinkLab MSA Prep — Version 3
+# ThinkLab MSA Prep — Version 4
 
-A static, responsive English examination preparation site for the Berlin MSA, using the ThinkLab identity.
+Original, exam-style English revision exercises for Berlin MSA students, styled with the ThinkLab brand.
 
-## Available practice
+## Current modules
 
-- **Reading Part 1:** Three levels (6, 10 and 10 matching questions).
-- **Reading Part 2:** Three levels (4, 6 and 6 short-text multiple-choice questions).
-- **Reading Part 3:** Three levels (6, 10 and 10 reading comprehension questions).
-  - Level 1: Two original short texts, a model answer, a reading strategy and optional clues.
-  - Level 2: An original educational adaptation about daylight saving time and health.
-  - Level 3: The teacher-supplied adapted Guardian article about restricting social media for under-16s, without the original photograph.
+- Reading Parts 1, 2 and 3 — three learning levels each.
+- Writing Part 1 — three learning levels:
+  1. **Learn with clues:** a photo of a neighbourhood football game, writing guidance, story-building choices and a self-check.
+  2. **Practise like the exam:** a proposal in a park; independent 30–50-word photo response.
+  3. **Take the challenge:** a cloudy mountain hike; independent 30–50-word photo response.
 
-After completing a level, students receive their marks, correct answers, textual evidence and explanations. Materials are exam-style practice, not official examination papers.
+Writing Part 1 is based on the 2026 Berlin MSA format: explain where the photo was taken, who the people are and what is happening. All reasonable interpretations of each photo are accepted. Students receive formative self-assessment and word-count feedback, not an automatic examination grade. Each writing feedback page reminds the student to share their writing with a teacher for a score out of five.
 
-## Reading Part 3 source credits
+## Image attribution
 
-- Level 1: Original ThinkLab practice texts, 2026.
-- Level 2: Based on VOA Learning English, *How Daylight Saving Time Affects Health*, 6 March 2025. Original AP reporting by Lauran Neergaard; adapted for VOA by John Russell. https://learningenglish.voanews.com/a/how-daylight-savings-time-affects-health/8001173.html
-- Level 3: Adapted from Nicola Slawson and Jane Clinton, *The Guardian*, 29 January 2026. https://www.theguardian.com/media/2026/jan/29/social-media-ban-under-16s-uk-australia-views
+Photographs were **AI-generated with ChatGPT (OpenAI), 2026, for ThinkLab MSA Prep**. They depict fictional scenes and people. Source credits are displayed with each image in the writing tasks.
 
-Both source credits show the requested date accessed: **14 November 2026**. The Guardian passage reflects the supplied January 2026 article, not a statement about current legislation.
+## Privacy and student progress
 
-## Student data
+No student login, external submissions or analytics. Drafts and results are stored locally in the browser. The established storage key `thinklab-msa-prep-progress-v1` remains unchanged, supporting previously saved progress in the same browser and at the same site address.
 
-No logins or server-side storage. Results and unfinished answers are saved on the device in browser localStorage. The key `thinklab-msa-prep-progress-v1` is unchanged from Version 2, so existing progress normally remains available in the same browser at the same website address. Backup export/import is provided. Clearing browser data can erase saved work.
+## Publishing
 
-## Publish
+Set GitHub Pages to **Deploy from a branch**, `main`, `/(root)`.
 
-GitHub Pages: Settings → Pages → Deploy from a branch → `main` → `/(root)`.
+Website: https://jakamani.github.io/thinklab-msa-prep/
 
-Homepage: `index.html`. Dependencies: `styles.css`, `data.js`, `reading2-data.js`, `reading3-data.js`, `app.js`, and `assets/`.
-
-Site: https://jakamani.github.io/thinklab-msa-prep/
-
-Only Reading Parts 1–3 are live; Writing and Listening are planned.
+Writing Parts 2–3 and Listening Parts 1–4 remain in development.
