@@ -1,3 +1,4 @@
+
 :root{
   --navy:#0B2D56;--deep:#081f41;--teal:#00897B;--teal-dark:#00776D;--yellow:#FFC107;--orange:#FF7043;--pale:#E6F4FA;--soft:#F4FAFB;--ink:#11345B;--muted:#60758D;--line:#D9E7ED;--white:#fff;
   --shadow:0 15px 34px rgba(11,45,86,.075);--round:20px;--heading:'Montserrat','Avenir Next','Trebuchet MS',system-ui,sans-serif;--body:'Source Sans 3','Segoe UI',system-ui,sans-serif;
@@ -226,3 +227,50 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{cur
 
 
 .w1-teacher-note{margin:14px 0 0;padding:12px 15px;background:#edf7f8;border-left:3px solid #00897B;border-radius:9px;color:#204759;font-size:.88rem;line-height:1.55}
+
+/* Writing Part 2 — compact, choice-first guided practice */
+.w2-section{padding-top:28px}
+.w2-headline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 18px;border:1px solid #d6e8ec;border-radius:15px;margin-bottom:16px;color:#294563;background:#f8fcfd;font-size:.88rem}
+.w2-headline strong{color:#00897B}
+.w2-page-grid{display:grid;grid-template-columns:minmax(275px,.82fr) minmax(0,1.25fr);gap:22px;align-items:start}
+.w2-left{position:sticky;top:101px}
+.w2-chat,.w2-plan-card,.w2-compose-card,.w2-level-card{background:white;border:1px solid #d9e7ed;border-radius:19px;box-shadow:0 12px 30px rgba(11,45,86,.055)}
+.w2-chat{padding:23px}.w2-chat-top{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid #d9e7ed}
+.w2-forum-icon{width:39px;height:39px;border-radius:12px;background:#0B2D56;color:#FFC107;display:grid;place-items:center;font-weight:800;font-size:23px}
+.w2-chat-top strong{display:block}.w2-chat-top small{display:block;color:#60758D;font-size:.77rem}
+.w2-author{display:flex;align-items:center;gap:8px;margin:18px 0 11px;font-size:.9rem}.w2-forum-avatar{display:inline-grid;place-items:center;width:31px;height:31px;border-radius:50%;background:#E6F4FA;color:#0B2D56;font-weight:800}
+.w2-chat p{font-size:.93rem;line-height:1.63;margin:0 0 14px}
+.w2-questions{list-style:none;counter-reset:questions;padding:0;display:grid;gap:9px;margin:0}
+.w2-questions li{counter-increment:questions;display:flex;gap:10px;font-size:.88rem;line-height:1.45;color:#254562}
+.w2-questions li:before{content:counter(questions);min-width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:#E6F4FA;color:#0B2D56;font-weight:850;font-size:.75rem}
+.w2-post-foot{border-top:1px solid #e4ecf0;margin-top:17px;padding-top:13px;color:#00776D;font-size:.82rem;font-weight:750}
+.w2-exam-tip{margin-top:14px;background:#fff8e6;border-left:4px solid #FFC107;border-radius:8px;padding:14px 16px;color:#40516c}.w2-exam-tip strong{font-size:.82rem}.w2-exam-tip p{font-size:.83rem;margin:4px 0 0;line-height:1.5}
+.w2-right{display:grid;gap:18px}
+.w2-plan-card,.w2-compose-card{padding:21px}
+.w2-panel-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}.w2-panel-title>div{display:flex;align-items:center;gap:10px}.w2-panel-title h2{font-size:1.28rem;margin:0}.w2-step-pill{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#0B2D56;color:white;font-size:.78rem;font-weight:850}
+.w2-subtle{font-size:.82rem;color:#60758D;font-weight:700}.w2-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.w2-choice-box{padding:13px;border:1px solid #e0eaed;border-radius:12px;background:#fafdfe}
+.w2-choice-title{font-size:.86rem;font-weight:850;color:#0B2D56}.w2-choice-sub{font-size:.73rem;color:#60758D;margin:1px 0 10px}
+.w2-chips{display:flex;flex-wrap:wrap;gap:7px}.w2-chip{font-size:.79rem;font-weight:700;line-height:1.3;padding:7px 11px;background:white;border:1.5px solid #d5e4e9;border-radius:999px;color:#2c5269;text-align:left;transition:background .1s,border .1s,color .1s}.w2-chip:hover{border-color:#00897B}.w2-chip.selected{background:#00897B;color:#fff;border-color:#00897B}.w2-chip:focus-visible{outline:3px solid #FFC107;outline-offset:2px}
+.w2-plan-bottom{display:flex;align-items:center;gap:12px;margin-top:15px;flex-wrap:wrap}.w2-plan-bottom p{margin:0;color:#60758D;font-size:.82rem}
+.w2-compose-lead{font-size:.86rem;color:#526b7d;margin:-7px 0 13px}.w2-editor-label{display:block;font-weight:800;font-size:.82rem;margin-bottom:8px}
+.w2-editor{display:block;width:100%;min-height:220px;resize:vertical;padding:16px 18px;border:1.5px solid #bfcfd9;border-radius:13px;color:#0B2D56;background:#fff;font:1rem/1.7 var(--body);outline-offset:3px}
+.w2-editor:focus{border-color:#00897B;outline:3px solid #d9f4eb}
+.w2-word-status{font-size:.85rem;white-space:nowrap;font-weight:800;color:#7b5b00;background:#fff6d6;padding:7px 11px;border-radius:99px}.w2-word-status.good{color:#00776D;background:#ddf6ee}
+.w2-length{margin:14px 0}.w2-length-line{display:flex;justify-content:space-between;font-size:.77rem;color:#526b7d}.w2-track{height:7px;margin-top:7px;background:#e6eff2;border-radius:99px;overflow:hidden}.w2-track>span{height:100%;background:linear-gradient(90deg,#FFC107,#00897B);border-radius:99px;display:block;transition:width .15s}
+.w2-editor-actions{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}.w2-autosave{font-size:.75rem;color:#60758D}
+.w2-level-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.w2-level-card{padding:23px;display:flex;flex-direction:column;gap:8px;min-height:260px}.w2-level-card h2{font-size:1.32rem;margin:0}.w2-level-card p{margin:4px 0 8px;color:#60758D;font-size:.85rem}.w2-level-index{font-weight:900;font-size:2rem;line-height:1.1;color:#0B2D56}.w2-level-ready{border-color:#00897B;border-top:5px solid #00897B}.w2-level-locked{background:#f7fafb}.w2-level-locked .w2-level-index{color:#b5c3ca}.w2-level-locked .eyebrow{color:#708695}.w2-tag{font-size:.75rem;font-weight:800;color:#486376}.w2-card-bottom{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.w2-short-note{padding:14px 18px;margin-top:17px;color:#425c71;background:#eef8fb;border-radius:11px;font-size:.84rem}
+.w2-feedback-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,.8fr);gap:22px;align-items:start}.w2-review-main{display:grid;gap:18px}.w2-review-panel{padding:26px}.w2-review-panel h2{font-size:1.28rem}.w2-student-text{border-left:4px solid #00897B;background:#f5fbfa;padding:17px 19px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;border-radius:7px;font-size:.95rem}.w2-review-note{background:#fff9ec;border-left:4px solid #FFC107;padding:12px 14px;margin:16px 0;color:#4b5b70;font-size:.84rem}.w2-feedback-actions{display:flex;gap:8px;flex-wrap:wrap}.w2-copied{display:block;color:#00776D;font-size:.78rem;margin-top:8px}.w2-small{color:#60758D;font-size:.83rem}.w2-check-row{display:flex;align-items:start;gap:10px;padding:10px 0;border-bottom:1px solid #e6eef0;font-size:.89rem;cursor:pointer}.w2-check-row input{accent-color:#00897B;margin-top:4px}.w2-check-result{margin:13px 0 0;color:#00776D;font-size:.84rem;font-weight:700}
+.w2-marking{background:#0B2D56;color:#fff;border-radius:18px;padding:23px}.w2-marking h3{color:#fff}.w2-mark-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.w2-mark-grid>div{border:1px solid #487187;border-radius:11px;padding:11px;display:grid;gap:3px}.w2-mark-grid strong{font-size:1.9rem;color:#FFC107;line-height:1.2}.w2-mark-grid span{font-size:.86rem}.w2-marking p{font-size:.82rem;color:#d5e5eb;line-height:1.55;margin:14px 0 0}.w2-marking .w2-fineprint{font-size:.74rem;color:#bed3dc}.w2-model{border:1px solid #d9e7ed;border-radius:14px;background:#fff;padding:15px;margin-top:15px}.w2-model summary{font-size:.86rem;font-weight:800;cursor:pointer;color:#00897B}.w2-model p{font-size:.88rem;line-height:1.6;margin:11px 0}
+@media(max-width:950px){.w2-page-grid{grid-template-columns:minmax(0,1fr)}.w2-left{position:static}.w2-feedback-layout{grid-template-columns:1fr}}
+@media(max-width:720px){.w2-choice-grid,.w2-level-grid{grid-template-columns:1fr}.w2-plan-card,.w2-compose-card,.w2-chat{padding:17px}.w2-headline{padding:11px 14px}.w2-level-card{min-height:0}.w2-editor{min-height:230px}.w2-panel-title h2{font-size:1.12rem}.w2-review-panel{padding:17px}}
+
+/* Writing Part 2 — independent Levels 2–3 */
+.w2-exam-layout .w2-left{position:sticky;top:101px}
+.w2-exam-editor{min-height:330px;background:repeating-linear-gradient(#fff,#fff 36px,#f2f7f8 37px)}
+.w2-exam-notice{min-height:1.4em;color:#a75130;font-size:.82rem;margin:8px 0 0}
+.w2-review-length-warning{margin-top:12px;border-left:4px solid #FF7043;border-radius:8px;padding:11px 13px;background:#fff0e9;color:#904224;font-size:.85rem}
+.w2-level-challenge{border-top-color:#FF7043}
+.w2-level-challenge .w2-level-index{color:#d24f26}
+@media(max-width:950px){.w2-exam-layout .w2-left{position:static}}
+@media(max-width:720px){.w2-exam-editor{min-height:270px}}

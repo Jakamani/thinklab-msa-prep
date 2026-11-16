@@ -1,3 +1,4 @@
+
 /* ThinkLab MSA Prep — static, offline-friendly student app.
    All questions are original practice content. Progress remains on the user's device. */
 (() => {
@@ -61,7 +62,7 @@
   function home() {
     const cards=[
       ['reading','Reading','3 parts','Read to find the meaning, identify evidence and match the right details.',['Match people to activities','Understand short texts','Read a longer article'],'✓','live'],
-      ['writing','Writing','3 parts','Communicate clearly, organise ideas and respond for the right reader.',['Respond to a photo · All 3 levels ready','Write a discussion response','Mediation: German → English'],'✎','live'],
+      ['writing','Writing','3 parts','Communicate clearly, organise ideas and respond for the right reader.',['Respond to a photo · All 3 levels ready','Discussion responses · All 3 levels ready','Mediation: German → English'],'✎','live'],
       ['listening','Listening','4 parts','Listen for meaning, follow speakers and recognise the important clues.',['Match messages to pictures','Match podcast intros to titles','Complete notes and tables','Understand a radio discussion'],'◉','planned']
     ];
     const html=`<section class="hero"><div class="container hero-grid"><div>
@@ -73,8 +74,8 @@
        ${['Learn with clues','Practise like the exam','Take the challenge'].map((s,i)=>`<div class="journey-step"><span class="num">0${i+1}</span><div><strong>${s}</strong><p>${['Short examples + helpful guidance','Fresh tasks with the real exam structure','More demanding practice'][i]}</p></div><span style="margin-left:auto;color:#bad2dd">›</span></div>`).join('')}
        <div class="bottom-note">✓ Reading tasks give scores and evidence. Writing tasks give word-count checks and self-review.</div>
     </div></div></div></section>
-    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels · 3 Writing levels</div></div></div>
-    <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore the skills. All three Reading parts and all three Writing Part 1 levels are available.')}
+    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels · 6 Writing levels</div></div></div>
+    <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore the skills. Reading Parts 1–3 and Writing Parts 1–2 are available.')}
       <div class="skill-grid">${cards.map(([route,title,parts,desc,items,ico,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon">${ico}</div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':route==='writing'?'Start Writing':'View the plan'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
     </div></section><section class="section alt"><div class="container">${titleBlock('One simple route','Three levels. Real progress.','Every part follows the same learning path so you always know what comes next.')}
     <div class="path-grid">${levels.map((l,i)=>`<a class="level-card" href="#/reading/part-1/${l.id}"><div class="topline"><span class="level-number">0${i+1}</span><div><div class="tiny muted" style="font-weight:800">LEVEL ${i+1}</div><h3 style="margin:0">${stepTitle(i)}</h3></div></div><p>${e(l.description)}</p><div class="tiny"><span class="pill ${getAttempts(l.id).length?'ready':''}">${getAttempts(l.id).length?'Best '+scoreLabel(l):'Not completed'}</span></div></a>`).join('')}</div>
@@ -87,7 +88,7 @@
   }
   const skills = {
     reading: [['Reading Part 1','Match people to activities','Ready'],['Reading Part 2','Understand short texts','Ready'],['Reading Part 3','Longer reading comprehension','Ready']],
-    writing: [['Writing Part 1','Photo response · Level 1 available','Ready'],['Writing Part 2','Discussion / opinion response','Planned'],['Writing Part 3','Mediation: German → English','Planned']],
+    writing: [['Writing Part 1','Photo response · Three levels','Ready'],['Writing Part 2','Discussion reply · Three levels','Ready'],['Writing Part 3','Mediation: German → English','Planned']],
     listening: [['Listening Part 1','Voicemail and picture matching','Planned'],['Listening Part 2','Podcast intro matching','Planned'],['Listening Part 3','Information completion','Planned'],['Listening Part 4','Radio programme comprehension','Planned']]
   };
   function subjectPage(skill) {
@@ -563,10 +564,255 @@
     APP.querySelectorAll('[data-w1-exam-check]').forEach(box=>box.addEventListener('change',()=>{attempt.checks[box.dataset.w1ExamCheck]=box.checked;saveStore();updateReflection();}));
     updateReflection();
   }
+  // Writing Part 2 — guided + two independent exam-style discussion replies; browser-local saving.
+  const W2_ID = 'w2-creative-afternoon-level-1';
+  const W2_GROUPS = [
+    {key:'activity', label:'1 · Your activity', prompt:'What would students do?', options:[
+      {id:'drama', label:'Drama', plan:'Drama: rehearse and perform short scenes', starter:'I would choose a drama workshop where students could rehearse and perform short scenes.'},
+      {id:'photography', label:'Photography', plan:'Photography: make a school exhibition', starter:'I would suggest photography, so students could take pictures and organise a school exhibition.'},
+      {id:'music', label:'Music', plan:'Music: write and record songs', starter:'I would choose a music workshop where students could write songs and record them together.'},
+      {id:'garden', label:'School garden', plan:'Gardening: grow plants together', starter:'Our school could offer gardening, and students could grow plants and look after them together.'}
+    ]},
+    {key:'personal', label:'2 · Your benefit', prompt:'How could it help you?', options:[
+      {id:'confidence', label:'Confidence', plan:'Become more confident when speaking or performing', starter:'Personally, it could make me more confident because I would practise sharing my ideas.'},
+      {id:'skills', label:'Useful skills', plan:'Learn skills for projects outside school', starter:'For me, the main advantage is learning practical skills that I can use outside school.'},
+      {id:'friends', label:'New friends', plan:'Meet students from other classes', starter:'I could get to know students from other classes and make new friends by working with them.'},
+      {id:'relax', label:'Less stress', plan:'Relax and enjoy a different activity', starter:'It would give me a chance to relax after difficult lessons and try something enjoyable.'}
+    ]},
+    {key:'community', label:'3 · School benefit', prompt:'Why could this help others?', options:[
+      {id:'teamwork', label:'Teamwork', plan:'Students from different classes work together', starter:'For the school community, it could improve teamwork because students from different classes would cooperate.'},
+      {id:'showcase', label:'School events', plan:'Invite families to see work and performances', starter:'The whole school could benefit from events where families see the students’ projects and performances.'},
+      {id:'belonging', label:'Belonging', plan:'Quieter students can show their talents', starter:'It could help quieter students feel included and give everyone a chance to show their talents.'},
+      {id:'schoolspace', label:'Better school', plan:'Create a more welcoming school environment', starter:'Students might make the school a more welcoming place by creating or improving something together.'}
+    ]},
+    {key:'problem', label:'4 · Possible problem', prompt:'What might go wrong?', options:[
+      {id:'time', label:'Lesson time', plan:'Regular lessons might be missed', starter:'However, losing time for regular subjects could be a problem, so the school would need a careful timetable.'},
+      {id:'cost', label:'Costs', plan:'Materials and equipment may be expensive', starter:'One problem is the cost of materials, but we could begin with simple activities and donated equipment.'},
+      {id:'places', label:'Limited places', plan:'Some clubs may fill up quickly', starter:'A difficulty might be that popular clubs have limited places, so students could take turns.'},
+      {id:'staff', label:'Not enough adults', plan:'Activities need enough adults to supervise', starter:'There might not be enough teachers to supervise every activity, so planning would be important.'}
+    ]}
+  ];
+  const W2_MODEL = 'Hi schooltalker, I think a Creative Afternoon could be a great idea. I would choose drama, because students could practise short scenes and perform them for their classmates. I sometimes get nervous when speaking in public, so this could help me become more confident. It might also bring students from different classes together and improve teamwork across the school. However, we could lose time for important subjects. The school should organise the timetable carefully and perhaps try the idea for one term first. Overall, I would support it because learning is not only about textbooks. It could also help students discover talents they did not know they had.';
+  const W2_EXAMS = {
+    2: {
+      id:'w2-later-start-level-2',
+      title:'A Later Start for School?',
+      label:'Practise like the exam',
+      forum:'Student Voices', category:'School Life · Discussion',
+      author:'clockwatcher',
+      post:'Our school council is discussing whether lessons should start at 9 a.m. instead of 8 a.m. Supporters say teenagers might be less tired, but some parents think changing the timetable would cause problems. What is your opinion?',
+      questions:[
+        'Would you support starting school one hour later? Why or why not?',
+        'How might a later start affect your own morning routine?',
+        'What advantages could a later start have for learning at school?',
+        'What practical problem could the change cause for students or families?'
+      ],
+      review:[
+        'I gave my opinion about a later starting time and explained why.',
+        'I explained how it would affect my own morning routine.',
+        'I explained at least one benefit for learning at school.',
+        'I explained a practical problem for students or families.'
+      ],
+      model:'Hi clockwatcher, I would support starting school at nine rather than eight because many students arrive tired. At the moment, I have to get up before six thirty to catch the bus, so an extra hour would make my mornings less stressful. I could eat breakfast properly and arrive ready to concentrate. I also think teachers might benefit because students would be more alert, especially in the first lesson. However, some parents leave for work early and might find it difficult to organise transport or care for younger children. The school would also need to decide whether lessons should finish later. I would suggest testing the new timetable for one month and asking students and families for feedback before making a final decision.'
+    },
+    3: {
+      id:'w2-ai-homework-level-3',
+      title:'AI and Homework: Help or Shortcut?',
+      label:'Take the challenge',
+      forum:'Student Voices', category:'Learning & Technology · Discussion',
+      author:'nextgenstudent',
+      post:'More students are using AI tools to explain ideas, plan essays or check their writing. Some teachers think these tools support independent learning. Others worry that students could submit work they do not understand. Our school is considering rules for AI-assisted homework. What should those rules be?',
+      questions:[
+        'Describe one way students could use AI responsibly for homework.',
+        'How might this help students learn more independently?',
+        'What is one important concern teachers might have about AI-assisted work?',
+        'Suggest a fair school rule for AI use and explain why it would help.'
+      ],
+      review:[
+        'I described a specific, responsible way to use AI for homework.',
+        'I explained how this could help students learn independently.',
+        'I explained a concern teachers might have.',
+        'I suggested a fair rule and explained why it could work.'
+      ],
+      model:'Hi nextgenstudent, I think students should be allowed to use AI to understand difficult homework, but not to have whole assignments written for them. For example, if I do not understand a science topic, I could ask for a simpler explanation and then answer the questions myself. This might help learners who are shy about asking for help, especially when they study at home. However, teachers could find it difficult to know whether a student’s work shows their own understanding. Some students might also trust incorrect information. My suggested rule is that students must write their own final answers and mention when they have used an AI tool. Teachers could sometimes ask students to explain their reasoning in class. That would make the rules fair and keep learning important.'
+    }
+  };
+  const W2_ALL_IDS = [W2_ID, W2_EXAMS[2].id, W2_EXAMS[3].id];
+  function w2AnyDraft(id) {
+    const d=store.drafts[id];
+    return (d && typeof d==='object' && !Array.isArray(d))?d:{text:''};
+  }
+  function w2AnyAttempts(id) { return Array.isArray(store.attempts[id])?store.attempts[id]:[]; }
+  function w2AnyLatest(id) { return w2AnyAttempts(id).at(-1); }
+  function w2Count(text) { return String(text||'').trim().split(/\s+/).filter(Boolean).length; }
+  function w2Draft(){
+    const d=store.drafts[W2_ID];
+    return (d && typeof d==='object' && !Array.isArray(d))?d:{ideas:{},text:''};
+  }
+  function w2Attempts(){ return Array.isArray(store.attempts[W2_ID])?store.attempts[W2_ID]:[]; }
+  function w2Latest(){ return w2Attempts().at(-1); }
+  function w2Selected(ideas,g) {return g.options.find(o=>o.id===ideas?.[g.key]);}
+  function w2PartPage(){
+    const latest=w2Latest(), draft=w2Draft();
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 2','#/writing/part-2']],'Writing · Part 2','Reply to a discussion','Read a post, give reasons and respond to four questions. The exam asks for at least 100 words.')+
+     `<section class="section w2-section"><div class="container"><div class="w2-level-grid">
+      <article class="w2-level-card w2-level-ready"><span class="w2-level-index">01</span><div class="eyebrow">LEARN WITH CLUES</div><h2>A Creative Afternoon at School?</h2><p>Choose ideas, build a short draft and finish it in your own words.</p><div class="w2-card-bottom"><span class="w2-tag">Guided · 100+ words</span><a class="button primary small" href="#/writing/part-2/level-1">${latest?'Try again':draft.text?'Continue draft':'Start writing'} →</a></div></article>
+      ${[2,3].map(n=>{const task=W2_EXAMS[n],a=w2AnyLatest(task.id),d=w2AnyDraft(task.id);return `<article class="w2-level-card w2-level-ready ${n===3?'w2-level-challenge':''}"><span class="w2-level-index">0${n}</span><div class="eyebrow">${n===2?'PRACTISE LIKE THE EXAM':'TAKE THE CHALLENGE'}</div><h2>${e(task.title)}</h2><p>${n===2?'Independent response. No idea bank or sentence starters.':'Explain different viewpoints and propose a reasoned solution.'}</p><div class="w2-card-bottom"><span class="w2-tag">100+ words · /10 marks</span><a class="button ${n===3?'secondary':'primary'} small" href="#/writing/part-2/level-${n}">${d.text?'Continue draft':a?'Try again':'Start writing'} →</a></div></article>`;}).join('')}
+      </div><div class="w2-short-note"><strong>MSA format:</strong> Answer all four questions · at least 100 words · 5 marks for content + 5 for language · teacher assessed</div>
+     </div></section>`,'writing');
+  }
+  function w2LevelPage(){
+    const draft=w2Draft(), ideas=draft.ideas||{}, chosen=W2_GROUPS.filter(g=>w2Selected(ideas,g)).length;
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 2','#/writing/part-2'],['Level 1','#/writing/part-2/level-1']],'Writing Part 2 · Level 1','A Creative Afternoon at School?','Choose ideas, put them together and write a reply of at least 100 words.')+
+      `<section class="section w2-section"><div class="container"><div class="w2-headline"><span><strong>YOUR TASK</strong> · Online discussion reply</span><span>100+ words &nbsp;·&nbsp; /10 marks</span></div>
+      <div class="w2-page-grid">
+       <div class="w2-left">
+        <article class="w2-chat"><div class="w2-chat-top"><span class="w2-forum-icon">✎</span><div><strong>Student Voices</strong><small>School Life · Discussion</small></div></div><div class="w2-author"><span class="w2-forum-avatar">S</span> <strong>schooltalker</strong></div><p>Our school might introduce a <strong>Creative Afternoon</strong> every week. Students could choose drama, music, photography, gardening or other activities. Some teachers like the idea, but others worry about lesson time. What do you think?</p><ol class="w2-questions"><li>What activity would you choose, and what would students do?</li><li>How could it benefit you personally?</li><li>Why could it be good for the school community?</li><li>What might be one problem?</li></ol><div class="w2-post-foot">Reply to all four questions · Write at least 100 words</div></article>
+        <aside class="w2-exam-tip"><strong>Exam tip</strong><p>Give a reason or an example for each point. A list of four short answers is not enough.</p></aside>
+       </div>
+       <div class="w2-right">
+        <section class="w2-plan-card"><div class="w2-panel-title"><div><span class="w2-step-pill">01</span><h2>Pick your ideas</h2></div><span class="w2-subtle" id="w2-selection-count">${chosen}/4 selected</span></div>
+         <div class="w2-choice-grid">${W2_GROUPS.map(g=>`<div class="w2-choice-box"><div class="w2-choice-title">${e(g.label)}</div><div class="w2-choice-sub">${e(g.prompt)}</div><div class="w2-chips">${g.options.map(o=>`<button type="button" class="w2-chip ${ideas[g.key]===o.id?'selected':''}" data-w2-group="${e(g.key)}" data-w2-pick="${e(o.id)}" aria-pressed="${ideas[g.key]===o.id?'true':'false'}">${e(o.label)}</button>`).join('')}</div></div>`).join('')}</div>
+         <div class="w2-plan-bottom"><button type="button" class="button primary small" id="w2-build" ${chosen!==4?'disabled':''}>Use my ideas ↓</button><p id="w2-plan-status" aria-live="polite">Choose one idea for each question.</p></div>
+        </section>
+        <section class="w2-compose-card" id="w2-composer"><div class="w2-panel-title"><div><span class="w2-step-pill">02</span><h2>Write your reply</h2></div><span class="w2-word-status" id="w2-word-badge">${w2Count(draft.text||'')} words</span></div>
+        <p class="w2-compose-lead">Use the ideas as a starting point. <strong>Add your own example and write naturally.</strong></p>
+        <label class="w2-editor-label" for="w2-editor">Your message to schooltalker</label><textarea id="w2-editor" class="w2-editor" spellcheck="true" placeholder="Hi schooltalker, I think ...">${e(draft.text||'')}</textarea>
+        <div class="w2-length"><div class="w2-length-line"><span id="w2-length-label">Minimum: 100 words</span><span id="w2-length-number">${w2Count(draft.text||'')} / 100</span></div><div class="w2-track"><span id="w2-meter" style="width:${Math.min(100,w2Count(draft.text||''))}%"></span></div></div>
+        <div class="w2-editor-actions"><div class="w2-autosave">Saved in this browser</div><button type="button" id="w2-submit" class="button primary" ${w2Count(draft.text||'')<100?'disabled':''}>Review my writing →</button></div>
+        </section>
+       </div>
+      </div></div></section>`,'writing');
+    APP.querySelectorAll('[data-w2-group]').forEach(button=>button.addEventListener('click',()=>{
+      const group=button.dataset.w2Group,id=button.dataset.w2Pick;
+      const d=w2Draft(), next={...d,ideas:{...(d.ideas||{}),[group]:id}};
+      store.drafts[W2_ID]=next;saveStore();
+      APP.querySelectorAll(`[data-w2-group="${group}"]`).forEach(btn=>{
+        const yes=btn.dataset.w2Pick===id;btn.classList.toggle('selected',yes);btn.setAttribute('aria-pressed',String(yes));
+      });
+      const n=W2_GROUPS.filter(g=>w2Selected(next.ideas,g)).length;
+      document.getElementById('w2-selection-count').textContent=`${n}/4 selected`;
+      document.getElementById('w2-build').disabled=n<4;
+      document.getElementById('w2-plan-status').textContent=n===4?'Ready! Add the ideas to your reply.':'Choose one idea for each question.';
+    }));
+    const editor=document.getElementById('w2-editor');
+    const updateCounter=()=>{
+      const n=w2Count(editor.value),ready=n>=100;
+      const badge=document.getElementById('w2-word-badge');badge.textContent=`${n} words`;badge.classList.toggle('good',ready);
+      document.getElementById('w2-length-number').textContent=`${n} / 100`;
+      document.getElementById('w2-meter').style.width=Math.min(100,n)+'%';
+      document.getElementById('w2-length-label').textContent=ready?'Minimum reached — review your ideas':'Minimum: 100 words';
+      document.getElementById('w2-submit').disabled=!ready;
+    };
+    editor.addEventListener('input',()=>{const d=w2Draft();d.text=editor.value.slice(0,9000);store.drafts[W2_ID]=d;saveStore();updateCounter();});
+    updateCounter();
+    document.getElementById('w2-build').addEventListener('click',()=>{
+      const d=w2Draft(),parts=W2_GROUPS.map(g=>w2Selected(d.ideas,g));if(parts.some(x=>!x))return;
+      if(editor.value.trim()&&!window.confirm('Replace your current text with the selected ideas?'))return;
+      const text=['Hi schooltalker,',parts[0].starter,parts[1].starter,parts[2].starter,parts[3].starter,'I also think ... because ...','Overall, my opinion is ...'].join('\n\n');
+      editor.value=text;d.text=text;store.drafts[W2_ID]=d;saveStore();updateCounter();
+      document.getElementById('w2-plan-status').textContent='Ideas added. Replace the dots and give your own reasons.';
+      editor.focus();
+    });
+    document.getElementById('w2-submit').addEventListener('click',()=>{
+      const text=editor.value.trim(),n=w2Count(text);
+      if(n<100){editor.focus();return;}
+      const attempt={at:new Date().toISOString(),text:text.slice(0,9000),wordCount:n,ideas:{...(w2Draft().ideas||{})},checks:{}};
+      store.attempts[W2_ID]||=[];store.attempts[W2_ID].push(attempt);store.attempts[W2_ID]=store.attempts[W2_ID].slice(-15);
+      delete store.drafts[W2_ID];saveStore();routeTo('#/writing/part-2/level-1/feedback');
+    });
+  }
+  function w2FeedbackPage(){
+    const a=w2Latest();if(!a){routeTo('#/writing/part-2/level-1');return;}
+    const checks=[['activity','I described an activity and what students would do.'],['personal','I explained how the activity could help me.'],['community','I explained a benefit for the school community.'],['problem','I explained a possible problem.']];
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 2','#/writing/part-2'],['Level 1','#/writing/part-2/level-1'],['Feedback','#/writing/part-2/level-1/feedback']],'Writing Part 2 · Feedback','Your writing review','Check all four points, then give your teacher your response for an official score.')+
+    `<section class="section w2-section"><div class="container w2-feedback-layout"><div class="w2-review-main"><article class="panel w2-review-panel"><div class="w2-panel-title"><div><span class="w2-step-pill">✓</span><h2>Your reply</h2></div><span class="w2-word-status good">${a.wordCount} words</span></div><div class="w2-student-text">${e(a.text)}</div><p class="w2-review-note"><strong>For a score out of 10, share this writing with your teacher.</strong> This website checks your word count and your own review, not your grammar or mark.</p><div class="w2-feedback-actions"><button type="button" id="w2-copy" class="button secondary small">Copy for teacher</button><a class="button primary small" href="#/writing/part-2/level-1">Try again →</a><a class="button subtle-btn small" href="#/writing/part-2">All levels</a></div><span class="w2-copied" id="w2-copied" role="status"></span></article>
+     <article class="panel w2-review-panel"><h2>Check the four points</h2><p class="w2-small">Tick what you included. If something is missing, try again and add it.</p>${checks.map(([k,lab])=>`<label class="w2-check-row"><input type="checkbox" data-w2-review="${k}" ${a.checks?.[k]?'checked':''}/><span>${e(lab)}</span></label>`).join('')}<p class="w2-check-result" id="w2-check-result"></p></article></div>
+     <aside class="w2-feedback-aside"><div class="w2-marking"><h3>How it is marked</h3><div class="w2-mark-grid"><div><strong>5</strong><span>Content</span></div><div><strong>5</strong><span>Language</span></div></div><p>Relevant answers to all four questions; clear explanations, organisation and appropriate English.</p><p class="w2-fineprint">The official task asks for at least 100 words. Very short writing can limit your mark.</p></div><details class="w2-model"><summary>See a model reply</summary><p>${e(W2_MODEL)}</p><p class="w2-small">Example only — many different answers are possible.</p></details></aside>
+     </div></section>`,'writing');
+    const update=()=>{const n=checks.filter(([k])=>a.checks?.[k]).length;document.getElementById('w2-check-result').textContent=`${n} of 4 content points checked. ${n===4?'Read it aloud and check your language.':'Review your response and include the missing points.'}`;};
+    APP.querySelectorAll('[data-w2-review]').forEach(box=>box.addEventListener('change',()=>{a.checks[box.dataset.w2Review]=box.checked;saveStore();update();}));update();
+    document.getElementById('w2-copy').addEventListener('click',async()=>{
+      const msg=document.getElementById('w2-copied');
+      try { await navigator.clipboard.writeText(a.text);msg.textContent='Copied! Paste it into a message to your teacher.';}
+      catch(_){msg.textContent='Select the response above and copy it to share with your teacher.';}
+    });
+  }
+
+  function w2ExamPage(level) {
+    const task=W2_EXAMS[level]; if(!task)return;
+    const draft=w2AnyDraft(task.id), wordCount=w2Count(draft.text||'');
+    const path=`#/writing/part-2/level-${level}`;
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 2','#/writing/part-2'],[`Level ${level}`,path]],`Writing Part 2 · Level ${level}`,task.title,level===2?'Read the discussion and write your own response.':'Think critically, give reasons and offer a workable suggestion.')+
+      `<section class="section w2-section"><div class="container"><div class="w2-headline"><span><strong>${level===2?'EXAM-STYLE PRACTICE':'TAKE THE CHALLENGE'}</strong> · Online discussion</span><span>At least 100 words · /10 marks</span></div>
+        <div class="w2-page-grid w2-exam-layout">
+        <div class="w2-left"><article class="w2-chat"><div class="w2-chat-top"><span class="w2-forum-icon">✎</span><div><strong>${e(task.forum)}</strong><small>${e(task.category)}</small></div></div>
+          <div class="w2-author"><span class="w2-forum-avatar">${e(task.author.charAt(0).toUpperCase())}</span> <strong>${e(task.author)}</strong></div>
+          <p>${e(task.post)}</p><ol class="w2-questions">${task.questions.map(q=>`<li>${e(q)}</li>`).join('')}</ol>
+          <div class="w2-post-foot">Reply to all four questions · Write at least 100 words</div></article></div>
+        <div class="w2-right"><section class="w2-compose-card"><div class="w2-panel-title"><div><span class="w2-step-pill">✎</span><h2>Your response</h2></div><span id="w2e-count" class="w2-word-status ${wordCount>=100?'good':''}">${wordCount} words</span></div>
+          <p class="w2-compose-lead">Write a connected reply with reasons and examples. All four questions should be answered.</p>
+          <label class="w2-editor-label" for="w2e-editor">Reply to ${e(task.author)}</label><textarea class="w2-editor w2-exam-editor" id="w2e-editor" maxlength="9000" spellcheck="true" placeholder="Write your response here...">${e(draft.text||'')}</textarea>
+          <div class="w2-length"><div class="w2-length-line"><span id="w2e-length-label">${wordCount>=100?'Minimum reached — check all four points':'Minimum: 100 words'}</span><span id="w2e-length-number">${wordCount} / 100</span></div><div class="w2-track"><span id="w2e-meter" style="width:${Math.min(wordCount,100)}%"></span></div></div>
+          <div class="w2-editor-actions"><span class="w2-autosave">Draft saved in this browser</span><button type="button" id="w2e-submit" class="button primary" ${wordCount<1?'disabled':''}>Submit for self-review →</button></div><p class="w2-exam-notice" role="status" id="w2e-warning" aria-live="polite"></p></section></div>
+        </div></div></section>`,'writing');
+    const input=document.getElementById('w2e-editor'),submit=document.getElementById('w2e-submit');
+    const refresh=()=>{
+      const n=w2Count(input.value),good=n>=100;
+      const badge=document.getElementById('w2e-count');badge.textContent=`${n} words`;badge.classList.toggle('good',good);
+      document.getElementById('w2e-length-number').textContent=`${n} / 100`;
+      document.getElementById('w2e-meter').style.width=Math.min(100,n)+'%';
+      document.getElementById('w2e-length-label').textContent=good?'Minimum reached — check all four points':`Minimum: 100 words (${Math.max(0,100-n)} more to go)`;
+      submit.disabled=n===0;
+      document.getElementById('w2e-warning').textContent='';
+    };
+    input.addEventListener('input',()=>{
+      store.drafts[task.id]={text:input.value.slice(0,9000)};saveStore();refresh();
+    });
+    submit.addEventListener('click',()=>{
+      const text=input.value.trim(),count=w2Count(text);
+      if(count===0)return;
+      if(count<100 && !window.confirm(`You have written ${count} words. The MSA task requires at least 100. Submit anyway to see feedback?`)){
+        document.getElementById('w2e-warning').textContent='Add more detail to meet the 100-word minimum.';input.focus();return;
+      }
+      const a={at:new Date().toISOString(),text:text.slice(0,9000),wordCount:count,checks:{}};
+      store.attempts[task.id]||=[];store.attempts[task.id].push(a);store.attempts[task.id]=store.attempts[task.id].slice(-15);
+      delete store.drafts[task.id];saveStore();routeTo(path+'/feedback');
+    });
+  }
+  function w2ExamFeedback(level) {
+    const task=W2_EXAMS[level];if(!task)return;
+    const a=w2AnyLatest(task.id);const path=`#/writing/part-2/level-${level}`;
+    if(!a){routeTo(path);return;}
+    a.checks=a.checks||{};
+    const checks=task.review.map((label,i)=>[String(i),label]);
+    const shortNote=a.wordCount<100?`<p class="w2-review-length-warning">Your answer has ${a.wordCount} words. The MSA task asks for at least 100. Add more detail before giving it to your teacher.</p>`:'';
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 2','#/writing/part-2'],[`Level ${level}`,path],['Feedback',path+'/feedback']],'Writing Part 2 · Feedback','Review your response','Check the four points. Your teacher assesses the content and language.')+
+      `<section class="section w2-section"><div class="container w2-feedback-layout"><div class="w2-review-main">
+        <article class="panel w2-review-panel"><div class="w2-panel-title"><div><span class="w2-step-pill">✓</span><h2>Your reply</h2></div><span class="w2-word-status ${a.wordCount>=100?'good':''}">${a.wordCount} words</span></div>
+          <div class="w2-student-text">${e(a.text)}</div>${shortNote}<p class="w2-review-note"><strong>Share your writing with your teacher for a score out of 10.</strong> This website offers self-review only; it does not check grammar or award marks.</p>
+          <div class="w2-feedback-actions"><button type="button" id="w2e-copy" class="button secondary small">Copy for teacher</button><a href="${path}" class="button primary small">Try again →</a><a href="#/writing/part-2" class="button subtle-btn small">All levels</a></div><span class="w2-copied" id="w2e-copied" role="status"></span></article>
+        <article class="panel w2-review-panel"><h2>Check the four content points</h2><p class="w2-small">Tick only the points you explained in your reply.</p>${checks.map(([k,label])=>`<label class="w2-check-row"><input type="checkbox" data-w2e-review="${k}" ${a.checks[k]?'checked':''}><span>${e(label)}</span></label>`).join('')}<p class="w2-check-result" id="w2e-check-result"></p></article>
+        </div><aside class="w2-feedback-aside"><div class="w2-marking"><h3>MSA marking</h3><div class="w2-mark-grid"><div><strong>5</strong><span>Content</span></div><div><strong>5</strong><span>Language</span></div></div><p>Answer all four questions, develop your points, and use clear, organised English appropriate for a discussion reply.</p><p class="w2-fineprint">In the official scheme, fewer than 80 words limits content to 2 marks; fewer than 50 words limits content to 1 and language to 2.</p></div>
+        <details class="w2-model"><summary>Compare with a model reply</summary><p>${e(task.model)}</p><p class="w2-small">One possible answer — yours can be different.</p></details></aside>
+        </div></section>`,'writing');
+    const result=document.getElementById('w2e-check-result');
+    const update=()=>{const count=checks.filter(([k])=>a.checks[k]).length;result.textContent=`${count}/4 content points checked. ${count===4?'Now check whether your reasons and examples are clear.':'Review the missing points and improve your reply.'}`;};
+    APP.querySelectorAll('[data-w2e-review]').forEach(el=>el.addEventListener('change',()=>{a.checks[el.dataset.w2eReview]=el.checked;saveStore();update();})); update();
+    document.getElementById('w2e-copy').addEventListener('click',async()=>{
+      try{await navigator.clipboard.writeText(a.text);document.getElementById('w2e-copied').textContent='Copied! You can share this with your teacher.';}
+      catch(_){document.getElementById('w2e-copied').textContent='Select your reply above and copy it for your teacher.';}
+    });
+  }
   function writingSubjectPage(){
     const reviews=W1_ALL_IDS.reduce((n,id)=>n+w1AnyAttempts(id).length,0);
-    shell(pageHero([['Home','#/home'],['Writing','#/writing']],'Your practice hub','Writing','Start with guided photo writing, then practise the same 30–50-word task independently.')+
-      `<section class="section"><div class="container work-layout"><div class="module-parts"><div class="module-part active"><div class="module-part-left"><span class="mini-num">01</span><div><h3>Writing Part 1</h3><p>Your Photo · Three levels, three original images, one five-point marking scheme.</p><div class="tiny muted" style="margin-top:7px">30–50 words · where / who / what · 5 marks in the real exam</div></div></div><a class="button primary small" href="#/writing/part-1">Open →</a></div>${[['02','Writing Part 2','Discussion and opinion response'],['03','Writing Part 3','Mediation: German → English']].map(x=>`<div class="module-part"><div class="module-part-left"><span class="mini-num">${x[0]}</span><div><h3>${x[1]}</h3><p>${x[2]}</p></div></div><span class="pill planned">In development</span></div>`).join('')}</div><aside><div class="path-summary"><div class="label">Available now</div><strong>Part 1 · All three levels</strong><p style="font-size:.86rem;margin-top:10px">${reviews?reviews+' self-review'+(reviews===1?'':'s')+' saved': 'Choose your photo task and make it your own story.'}</p><a class="button primary small" style="margin-top:12px" href="#/writing/part-1">Explore levels →</a></div></aside></div></section>`,'writing');
+    const w2Reviews=W2_ALL_IDS.reduce((n,id)=>n+w2AnyAttempts(id).length,0);
+    shell(pageHero([['Home','#/home'],['Writing','#/writing']],'Your practice hub','Writing','Choose a photo response or practise replying to an online discussion.')+
+      `<section class="section"><div class="container work-layout"><div class="module-parts">
+      <div class="module-part active"><div class="module-part-left"><span class="mini-num">01</span><div><h3>Writing Part 1</h3><p>Your Photo · Three levels · 30–50 words · 5 marks</p></div></div><a class="button primary small" href="#/writing/part-1">Open →</a></div>
+      <div class="module-part active"><div class="module-part-left"><span class="mini-num">02</span><div><h3>Writing Part 2</h3><p>Online discussion · Three levels · 100+ words · 10 marks</p></div></div><a class="button primary small" href="#/writing/part-2">Open →</a></div>
+      <div class="module-part"><div class="module-part-left"><span class="mini-num">03</span><div><h3>Writing Part 3</h3><p>Mediation: German → English</p></div></div><span class="pill planned">In development</span></div>
+      </div><aside><div class="path-summary"><div class="label">Writing practice available</div><strong>3 photo levels + 3 discussion levels</strong><p style="font-size:.86rem;margin-top:10px">${reviews+w2Reviews?`${reviews+w2Reviews} writing review${reviews+w2Reviews===1?'':'s'} saved`:'Your drafts and writing feedback are saved on this device.'}</p><a class="button primary small" style="margin-top:12px" href="#/writing/part-2/level-1">Try Writing Part 2 →</a></div></aside></div></section>`,'writing');
   }
   function writingProgressBlock(){
     const names=['Learn with clues · Football','Practise like the exam · Park proposal','Take the challenge · Mountain hike'];
@@ -575,6 +821,13 @@
       return `<div class="attempt-row"><div><strong>Level ${i+1}: ${e(names[i])}</strong><div><span>${tries.length?`${tries.length} review${tries.length===1?'':'s'} · Latest: ${last.wordCount} words`:draft.text?`Draft saved · ${w1WordCount(draft.text)} words`:'Not started yet'}</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${last?`<a class="button small secondary" href="${url}/feedback">Feedback</a>`:''}<a class="button small primary" href="${url}">${tries.length?'Try again':draft.text?'Continue':'Start'} →</a></div></div>`;
     }).join('')}<p class="tiny muted">Open-ended writing is not given an automatic mark. Your drafts and reflections stay on your device.</p></div>`;
   }
+  function writing2ProgressBlock(){
+    const tasks=[{id:W2_ID,title:'A Creative Afternoon at School?'},W2_EXAMS[2],W2_EXAMS[3]];
+    return `<div class="panel" style="margin-bottom:18px"><h2>Writing Part 2</h2><p class="muted" style="font-size:.87rem">Discussion reply · Three levels · 100+ words</p>
+      ${tasks.map((task,i)=>{const tries=w2AnyAttempts(task.id),last=w2AnyLatest(task.id),draft=w2AnyDraft(task.id),url=`#/writing/part-2/level-${i+1}`;
+      return `<div class="attempt-row"><div><strong>Level ${i+1}: ${e(task.title)}</strong><div><span>${tries.length?`${tries.length} review${tries.length===1?'':'s'} · Latest: ${last.wordCount} words`:draft.text?`Draft saved · ${w2Count(draft.text)} words`:'Not started yet'}</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${last?`<a class="button small secondary" href="${url}/feedback">Feedback</a>`:''}<a class="button small primary" href="${url}">${draft.text?'Continue':tries.length?'Try again':'Start'} →</a></div></div>`;
+      }).join('')}<p class="tiny muted">Give your writing to your teacher for a score out of 10.</p></div>`;
+  }
   function progressPage() {
     const done=completedTotal(),totalAttempts=allLevels.reduce((n,l)=>n+getAttempts(l.id).length,0);
     const avg=done?Math.round(allLevels.reduce((sum,l)=>sum+(getAttempts(l.id).length?bestScore(l.id)/l.questions.length:0),0)/done*100):0;
@@ -582,8 +835,8 @@
       const tries=getAttempts(l.id),last=latestAttempt(l.id),url=`#/reading/part-${part}/${l.id}`;
       return `<div class="attempt-row"><div><strong>Level ${i+1}: ${e(l.title)}</strong><div><span>${tries.length?`${tries.length} attempt${tries.length>1?'s':''} · Latest: ${last.score}/${l.questions.length} · Best: ${scoreLabel(l)}`:'Not started yet'}</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${last?`<a class="button small secondary" href="${url}/feedback">Feedback</a>`:''}<a class="button small primary" href="${url}">${tries.length?'Try again':'Start'} →</a></div></div>`;
     }).join('')}</div>`;
-    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','Review Reading Parts 1–3 and your three Writing Part 1 levels, or continue where you left off.')+
-      `<section class="section"><div class="container work-layout"><div><div class="progress-stats"><div class="progress-card"><strong>${done}/${allLevels.length}</strong><span>Reading levels completed</span></div><div class="progress-card"><strong>${totalAttempts}</strong><span>Total attempts</span></div><div class="progress-card"><strong>${avg}%</strong><span>Average best score</span></div></div>${progressSection('Reading Part 1',1,levels)}${progressSection('Reading Part 2',2,part2Levels)}${progressSection('Reading Part 3',3,part3Levels)}${writingProgressBlock()}<div class="panel" style="margin-top:18px"><h3>Back up or clear your progress</h3><p class="muted" style="font-size:.87rem">Download a JSON backup of your scores and answers. You can import this on another device, or clear the progress saved here.</p><div style="display:flex;flex-wrap:wrap;gap:10px"><button id="export-progress" class="button secondary">Download progress</button><label class="button secondary" for="import-progress" style="cursor:pointer">Import progress</label><input type="file" id="import-progress" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0"><button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div><p id="progress-notice" class="tiny" aria-live="polite" style="margin:12px 0 0;color:#3d7281"></p></div></div><aside><div class="privacy-note"><strong>Privacy and saving</strong><p style="margin:9px 0 0">ThinkLab requires no student login. Your scores and answers are saved locally in this browser, not sent to a teacher or server. Clearing site data or switching browsers may remove them. Export a backup if needed.</p></div></aside></div></section>`,'progress');
+    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','Review Reading Parts 1–3 and Writing Parts 1–2, or continue where you left off.')+
+      `<section class="section"><div class="container work-layout"><div><div class="progress-stats"><div class="progress-card"><strong>${done}/${allLevels.length}</strong><span>Reading levels completed</span></div><div class="progress-card"><strong>${totalAttempts}</strong><span>Total attempts</span></div><div class="progress-card"><strong>${avg}%</strong><span>Average best score</span></div></div>${progressSection('Reading Part 1',1,levels)}${progressSection('Reading Part 2',2,part2Levels)}${progressSection('Reading Part 3',3,part3Levels)}${writingProgressBlock()}${writing2ProgressBlock()}<div class="panel" style="margin-top:18px"><h3>Back up or clear your progress</h3><p class="muted" style="font-size:.87rem">Download a JSON backup of your scores and answers. You can import this on another device, or clear the progress saved here.</p><div style="display:flex;flex-wrap:wrap;gap:10px"><button id="export-progress" class="button secondary">Download progress</button><label class="button secondary" for="import-progress" style="cursor:pointer">Import progress</label><input type="file" id="import-progress" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0"><button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div><p id="progress-notice" class="tiny" aria-live="polite" style="margin:12px 0 0;color:#3d7281"></p></div></div><aside><div class="privacy-note"><strong>Privacy and saving</strong><p style="margin:9px 0 0">ThinkLab requires no student login. Your scores and answers are saved locally in this browser, not sent to a teacher or server. Clearing site data or switching browsers may remove them. Export a backup if needed.</p></div></aside></div></section>`,'progress');
     bindProgress();
   }
   function bindProgress() {
@@ -629,6 +882,27 @@
           const draft=imported.drafts?.[id];
           if(draft && typeof draft==='object' && !Array.isArray(draft)) clean.drafts[id]={text:String(draft.text||'').slice(0,3000)};
         }
+        const w2Arr=imported.attempts?.[W2_ID];
+        if(Array.isArray(w2Arr))clean.attempts[W2_ID]=w2Arr.slice(-15).filter(x=>x && typeof x.text==='string').map(x=>({
+          at:typeof x.at==='string'?x.at:new Date().toISOString(),text:x.text.slice(0,9000),wordCount:w2Count(x.text.slice(0,9000)),
+          ideas:Object.fromEntries(W2_GROUPS.map(g=>[g.key,g.options.some(o=>o.id===x.ideas?.[g.key])?x.ideas[g.key]:''])),
+          checks:Object.fromEntries(W2_GROUPS.map(g=>[g.key,x.checks?.[g.key]===true]))
+        }));
+        const w2D=imported.drafts?.[W2_ID];
+        if(w2D && typeof w2D==='object' && !Array.isArray(w2D))clean.drafts[W2_ID]={
+          text:String(w2D.text||'').slice(0,9000),
+          ideas:Object.fromEntries(W2_GROUPS.map(g=>[g.key,g.options.some(o=>o.id===w2D.ideas?.[g.key])?w2D.ideas[g.key]:'']))
+        };
+        for(const level of [2,3]) {
+          const id=W2_EXAMS[level].id, attempts=imported.attempts?.[id], draft=imported.drafts?.[id];
+          if(Array.isArray(attempts))clean.attempts[id]=attempts.slice(-15).filter(x=>x && typeof x.text==='string').map(x=>({
+            at:typeof x.at==='string'?x.at:new Date().toISOString(),
+            text:x.text.slice(0,9000),wordCount:w2Count(x.text.slice(0,9000)),
+            checks:Object.fromEntries(['0','1','2','3'].map(k=>[k,x.checks?.[k]===true]))
+          }));
+          if(draft && typeof draft==='object' && !Array.isArray(draft))
+            clean.drafts[id]={text:String(draft.text||'').slice(0,9000)};
+        }
         if(!window.confirm('Import this file? It will replace progress currently saved in this browser.')) return;
         store=clean;saveStore();progressPage();
       } catch(_) {document.getElementById('progress-notice').textContent='That file is not a valid ThinkLab progress backup.';}
@@ -660,6 +934,11 @@
     else if(p[0]==='writing'&&p[1]==='part-1'&&p[2]==='level-1'&&p[3]==='feedback'&&p.length===4)writingFeedbackPage();
     else if(p[0]==='writing'&&p[1]==='part-1'&&['level-2','level-3'].includes(p[2])&&p.length===3)w1ExamLevelPage(Number(p[2].slice(-1)));
     else if(p[0]==='writing'&&p[1]==='part-1'&&['level-2','level-3'].includes(p[2])&&p[3]==='feedback'&&p.length===4)w1ExamFeedback(Number(p[2].slice(-1)));
+    else if(p[0]==='writing'&&p[1]==='part-2'&&p.length===2)w2PartPage();
+    else if(p[0]==='writing'&&p[1]==='part-2'&&p[2]==='level-1'&&p.length===3)w2LevelPage();
+    else if(p[0]==='writing'&&p[1]==='part-2'&&p[2]==='level-1'&&p[3]==='feedback'&&p.length===4)w2FeedbackPage();
+    else if(p[0]==='writing'&&p[1]==='part-2'&&['level-2','level-3'].includes(p[2])&&p.length===3)w2ExamPage(Number(p[2].slice(-1)));
+    else if(p[0]==='writing'&&p[1]==='part-2'&&['level-2','level-3'].includes(p[2])&&p[3]==='feedback'&&p.length===4)w2ExamFeedback(Number(p[2].slice(-1)));
     else if(p[0]==='progress')progressPage();
     else notFound();
     window.scrollTo({top:0,behavior:'instant'});
@@ -667,3 +946,4 @@
   window.addEventListener('hashchange',render);
   if(!location.hash)location.hash='#/home'; else render();
 })();
+
