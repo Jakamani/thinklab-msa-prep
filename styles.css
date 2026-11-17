@@ -274,3 +274,67 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{cur
 .w2-level-challenge .w2-level-index{color:#d24f26}
 @media(max-width:950px){.w2-exam-layout .w2-left{position:static}}
 @media(max-width:720px){.w2-exam-editor{min-height:270px}}
+
+
+/* Writing Part 3 — guided mediation (one compact page, three steps) */
+.w3-section{padding-top:28px}.w3-task-header{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 20px}
+.w3-task-pill{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:800;color:#27605b;background:#e8f8f4;padding:8px 11px;border-radius:30px}
+.w3-exam-mark{font-size:.81rem;color:#60758D;font-weight:800;margin-left:auto}
+.w3-layout{display:grid;grid-template-columns:minmax(300px,.95fr) minmax(0,1.12fr);align-items:start;gap:24px}.w3-left{min-width:0}.w3-sticky{position:sticky;top:100px}.w3-right{display:grid;gap:17px;min-width:0}
+.w3-source-card,.w3-brief,.w3-card,.w3-level-card{background:#fff;border:1px solid #d9e7ed;border-radius:20px;box-shadow:0 13px 30px rgba(11,45,86,.052)}
+.w3-source-card{padding:23px 24px}.w3-source-head{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:17px}.w3-lang{font-weight:850;background:#0B2D56;color:#fff;border-radius:8px;padding:6px 10px;font-size:.74rem}.w3-source-original{font-size:.76rem;color:#60758D}
+.w3-source-card h2{font-size:1.39rem;margin-bottom:18px}.w3-source-card p{font-size:.925rem;line-height:1.66;color:#284b62;margin:0 0 15px}.w3-source-credit{border-top:1px solid #e0eaed;padding-top:12px;margin-top:7px;font-size:.72rem;color:#697f8a}
+.w3-translation-note{background:#fff8e5;border-left:4px solid #FFC107;border-radius:11px;margin-top:13px;padding:15px 18px;color:#30536a;font-size:.82rem}.w3-translation-note strong{display:block;margin-bottom:8px}.w3-translation-note div{margin:5px 0}.w3-translation-note div span{font-size:.64rem;font-weight:900;color:#00897B;margin-right:8px}
+.w3-brief{padding:20px 23px;background:#f5fbfc}.w3-brief-top{display:flex;gap:12px;align-items:center;margin-bottom:11px}.w3-brief-top h2{font-size:1.38rem;margin:2px 0}.w3-icon{width:42px;height:42px;border-radius:12px;background:#0B2D56;color:#FFC107;font-size:23px;display:grid;place-items:center}.w3-brief p{font-size:.87rem;line-height:1.58;margin:8px 0;color:#355267}
+.w3-card{padding:22px}.w3-card-title{display:flex;gap:12px;align-items:start;margin-bottom:15px}.w3-card-title h2{font-size:1.18rem;margin:1px 0 4px}.w3-card-title p{font-size:.82rem;color:#60758D;margin:0}.w3-step{display:grid;place-items:center;background:#0B2D56;color:#fff;width:35px;height:35px;border-radius:10px;font-weight:850;font-size:.82rem;flex-shrink:0}
+.w3-job{display:flex;gap:10px;align-items:start;padding:11px 13px;border-radius:11px;background:#eaf8f3;color:#135448;margin-bottom:13px}.w3-job>span{font-size:1.3rem;font-weight:900}.w3-job small{display:block;color:#397c73;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.045em}.w3-job strong{font-size:.82rem;font-weight:800}
+.w3-facts{display:grid;grid-template-columns:1fr 1fr;gap:9px}.w3-fact{cursor:pointer;display:flex;align-items:center;gap:9px;line-height:1.36;border:1.5px solid #e2eaf0;border-radius:11px;padding:11px;min-height:64px;font-size:.79rem;color:#355267;transition:background .12s,border .12s;background:#fff}.w3-fact:hover{border-color:#00897B}.w3-fact:focus-within{outline:3px solid #FFC107;outline-offset:2px}.w3-fact.chosen{background:#eaf8f3;border-color:#00897B;color:#0B514a}.w3-fact input{position:absolute;opacity:0;width:1px;height:1px}.w3-fact-check{border:1.4px solid #adc8d4;display:grid;place-items:center;width:25px;height:25px;border-radius:8px;flex-shrink:0;font-weight:800}.w3-fact.chosen .w3-fact-check{background:#00897B;color:#fff;border-color:#00897B}.w3-facts-footer{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-top:13px;color:#60758D;font-size:.8rem}.w3-tag{background:#fff7e0;color:#755706;padding:6px 10px;border-radius:40px;font-size:.72rem;font-weight:800}
+.w3-email-meta{display:grid;grid-template-columns:80px 1fr;gap:4px 12px;padding:12px 14px;border:1px solid #dce9ed;border-radius:10px;background:#f9fcfd;margin-bottom:13px;font-size:.8rem}.w3-email-meta span{color:#60758D;font-size:.7rem;font-weight:900}.w3-writing-help{padding:10px 14px;border:1px solid #f0dba4;border-radius:11px;background:#fffaf0;margin:12px 0}.w3-writing-help summary{font-size:.82rem;font-weight:800;color:#8d620a;cursor:pointer}.w3-writing-help p{margin:8px 0;font-size:.82rem;color:#385469}
+
+/* Three optional email openings: compact, accessible and keyboard-selectable. */
+.w3-help-body{margin-top:9px}
+.w3-help-intro{font-size:.8rem;color:#385469;margin:4px 0 11px}
+.w3-opening-list{border:0;padding:0;margin:0;display:grid;gap:8px;min-width:0}
+.w3-opening-choice{display:flex;align-items:flex-start;gap:10px;background:#fff;border:1.5px solid #eadfbe;border-radius:10px;padding:10px 12px;cursor:pointer;line-height:1.5}
+.w3-opening-choice:has(input:checked){background:#edf8f6;border-color:#00897B}
+.w3-opening-choice:focus-within{outline:3px solid #FFC107;outline-offset:2px}
+.w3-opening-choice input{flex:0 0 auto;margin:4px 0 0;accent-color:#00897B;width:16px;height:16px}
+.w3-opening-copy{display:grid;gap:2px;min-width:0;font-size:.79rem;color:#234456}
+.w3-opening-copy strong{color:#0B2D56;font-size:.76rem}
+.w3-opening-copy>span:nth-child(2){font-weight:750}
+.w3-opening-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0 6px}
+.w3-opening-status{font-size:.74rem;line-height:1.35;color:#13786a;flex:1;min-width:175px}
+.w3-writing-help .w3-follow-on{font-size:.76rem;margin:9px 0;color:#385469}
+.w3-writing-help .w3-help-foot{font-size:.73rem;margin:6px 0 1px;color:#6e6660}
+.w3-plan-preview{font-size:.78rem;line-height:1.6;background:#edf8f6;border-radius:10px;color:#205b54;padding:11px 13px;margin:12px 0;max-height:110px;overflow:auto}.w3-editor-label{display:block;font-size:.84rem;font-weight:850;margin:16px 0 8px}.w3-editor{min-height:228px;width:100%;border:1.5px solid #b9d0db;border-radius:12px;padding:15px;resize:vertical;font:1rem/1.7 var(--body);color:#0B2D56;background:#ffffff;color-scheme:light}.w3-editor:focus{border-color:#00897B;outline:3px solid #c9f0e8}.w3-compose-footer{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.73rem;color:#60758D;margin:8px 0 16px}.w3-save{color:#227b6b}.w3-actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px}.w3-warning{font-size:.82rem;color:#a34d1e;margin-top:7px}
+.w3-level-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.w3-level-card{min-height:255px;padding:24px;display:flex;flex-direction:column;gap:7px}.w3-level-card.current{border-top:5px solid #00897B}.w3-level-card.upcoming{background:#f7fafb}.w3-level-num{font-size:2.1rem;line-height:1;color:#0B2D56;font-weight:900}.w3-level-card h2{font-size:1.3rem;margin:2px 0}.w3-level-card p{font-size:.85rem;color:#60758D;margin:2px 0 12px}.w3-level-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:auto}.w3-level-card.upcoming .pill{align-self:flex-start;margin-top:auto}.w3-endnote{background:#f0fafb;border-radius:12px;color:#486275;font-size:.85rem;padding:16px 20px;margin-top:18px}.w3-endnote a{text-decoration:underline;font-weight:800;color:#00776D}
+.w3-review-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(270px,.8fr);align-items:start;gap:23px}.w3-review-layout>div{display:grid;gap:17px;min-width:0}.w3-review-panel{padding:23px}.w3-feedback-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.w3-feedback-top h2{margin:3px 0}.w3-word-pill{background:#e6f4fa;color:#0B2D56;font-size:.82rem;font-weight:850;border-radius:50px;padding:7px 11px}.w3-student-text{white-space:pre-wrap;overflow-wrap:anywhere;background:#f4fbfa;border-left:4px solid #00897B;border-radius:7px;padding:17px 19px;font-size:.94rem;line-height:1.75;color:#234456}.w3-teacher-alert{font-size:.84rem;background:#fff8e5;border-left:4px solid #FFC107;border-radius:8px;color:#524c3c;padding:12px 14px;margin:16px 0}.w3-review-actions{display:flex;gap:8px;flex-wrap:wrap}.w3-mini{color:#00776D;font-size:.78rem;margin:9px 0 0}.w3-muted{color:#60758D;font-size:.85rem}.w3-check{display:flex;align-items:start;gap:11px;border-bottom:1px solid #e4edf1;padding:11px 0;font-size:.86rem;line-height:1.48;cursor:pointer}.w3-check input{margin-top:3px;accent-color:#00897B}.w3-check-result{font-size:.81rem;color:#00776D;margin-top:15px;font-weight:800}.w3-model-text{white-space:pre-wrap;line-height:1.66;color:#284b62;font-size:.87rem;margin-top:12px}.w3-marking{position:sticky;top:104px}
+@media(max-width:1020px){.w3-layout{grid-template-columns:minmax(0,1fr)}.w3-sticky,.w3-marking{position:static}.w3-review-layout{grid-template-columns:1fr}.w3-left{max-width:none}.w3-source-card p{font-size:.94rem}}
+@media(max-width:760px){.w3-level-cards{grid-template-columns:1fr}.w3-level-card{min-height:0}.w3-facts{grid-template-columns:1fr}.w3-card,.w3-brief,.w3-source-card{padding:17px}.w3-task-header{gap:6px}.w3-task-pill{font-size:.68rem}.w3-exam-mark{margin-left:0}.w3-editor{min-height:220px}}
+
+
+/* Writing Part 3 — independent mediation with two genuine source choices. */
+.w3-exam-layout .w3-left{min-width:0}
+.w3-article-selector{padding:15px;border:1px solid #d9e7ed;border-radius:16px;background:#f5fafb;margin-bottom:14px}
+.w3-article-selector>p{margin:0 0 10px;font-size:.8rem;color:#526e80;font-weight:800}
+.w3-article-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.w3-article-tab{min-width:0;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:12px;border:1.5px solid #d9e7ed;background:#fff;border-radius:11px;color:#0B2D56;line-height:1.35;cursor:pointer}
+.w3-article-tab:hover{border-color:#00897B}.w3-article-tab:focus-visible{outline:3px solid #FFC107;outline-offset:2px}
+.w3-article-tab.selected{border-color:#00897B;background:#e9f7f3;box-shadow:inset 0 0 0 1px #00897B}
+.w3-article-tab>span{font-size:.74rem;letter-spacing:.04em;text-transform:uppercase;font-weight:850;color:#00897B}
+.w3-article-tab>strong{font-size:.85rem;font-weight:750;overflow-wrap:break-word}
+.w3-exam-article .w3-source-credit{overflow-wrap:anywhere;line-height:1.52}
+.w3-source-credit a{color:#00776D;text-decoration:underline;font-weight:800;display:inline-block;margin-top:5px}
+.w3-no-choice{min-height:270px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.w3-no-choice h2{margin-top:18px}
+.w3-exam-instructions{padding-left:1.25rem;margin:11px 0 3px;color:#355267;line-height:1.58;font-size:.87rem}
+.w3-exam-instructions li{margin-bottom:6px}
+.w3-exam-editor{min-height:350px;background:#fff !important;color:#0B2D56 !important;color-scheme:light}
+.w3-exam-editor:disabled{background:#f4f7f8 !important;color:#586b75 !important}
+.w3-level-challenge{border-top-color:#FF7043 !important}
+.w3-points-list{font-size:.86rem;line-height:1.55;color:#355267;margin-top:12px}
+.w3-points-list ul{padding-left:1.3rem}.w3-points-list li{margin-bottom:7px}
+.w3-feedback-aside{display:grid;gap:14px;min-width:0}
+.w3-feedback-aside .w3-marking{position:static}
+@media(max-width:1020px){.w3-exam-layout .w3-left{position:static}}
+@media(max-width:540px){.w3-article-tabs{grid-template-columns:1fr}.w3-article-tab{min-height:62px}.w3-exam-editor{min-height:270px}}

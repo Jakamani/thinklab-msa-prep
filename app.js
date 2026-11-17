@@ -62,7 +62,7 @@
   function home() {
     const cards=[
       ['reading','Reading','3 parts','Read to find the meaning, identify evidence and match the right details.',['Match people to activities','Understand short texts','Read a longer article'],'✓','live'],
-      ['writing','Writing','3 parts','Communicate clearly, organise ideas and respond for the right reader.',['Respond to a photo · All 3 levels ready','Discussion responses · All 3 levels ready','Mediation: German → English'],'✎','live'],
+      ['writing','Writing','3 parts','Communicate clearly, organise ideas and respond for the right reader.',['Respond to a photo · All 3 levels ready','Discussion replies · All 3 levels ready','Mediation · All 3 levels ready'],'✎','live'],
       ['listening','Listening','4 parts','Listen for meaning, follow speakers and recognise the important clues.',['Match messages to pictures','Match podcast intros to titles','Complete notes and tables','Understand a radio discussion'],'◉','planned']
     ];
     const html=`<section class="hero"><div class="container hero-grid"><div>
@@ -74,8 +74,8 @@
        ${['Learn with clues','Practise like the exam','Take the challenge'].map((s,i)=>`<div class="journey-step"><span class="num">0${i+1}</span><div><strong>${s}</strong><p>${['Short examples + helpful guidance','Fresh tasks with the real exam structure','More demanding practice'][i]}</p></div><span style="margin-left:auto;color:#bad2dd">›</span></div>`).join('')}
        <div class="bottom-note">✓ Reading tasks give scores and evidence. Writing tasks give word-count checks and self-review.</div>
     </div></div></div></section>
-    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels · 6 Writing levels</div></div></div>
-    <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore the skills. Reading Parts 1–3 and Writing Parts 1–2 are available.')}
+    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels · 9 Writing levels</div></div></div>
+    <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore Reading Parts 1–3 and Writing Parts 1–3, with three levels in each.')}
       <div class="skill-grid">${cards.map(([route,title,parts,desc,items,ico,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon">${ico}</div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':route==='writing'?'Start Writing':'View the plan'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
     </div></section><section class="section alt"><div class="container">${titleBlock('One simple route','Three levels. Real progress.','Every part follows the same learning path so you always know what comes next.')}
     <div class="path-grid">${levels.map((l,i)=>`<a class="level-card" href="#/reading/part-1/${l.id}"><div class="topline"><span class="level-number">0${i+1}</span><div><div class="tiny muted" style="font-weight:800">LEVEL ${i+1}</div><h3 style="margin:0">${stepTitle(i)}</h3></div></div><p>${e(l.description)}</p><div class="tiny"><span class="pill ${getAttempts(l.id).length?'ready':''}">${getAttempts(l.id).length?'Best '+scoreLabel(l):'Not completed'}</span></div></a>`).join('')}</div>
@@ -84,11 +84,11 @@
     shell(html,'home');
   }
   function howPage() {
-    shell(pageHero([['Home','#/home'],['How it works','#/how']],'Your learning path','Learn. Practise. Improve.','Here is how ThinkLab guides you through MSA-style tasks.')+`<section class="section"><div class="container"><div class="path-grid">${levels.map((l,i)=>`<div class="panel"><span class="level-number">0${i+1}</span><h3 style="margin-top:15px">${stepTitle(i)}</h3><p class="muted">${e(l.description)}</p></div>`).join('')}</div><div class="panel" style="margin-top:20px"><h3>How marking works</h3><p>For Reading, choose matching activities or correct statements and receive one point per correct answer, with evidence-based feedback. For Writing Part 1, respond to a photo in 30–50 words and use the MSA criteria to review your writing. Open-ended writing does not receive an automatic exam mark.</p><p>No account is required. Your attempts stay in this browser; use <strong>My progress</strong> to download a backup if you want to keep a copy.</p><a class="button primary" href="#/reading/part-1">Start Reading Part 1 →</a></div></div></section>`,'home');
+    shell(pageHero([['Home','#/home'],['How it works','#/how']],'Your learning path','Learn. Practise. Improve.','Here is how ThinkLab guides you through MSA-style tasks.')+`<section class="section"><div class="container"><div class="path-grid">${levels.map((l,i)=>`<div class="panel"><span class="level-number">0${i+1}</span><h3 style="margin-top:15px">${stepTitle(i)}</h3><p class="muted">${e(l.description)}</p></div>`).join('')}</div><div class="panel" style="margin-top:20px"><h3>How marking works</h3><p>For Reading, choose matching activities or correct statements and receive one point per correct answer, with evidence-based feedback. For Writing, write clear responses to photo, discussion and mediation tasks. Use the MSA content and language criteria to review your work. Open-ended writing does not receive an automatic exam mark.</p><p>No account is required. Your attempts stay in this browser; use <strong>My progress</strong> to download a backup if you want to keep a copy.</p><a class="button primary" href="#/reading/part-1">Start Reading Part 1 →</a></div></div></section>`,'home');
   }
   const skills = {
     reading: [['Reading Part 1','Match people to activities','Ready'],['Reading Part 2','Understand short texts','Ready'],['Reading Part 3','Longer reading comprehension','Ready']],
-    writing: [['Writing Part 1','Photo response · Three levels','Ready'],['Writing Part 2','Discussion reply · Three levels','Ready'],['Writing Part 3','Mediation: German → English','Planned']],
+    writing: [['Writing Part 1','Photo response · Three levels','Ready'],['Writing Part 2','Discussion reply · Three levels','Ready'],['Writing Part 3','Mediation · Guided Level 1 available','Ready']],
     listening: [['Listening Part 1','Voicemail and picture matching','Planned'],['Listening Part 2','Podcast intro matching','Planned'],['Listening Part 3','Information completion','Planned'],['Listening Part 4','Radio programme comprehension','Planned']]
   };
   function subjectPage(skill) {
@@ -804,15 +804,233 @@
       catch(_){document.getElementById('w2e-copied').textContent='Select your reply above and copy it for your teacher.';}
     });
   }
+
+  // Writing Part 3 — Level 1: guided mediation using an original German source.
+  // Content selection supports planning only: learners produce their own English email.
+  const W3_ID = 'w3-first-job-level-1';
+  const W3_EXAMS = window.THINKLAB_MEDIATION_EXAMS?.levels || {};
+
+  const W3_POINTS = [
+    {id:'holidays',note:'Three weeks in the summer holidays, mostly afternoons',anchor:'drei Wochen lang, meistens nachmittags'},
+    {id:'tasks',note:'Took orders, served ice cream and cleaned tables',anchor:'Bestellungen auf, gab Eis aus und machte die Tische sauber'},
+    {id:'mistake',note:'Felt nervous and served the wrong flavour once',anchor:'sehr nervös ... die falsche Sorte'},
+    {id:'boss',note:'Her boss was friendly and explained things again',anchor:'meine Chefin freundlich und erklärte mir alles'},
+    {id:'busy',note:'Hot days were busy; she needed to be quick and polite',anchor:'an heißen Tagen ... schnell arbeiten ... höflich'},
+    {id:'pay',note:'Earned €8 an hour and saved for a bicycle',anchor:'acht Euro pro Stunde ... neues Fahrrad'},
+    {id:'learning',note:'Became more confident and learned responsibility',anchor:'wurde ich sicherer ... Verantwortung zu übernehmen'}
+  ];
+  // Optional introductions link the source text to Kim's real communication purpose.
+  // Students can choose one, adapt it, or write an opening entirely on their own.
+  const W3_OPENINGS = [
+    {
+      label: 'Option A · Your topic',
+      text: "Your topic about first jobs is really interesting. I recently read an article about Lena's summer job that I think could help with your presentation."
+    },
+    {
+      label: 'Option B · I remember',
+      text: "I remember you are preparing a presentation about people's first jobs. I came across an article about a girl who worked in an ice cream shop and thought of you."
+    },
+    {
+      label: 'Option C · I found something',
+      text: "You asked for ideas for your presentation, so I wanted to share an article I found about a teenager's first job."
+    }
+  ];
+  const W3_MODEL = `Hi Kim,\n\nYour topic about first jobs sounds interesting! I recently read an article about Lena's summer job that I think could help your presentation. Lena was 16 when she worked at an ice cream shop during her summer holidays. She stayed there for three weeks and usually worked in the afternoons. Her duties included serving customers and cleaning tables. At first, she was nervous and once gave someone the wrong flavour, but her boss helped her. The shop was especially busy when it was hot, so Lena learned to work quickly and stay friendly. She earned eight euros an hour and saved for a bicycle. She says the job taught her to be responsible.\n\nHope this helps!`;
+  function w3Draft() {
+    const v=store.drafts[W3_ID];
+    return (v && typeof v==='object' && !Array.isArray(v))?v:{points:[],text:''};
+  }
+  function w3Attempts() {return Array.isArray(store.attempts[W3_ID])?store.attempts[W3_ID]:[];}
+  function w3Latest() {return w3Attempts().at(-1);}
+  function w3ValidPoints(p) {return Array.isArray(p)?[...new Set(p.filter(v=>W3_POINTS.some(x=>x.id===v)))]:[];}
+  function w3WordCount(s) {return String(s||'').trim().split(/\s+/).filter(Boolean).length;}
+  function w3GermanText() {
+    return `<article class="w3-source-card"><div class="w3-source-head"><span class="w3-lang">DE · German source</span><span class="w3-source-original">Original practice text</span></div>
+      <h2>Lena: Mein erster Ferienjob in einer Eisdiele</h2>
+      <p>Letzten Sommer habe ich mit 16 Jahren zum ersten Mal Geld verdient. Eine kleine Eisdiele in unserem Viertel suchte Hilfe für die Ferien. Ich arbeitete dort drei Wochen lang, meistens nachmittags.</p>
+      <p>Meine Aufgaben waren einfach: Ich nahm Bestellungen auf, gab Eis aus und machte die Tische sauber. Am ersten Tag war ich sehr nervös, weil ich die vielen Eissorten noch nicht kannte. Einmal habe ich einem Kunden sogar die falsche Sorte gegeben. Zum Glück blieb meine Chefin freundlich und erklärte mir alles noch einmal.</p>
+      <p>Besonders an heißen Tagen gab es lange Schlangen. Dann musste ich schnell arbeiten und trotzdem höflich bleiben. Nach einigen Tagen wurde ich sicherer und verstand mich gut mit meinen Kollegen.</p>
+      <p>Ich bekam acht Euro pro Stunde und sparte das Geld für ein neues Fahrrad. Der Job war anstrengender als erwartet, aber ich habe gelernt, Verantwortung zu übernehmen und mit unterschiedlichen Menschen umzugehen.</p>
+      <div class="w3-source-credit">Source: Original German practice text written for ThinkLab MSA Prep, 2026.</div>
+      </article>`;
+  }
+  function w3PartPage() {
+    const first=w3Latest(),d=w3Draft(),firstCount=w3ValidPoints(d.points).length;
+    const other=[2,3].map(level=>{
+      const task=W3_EXAMS[level],last=w3ExamLatest(level),draft=w3ExamDraft(level);
+      return `<article class="w3-level-card current ${level===3?'w3-level-challenge':''}"><span class="w3-level-num">0${level}</span><div class="eyebrow">${level===2?'PRACTISE LIKE THE EXAM':'TAKE THE CHALLENGE'}</div><h2>${e(task.title)}</h2><p>Choose one of two German articles. Write an email without clues.</p><div class="w3-level-foot"><span class="w2-tag">2 articles · /10 marks</span><a class="button primary small" href="#/writing/part-3/level-${level}">${draft.choice?'Continue':last?'Try again':'Start level'} →</a></div></article>`;
+    }).join('');
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 3','#/writing/part-3']],'Writing · Part 3','Mediation: German → English','Choose the important information and communicate it naturally to an English-speaking reader.')+
+     `<section class="section w3-section"><div class="container"><div class="w3-level-cards">
+       <article class="w3-level-card current"><span class="w3-level-num">01</span><div class="eyebrow">LEARN WITH CLUES</div><h2>Lena’s first job</h2><p>Select details, then write an email to Kim with optional support.</p><div class="w3-level-foot"><span class="w2-tag">Guided email · /10 marks</span><a class="button primary small" href="#/writing/part-3/level-1">${d.text?'Continue my draft':first?'Try again':'Start level'} →</a></div></article>
+       ${other}
+     </div><div class="w3-endnote">${first?`Your latest guided email has ${Number(first.wordCount)} words.`:firstCount?`You selected ${firstCount} details in Level 1.`:'Choose a level to begin.'} The two later levels let you choose one article and work independently. Your drafts are saved on this device.</div></div></section>`,'writing');
+  }
+  function w3LevelPage() {
+    const d=w3Draft(),selected=w3ValidPoints(d.points),prev=w3Latest();
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 3','#/writing/part-3'],['Level 1','#/writing/part-3/level-1']],'Writing Part 3 · Level 1','Lena’s first job','Read the German story, select important facts, and explain them in your own English email.')+
+      `<section class="section w3-section"><div class="container"><div class="w3-task-header"><span class="w3-task-pill">1 · Select details</span><span class="w3-task-pill">2 · Write an email</span><span class="w3-task-pill">3 · Check</span><span class="w3-exam-mark">Content /5 · Language /5</span></div>
+      <div class="w3-layout"><div class="w3-left"><div class="w3-sticky">${w3GermanText()}<div class="w3-translation-note"><strong>Same meaning, natural English</strong><div><span>DE</span> Besonders an heißen Tagen gab es lange Schlangen.</div><div><span>EN</span> The shop was especially busy on hot days.</div></div></div></div>
+      <div class="w3-right">
+       <div class="w3-brief"><div class="w3-brief-top"><span class="w3-icon">✉</span><div><div class="eyebrow">Your task</div><h2>Send Kim an idea</h2></div></div><p>Your Irish friend Kim is preparing a presentation about people’s first jobs. You have found Lena’s story.</p><p><strong>Write an email</strong> explaining what Lena’s job was and mentioning <strong>at least four other important details</strong>. Do not translate word for word. Write complete sentences.</p></div>
+       <section class="w3-card" aria-label="Step 1: Choose important information"><div class="w3-card-title"><span class="w3-step">01</span><div><h2>Pick the important details</h2><p>Kim needs to know about the job and at least four other facts.</p></div></div><div class="w3-job"><span aria-hidden="true">✓</span><div><small>What was the job?</small><strong>Lena worked in an ice cream shop during the summer.</strong></div></div><div class="w3-facts" id="w3-facts">${W3_POINTS.map(p=>`<label class="w3-fact ${selected.includes(p.id)?'chosen':''}"><input type="checkbox" data-w3-fact="${e(p.id)}" ${selected.includes(p.id)?'checked':''}><span class="w3-fact-check" aria-hidden="true">${selected.includes(p.id)?'✓':'+'}</span><span>${e(p.note)}</span></label>`).join('')}</div><div class="w3-facts-footer"><span id="w3-fact-count" aria-live="polite">${selected.length} selected · minimum 4</span><span class="w3-tag" id="w3-ready">${selected.length>=4?'Your plan is ready':'Choose four or more'}</span></div></section>
+       <section class="w3-card" aria-label="Step 2: Write your email"><div class="w3-card-title"><span class="w3-step">02</span><div><h2>Write your email to Kim</h2><p>Use your selected notes as a plan. Explain the information in your own words.</p></div></div><div class="w3-email-meta"><span>TO:</span><strong>Kim</strong><span>SUBJECT:</span><strong>An idea for your presentation</strong></div><details class="w3-writing-help" id="w3-starters"><summary>Need help starting your email?</summary><div class="w3-help-body"><p class="w3-help-intro">Start by referring to Kim’s presentation and why this article might help. Pick an opening or write your own.</p><fieldset class="w3-opening-list" aria-label="Choose an email opening">${W3_OPENINGS.map((o,i)=>`<label class="w3-opening-choice"><input type="radio" name="w3-opening" value="${i}"><span class="w3-opening-copy"><strong>${e(o.label)}</strong><span>Hi Kim,</span><span>${e(o.text)}</span></span></label>`).join('')}</fieldset><div class="w3-opening-toolbar"><button type="button" class="button secondary small" id="w3-use-opening">Use this opening</button><span id="w3-opening-message" class="w3-opening-status" role="status" aria-live="polite"></span></div><p class="w3-follow-on"><strong>Then tell Kim about Lena:</strong> One thing she had to do was… / At first, she felt… / She also…</p><p class="w3-help-foot">Make the opening your own. Keep it brief so you have room for the job and four important details.</p></div></details><div class="w3-plan-preview" id="w3-selected-plan">${selected.length?`<strong>My key points:</strong> ${selected.map(id=>e(W3_POINTS.find(p=>p.id===id).note)).join(' · ')}`:'<strong>Your notes will appear here</strong> when you select them above.'}</div><label for="w3-editor" class="w3-editor-label">Your email</label><textarea id="w3-editor" class="w3-editor" maxlength="6000" spellcheck="true" placeholder="Hi Kim,&#10;&#10;I found an interesting first-job story...">${e(d.text||'')}</textarea><div class="w3-compose-footer"><span id="w3-count" aria-live="polite">${w3WordCount(d.text)} words · no fixed minimum</span><span class="w3-save">Draft saved on this device</span></div><div class="w3-actions"><button type="button" class="button primary" id="w3-submit">Check my email →</button>${prev?'<a class="button secondary small" href="#/writing/part-3/level-1/feedback">Previous feedback</a>':''}</div><div id="w3-warning" role="status" class="w3-warning"></div></section>
+      </div></div></div></section>`,'writing');
+    const input=document.getElementById('w3-editor');
+    const saveD=()=>{const old=w3Draft();store.drafts[W3_ID]={points:w3ValidPoints(old.points),text:input.value.slice(0,6000)};saveStore();};
+    const useOpening=document.getElementById('w3-use-opening');
+    useOpening.addEventListener('click',()=>{
+      const chosen=APP.querySelector('input[name="w3-opening"]:checked');
+      const note=document.getElementById('w3-opening-message');
+      if(!chosen){note.textContent='Choose an opening first, or write your own.';return;}
+      const selectedOpening=W3_OPENINGS[Number(chosen.value)];
+      if(!selectedOpening)return;
+      // Remove only an earlier suggested opening, never any student's own sentences.
+      let existing=input.value.trim();
+      const previous=W3_OPENINGS.find(o=>existing.startsWith(`Hi Kim,\n\n${o.text}`));
+      if(previous){existing=existing.slice(`Hi Kim,\n\n${previous.text}`.length).trimStart();}
+      else if(/^Hi Kim,\s*/i.test(existing)){existing=existing.replace(/^Hi Kim,\s*/i,'').trimStart();}
+      const beginning=`Hi Kim,\n\n${selectedOpening.text}`;
+      const combined=beginning+(existing?'\n\n'+existing:'\n\n');
+      if(combined.length>6000){note.textContent='Your draft is too long to insert an opening. Edit it manually.';return;}
+      input.value=combined;
+      input.dispatchEvent(new Event('input',{bubbles:true}));
+      input.focus();input.setSelectionRange(beginning.length,beginning.length);
+      note.textContent=existing?'Opening added; your existing writing is kept. Check for repetition.':'Opening added. Now describe Lena’s job and four more details.';
+    });
+    APP.querySelectorAll('[data-w3-fact]').forEach(box=>box.addEventListener('change',()=>{
+      const chosen=[...APP.querySelectorAll('[data-w3-fact]:checked')].map(el=>el.dataset.w3Fact);
+      APP.querySelectorAll('.w3-fact').forEach(label=>{const cb=label.querySelector('input');label.classList.toggle('chosen',cb.checked);label.querySelector('.w3-fact-check').textContent=cb.checked?'✓':'+';});
+      store.drafts[W3_ID]={points:chosen,text:input.value.slice(0,6000)};saveStore();
+      document.getElementById('w3-fact-count').textContent=`${chosen.length} selected · minimum 4`;
+      document.getElementById('w3-ready').textContent=chosen.length>=4?'Your plan is ready':'Choose four or more';
+      document.getElementById('w3-selected-plan').innerHTML=chosen.length?`<strong>My key points:</strong> ${chosen.map(id=>e(W3_POINTS.find(p=>p.id===id).note)).join(' · ')}`:'<strong>Your notes will appear here</strong> when you select them above.';
+    }));
+    input.addEventListener('input',()=>{saveD();document.getElementById('w3-count').textContent=`${w3WordCount(input.value)} words · no fixed minimum`;});
+    document.getElementById('w3-submit').addEventListener('click',()=>{
+      saveD();const text=input.value.trim(),words=w3WordCount(text),pointCount=w3ValidPoints(w3Draft().points).length;
+      if(!text){document.getElementById('w3-warning').textContent='Write your email to Kim before checking it.';input.focus();return;}
+      if(words<35 || pointCount<4){
+        const msg=pointCount<4?'Your plan has fewer than four selected details. You can still submit if your email contains at least four details of your own.':'Your reply is quite short. Check whether you included Lena’s job and four additional details.';
+        if(!window.confirm(msg+' Submit anyway?'))return;
+      }
+      store.attempts[W3_ID]||=[];
+      store.attempts[W3_ID].push({at:new Date().toISOString(),text:text.slice(0,6000),wordCount:words,points:w3ValidPoints(w3Draft().points),checks:{}});
+      store.attempts[W3_ID]=store.attempts[W3_ID].slice(-15);
+      delete store.drafts[W3_ID];saveStore();routeTo('#/writing/part-3/level-1/feedback');
+    });
+  }
+  function w3FeedbackPage() {
+    const a=w3Latest();if(!a){routeTo('#/writing/part-3/level-1');return;}
+    a.checks||={};
+    const checklist=[
+      ['job','I clearly explained that Lena worked in an ice cream shop.'],
+      ['details','I included at least four other accurate details from Lena’s story.'],
+      ['purpose','I selected information useful to Kim’s presentation.'],
+      ['email','I wrote a personal email with complete sentences.'],
+      ['mediation','I expressed the ideas naturally in English, not word for word.']
+    ];
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 3','#/writing/part-3'],['Level 1','#/writing/part-3/level-1'],['Feedback','#/writing/part-3/level-1/feedback']],'Writing Part 3 · Feedback','Review your email','Check whether your message gives Kim the information needed for the presentation.')+
+     `<section class="section w3-section"><div class="container w3-review-layout"><div><section class="panel w3-review-panel"><div class="w3-feedback-top"><div><div class="eyebrow">Your response · ${e(dateText(a.at))}</div><h2>My email to Kim</h2></div><span class="w3-word-pill">${Number(a.wordCount)||0} words</span></div><div class="w3-student-text">${e(a.text)}</div><p class="w3-teacher-alert"><strong>For a score out of 10, share this email with your teacher.</strong> The self-check below is practice feedback, not a grade.</p><div class="w3-review-actions"><button class="button secondary small" id="w3-copy" type="button">Copy my email</button><a class="button primary small" href="#/writing/part-3/level-1">Try again →</a><a class="button subtle-btn small" href="#/writing/part-3">All levels</a></div><p id="w3-copy-status" class="w3-mini" aria-live="polite"></p></section>
+     <section class="panel w3-review-panel"><div class="eyebrow">STEP 3 · CHECK</div><h2>Did you mediate the information?</h2><p class="w3-muted">Tick each point only if you can find it in your email. You can return and improve your response.</p>${checklist.map(([id,txt])=>`<label class="w3-check"><input type="checkbox" data-w3-check="${id}" ${a.checks[id]?'checked':''}><span>${e(txt)}</span></label>`).join('')}<p class="w3-check-result" id="w3-check-result" aria-live="polite"></p></section></div>
+     <aside><div class="w2-marking w3-marking"><h3>How your teacher marks it</h3><div class="w2-mark-grid"><div><strong>5</strong><span>Content</span></div><div><strong>5</strong><span>Language</span></div></div><p>Content: clearly identify the job and at least four other relevant details. Language: a clear, natural English email suited to Kim.</p><p class="w2-fineprint">There is no fixed word-count minimum for this MSA mediation task. Accuracy and relevance matter.</p></div><details class="w2-model w3-model"><summary>Compare with a model email</summary><div class="w3-model-text">${e(W3_MODEL)}</div><p>One possible answer. Other accurate and clear emails are equally acceptable.</p></details></aside>
+     </div></section>`,'writing');
+    const update=()=>{const n=checklist.filter(([id])=>a.checks[id]).length;document.getElementById('w3-check-result').textContent=`${n} of ${checklist.length} points checked.${n===5?' Read your email once more for clarity.':' Review any missing points before giving it to your teacher.'}`;};
+    APP.querySelectorAll('[data-w3-check]').forEach(cb=>cb.addEventListener('change',()=>{a.checks[cb.dataset.w3Check]=cb.checked;saveStore();update();}));update();
+    document.getElementById('w3-copy').addEventListener('click',async()=>{
+      try{await navigator.clipboard.writeText(a.text);document.getElementById('w3-copy-status').textContent='Copied. You can paste the email into a message to your teacher.';}
+      catch(_){document.getElementById('w3-copy-status').textContent='Select your response above and copy it to share with your teacher.';}
+    });
+  }
+  // Writing Part 3 — independent Levels 2 and 3. The German passages have no internal subheadings.
+  function w3ExamTask(level) {return W3_EXAMS[level];}
+  function w3ExamDraft(level) {
+    const id=w3ExamTask(level).id;
+    const raw=store.drafts[id]||{};
+    return {choice:['A','B'].includes(raw.choice)?raw.choice:'',texts:{A:String(raw.texts?.A||''),B:String(raw.texts?.B||'')}};
+  }
+  function w3ExamAttempts(level) {return getAttempts(w3ExamTask(level).id);}
+  function w3ExamLatest(level) {return latestAttempt(w3ExamTask(level).id);}
+  function w3ExamPage(level) {
+    const task=w3ExamTask(level),draft=w3ExamDraft(level),choice=draft.choice;
+    const article=choice?task.articles[choice]:null,previous=w3ExamLatest(level);
+    const source=article?`<article class="w3-source-card w3-exam-article"><div class="w3-source-head"><span class="w3-lang">TEXT ${choice} · DE</span><span class="w3-source-original">German source text</span></div>
+        <h2>${e(article.title)}</h2>${article.paragraphs.map(p=>`<p>${e(p)}</p>`).join('')}
+        <div class="w3-source-credit">Quelle: ${e(article.credit)} <a href="${e(article.url)}" target="_blank" rel="noopener noreferrer">Originalquelle ↗</a></div></article>`:
+        `<div class="w3-source-card w3-no-choice"><span class="w3-lang">TEXT A ODER B</span><h2>Choose a text to read</h2><p>Read one of the two articles and use it to help Kim. You only need to write about one text.</p></div>`;
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 3','#/writing/part-3'],[`Level ${level}`,`#/writing/part-3/level-${level}`]],`Writing · Part 3 · Level ${level}`,task.title,`${task.subtitle} · Read one German article and mediate the useful information.`)+
+      `<section class="section w3-section"><div class="container"><div class="w3-task-header"><span class="w3-task-pill">1 · Choose a text</span><span class="w3-task-pill">2 · Write your email</span><span class="w3-task-pill">3 · Review</span><span class="w3-exam-mark">Content /5 · Language /5</span></div>
+      <div class="w3-layout w3-exam-layout"><div class="w3-left"><div class="w3-sticky"><div class="w3-article-selector" role="group" aria-label="Choose one German article"><p>Choose Text A or Text B</p><div class="w3-article-tabs">${['A','B'].map(k=>`<button type="button" class="w3-article-tab ${choice===k?'selected':''}" data-w3-exam-choice="${k}" aria-pressed="${choice===k}"><span>Text ${k}</span><strong>${e(task.articles[k].title)}</strong></button>`).join('')}</div></div>${source}</div></div>
+      <div class="w3-right"><div class="w3-brief"><div class="w3-brief-top"><span class="w3-icon" aria-hidden="true">✉</span><div><div class="eyebrow">Your task</div><h2>Write to Kim</h2></div></div><p>${e(task.scenario)}</p><ul class="w3-exam-instructions"><li>Read the two German articles. <strong>Choose one.</strong></li><li>Write an email to Kim explaining ${e(task.mainLabel)}.</li><li>Include ${e(task.detailsLabel)}.</li><li>Do not translate word for word. Write complete sentences.</li></ul></div>
+      <section class="w3-card w3-exam-compose" aria-label="Write an exam-style mediation email"><div class="w3-card-title"><span class="w3-step">✎</span><div><h2>Your email</h2><p>${choice?`Using Text ${choice}`:'Choose Text A or B to begin'} · No writing clues at this level.</p></div></div><div class="w3-email-meta"><span>TO:</span><strong>Kim</strong><span>SUBJECT:</span><strong>${e(task.subject)}</strong></div>
+      <label class="w3-editor-label" for="w3-exam-editor">Write your message in English</label><textarea id="w3-exam-editor" class="w3-editor w3-exam-editor" maxlength="9000" spellcheck="true" ${!choice?'disabled':''} placeholder="${choice?'Write your own email to Kim here.':'Choose Text A or B to activate the editor.'}">${choice?e(draft.texts[choice]):''}</textarea>
+      <div class="w3-compose-footer"><span id="w3-exam-count" aria-live="polite">${choice?w3WordCount(draft.texts[choice]):0} words · no official minimum</span><span class="w3-save">Saved on this device</span></div>
+      <div class="w3-actions"><button type="button" id="w3-exam-submit" class="button primary" ${!choice?'disabled':''}>Check my email →</button>${previous?`<a class="button secondary small" href="#/writing/part-3/level-${level}/feedback">Previous feedback</a>`:''}</div><p id="w3-exam-warning" class="w3-warning" role="status" aria-live="polite"></p></section></div></div></div></section>`,'writing');
+    APP.querySelectorAll('[data-w3-exam-choice]').forEach(btn=>btn.addEventListener('click',()=>{
+      const next=btn.dataset.w3ExamChoice;
+      if(choice && document.getElementById('w3-exam-editor')) draft.texts[choice]=document.getElementById('w3-exam-editor').value.slice(0,9000);
+      draft.choice=next;store.drafts[task.id]=draft;saveStore();render();
+    }));
+    if(!choice)return;
+    const field=document.getElementById('w3-exam-editor');
+    field.addEventListener('input',()=>{
+      draft.texts[choice]=field.value.slice(0,9000);store.drafts[task.id]=draft;saveStore();
+      document.getElementById('w3-exam-count').textContent=`${w3WordCount(field.value)} words · no official minimum`;
+    });
+    document.getElementById('w3-exam-submit').addEventListener('click',()=>{
+      const text=field.value.trim(),warning=document.getElementById('w3-exam-warning');
+      if(!text){warning.textContent='Write your email before asking for feedback.';field.focus();return;}
+      draft.texts[choice]=text.slice(0,9000);
+      const at={at:new Date().toISOString(),choice,text:draft.texts[choice],wordCount:w3WordCount(text),checks:{}};
+      store.attempts[task.id] ||= [];store.attempts[task.id].push(at);store.attempts[task.id]=store.attempts[task.id].slice(-15);
+      delete store.drafts[task.id];saveStore();routeTo(`#/writing/part-3/level-${level}/feedback`);
+    });
+  }
+  function w3ExamFeedback(level) {
+    const task=w3ExamTask(level),at=w3ExamLatest(level);
+    if(!at){routeTo(`#/writing/part-3/level-${level}`);return;}
+    const article=task.articles[at.choice];if(!article){routeTo('#/writing/part-3');return;}
+    at.checks ||= {};
+    const checks=[
+      ['main',`I explained ${task.mainLabel} clearly.`],
+      ['details','I included at least four accurate details from my chosen German article.'],
+      ['relevant','I selected details that would genuinely help Kim.'],
+      ['english','I expressed the meaning naturally in my own English sentences.'],
+      ['email','My response reads like a personal email to Kim.']
+    ];
+    shell(pageHero([['Home','#/home'],['Writing','#/writing'],['Part 3','#/writing/part-3'],[`Level ${level}`,`#/writing/part-3/level-${level}`],['Feedback',`#/writing/part-3/level-${level}/feedback`]],'Writing · Part 3','Check your mediation','Look at the information you communicated. Your teacher will assess the actual writing.')+
+      `<section class="section w3-section"><div class="container w3-review-layout"><div><section class="panel w3-review-panel"><div class="w3-feedback-top"><div><div class="eyebrow">LEVEL ${level} · TEXT ${e(at.choice)} · ${e(dateText(at.at))}</div><h2>My email to Kim</h2><p class="w3-muted">${e(article.title)}</p></div><span class="w3-word-pill">${Number(at.wordCount)||0} words</span></div><div class="w3-student-text">${e(at.text)}</div><p class="w3-teacher-alert"><strong>Share your writing with your teacher for a score out of 10.</strong> This site provides self-review, not a writing grade.</p><div class="w3-review-actions"><button type="button" id="w3-exam-copy" class="button secondary small">Copy my email</button><a class="button primary small" href="#/writing/part-3/level-${level}">Try again →</a><a class="button subtle-btn small" href="#/writing/part-3">All levels</a></div><p class="w3-mini" id="w3-exam-copy-status" role="status"></p></section>
+      <section class="panel w3-review-panel"><div class="eyebrow">SELF-CHECK</div><h2>Did I communicate what Kim needs?</h2><p class="w3-muted">Tick only what your email actually includes.</p>${checks.map(([key,text])=>`<label class="w3-check"><input type="checkbox" data-w3-exam-check="${key}" ${at.checks[key]?'checked':''}><span>${e(text)}</span></label>`).join('')}<p class="w3-check-result" id="w3-exam-check-result" aria-live="polite"></p></section></div>
+      <aside class="w3-feedback-aside"><div class="w2-marking w3-marking"><h3>Official MSA assessment</h3><div class="w2-mark-grid"><div><strong>5</strong><span>Content</span></div><div><strong>5</strong><span>Language</span></div></div><p>Content: explain the main idea and at least four relevant details. Language: write clearly and naturally to Kim in a suitable email.</p><p class="w2-fineprint">There is no specified minimum word count for this mediation task.</p></div>
+      <details class="w2-model w3-model"><summary>Possible information from Text ${e(at.choice)}</summary><div class="w3-points-list"><p><strong>Main idea</strong><br>${e(article.main)}</p><p><strong>Other useful details (choose at least four)</strong></p><ul>${article.points.map(p=>`<li>${e(p)}</li>`).join('')}</ul></div><p>These are examples, not exact phrases students must copy.</p></details>
+      <details class="w2-model w3-model"><summary>Compare with a model email</summary><div class="w3-model-text">${e(article.model)}</div><p>One possible response. Other accurate and well-organised emails are equally acceptable.</p></details></aside></div></section>`,'writing');
+    const update=()=>{const n=checks.filter(([key])=>at.checks[key]).length;document.getElementById('w3-exam-check-result').textContent=`${n} of ${checks.length} self-checks completed. This is not a score.`;};
+    APP.querySelectorAll('[data-w3-exam-check]').forEach(cb=>cb.addEventListener('change',()=>{at.checks[cb.dataset.w3ExamCheck]=cb.checked;saveStore();update();}));update();
+    document.getElementById('w3-exam-copy').addEventListener('click',async()=>{
+      try{await navigator.clipboard.writeText(at.text);document.getElementById('w3-exam-copy-status').textContent='Copied. You can share it with your teacher.';}
+      catch(_){document.getElementById('w3-exam-copy-status').textContent='Select the email above to copy it manually.';}
+    });
+  }
+  function writing3ProgressBlock() {
+    const tasks=[{level:1,id:W3_ID,title:'Lena’s first job'},...[2,3].map(level=>({level,id:W3_EXAMS[level].id,title:W3_EXAMS[level].title}))];
+    return `<div class="panel" style="margin-bottom:18px"><h2>Writing Part 3</h2><p class="muted" style="font-size:.87rem">Mediation · Three levels · One or two German source texts</p>${tasks.map(t=>{
+      const attempts=getAttempts(t.id),last=latestAttempt(t.id),draft=t.level===1?w3Draft():w3ExamDraft(t.level);
+      const inProgress=t.level===1?!!draft.text:!!draft.choice,words=t.level===1?w3WordCount(draft.text):w3WordCount(draft.texts?.[draft.choice]||'');
+      const href=`#/writing/part-3/level-${t.level}`;
+      return `<div class="attempt-row"><div><strong>Level ${t.level}: ${e(t.title)}</strong><div><span>${last?`${attempts.length} review${attempts.length===1?'':'s'} · Last: ${Number(last.wordCount)} words${last.choice?' · Text '+e(last.choice):''}`:inProgress?`Draft saved · ${words} words`:'Not started yet'}</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${last?`<a class="button small secondary" href="${href}/feedback">Feedback</a>`:''}<a class="button small primary" href="${href}">${inProgress?'Continue':last?'Try again':'Start'} →</a></div></div>`;
+    }).join('')}<p class="tiny muted">Show your teacher each completed email to receive a score out of 10.</p></div>`;
+  }
+
   function writingSubjectPage(){
     const reviews=W1_ALL_IDS.reduce((n,id)=>n+w1AnyAttempts(id).length,0);
     const w2Reviews=W2_ALL_IDS.reduce((n,id)=>n+w2AnyAttempts(id).length,0);
-    shell(pageHero([['Home','#/home'],['Writing','#/writing']],'Your practice hub','Writing','Choose a photo response or practise replying to an online discussion.')+
+    const w3Reviews=[W3_ID,W3_EXAMS[2].id,W3_EXAMS[3].id].reduce((n,id)=>n+getAttempts(id).length,0);
+    shell(pageHero([['Home','#/home'],['Writing','#/writing']],'Your practice hub','Writing','Practise photo responses, online discussions and German-to-English mediation.')+
       `<section class="section"><div class="container work-layout"><div class="module-parts">
       <div class="module-part active"><div class="module-part-left"><span class="mini-num">01</span><div><h3>Writing Part 1</h3><p>Your Photo · Three levels · 30–50 words · 5 marks</p></div></div><a class="button primary small" href="#/writing/part-1">Open →</a></div>
       <div class="module-part active"><div class="module-part-left"><span class="mini-num">02</span><div><h3>Writing Part 2</h3><p>Online discussion · Three levels · 100+ words · 10 marks</p></div></div><a class="button primary small" href="#/writing/part-2">Open →</a></div>
-      <div class="module-part"><div class="module-part-left"><span class="mini-num">03</span><div><h3>Writing Part 3</h3><p>Mediation: German → English</p></div></div><span class="pill planned">In development</span></div>
-      </div><aside><div class="path-summary"><div class="label">Writing practice available</div><strong>3 photo levels + 3 discussion levels</strong><p style="font-size:.86rem;margin-top:10px">${reviews+w2Reviews?`${reviews+w2Reviews} writing review${reviews+w2Reviews===1?'':'s'} saved`:'Your drafts and writing feedback are saved on this device.'}</p><a class="button primary small" style="margin-top:12px" href="#/writing/part-2/level-1">Try Writing Part 2 →</a></div></aside></div></section>`,'writing');
+      <div class="module-part active"><div class="module-part-left"><span class="mini-num">03</span><div><h3>Writing Part 3</h3><p>Mediation · Three levels · Two-text choices</p></div></div><a class="button primary small" href="#/writing/part-3">Open →</a></div>
+      </div><aside><div class="path-summary"><div class="label">Writing practice available</div><strong>3 photo + 3 discussion + 3 mediation levels</strong><p style="font-size:.86rem;margin-top:10px">${reviews+w2Reviews+w3Reviews?`${reviews+w2Reviews+w3Reviews} writing review${reviews+w2Reviews+w3Reviews===1?'':'s'} saved`:'Your drafts and writing feedback are saved on this device.'}</p><a class="button primary small" style="margin-top:12px" href="#/writing/part-2/level-1">Try Writing Part 2 →</a></div></aside></div></section>`,'writing');
   }
   function writingProgressBlock(){
     const names=['Learn with clues · Football','Practise like the exam · Park proposal','Take the challenge · Mountain hike'];
@@ -835,8 +1053,8 @@
       const tries=getAttempts(l.id),last=latestAttempt(l.id),url=`#/reading/part-${part}/${l.id}`;
       return `<div class="attempt-row"><div><strong>Level ${i+1}: ${e(l.title)}</strong><div><span>${tries.length?`${tries.length} attempt${tries.length>1?'s':''} · Latest: ${last.score}/${l.questions.length} · Best: ${scoreLabel(l)}`:'Not started yet'}</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${last?`<a class="button small secondary" href="${url}/feedback">Feedback</a>`:''}<a class="button small primary" href="${url}">${tries.length?'Try again':'Start'} →</a></div></div>`;
     }).join('')}</div>`;
-    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','Review Reading Parts 1–3 and Writing Parts 1–2, or continue where you left off.')+
-      `<section class="section"><div class="container work-layout"><div><div class="progress-stats"><div class="progress-card"><strong>${done}/${allLevels.length}</strong><span>Reading levels completed</span></div><div class="progress-card"><strong>${totalAttempts}</strong><span>Total attempts</span></div><div class="progress-card"><strong>${avg}%</strong><span>Average best score</span></div></div>${progressSection('Reading Part 1',1,levels)}${progressSection('Reading Part 2',2,part2Levels)}${progressSection('Reading Part 3',3,part3Levels)}${writingProgressBlock()}${writing2ProgressBlock()}<div class="panel" style="margin-top:18px"><h3>Back up or clear your progress</h3><p class="muted" style="font-size:.87rem">Download a JSON backup of your scores and answers. You can import this on another device, or clear the progress saved here.</p><div style="display:flex;flex-wrap:wrap;gap:10px"><button id="export-progress" class="button secondary">Download progress</button><label class="button secondary" for="import-progress" style="cursor:pointer">Import progress</label><input type="file" id="import-progress" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0"><button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div><p id="progress-notice" class="tiny" aria-live="polite" style="margin:12px 0 0;color:#3d7281"></p></div></div><aside><div class="privacy-note"><strong>Privacy and saving</strong><p style="margin:9px 0 0">ThinkLab requires no student login. Your scores and answers are saved locally in this browser, not sent to a teacher or server. Clearing site data or switching browsers may remove them. Export a backup if needed.</p></div></aside></div></section>`,'progress');
+    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','Review Reading Parts 1–3 and Writing Parts 1–3, or continue where you left off.')+
+      `<section class="section"><div class="container work-layout"><div><div class="progress-stats"><div class="progress-card"><strong>${done}/${allLevels.length}</strong><span>Reading levels completed</span></div><div class="progress-card"><strong>${totalAttempts}</strong><span>Total attempts</span></div><div class="progress-card"><strong>${avg}%</strong><span>Average best score</span></div></div>${progressSection('Reading Part 1',1,levels)}${progressSection('Reading Part 2',2,part2Levels)}${progressSection('Reading Part 3',3,part3Levels)}${writingProgressBlock()}${writing2ProgressBlock()}${writing3ProgressBlock()}<div class="panel" style="margin-top:18px"><h3>Back up or clear your progress</h3><p class="muted" style="font-size:.87rem">Download a JSON backup of your scores and answers. You can import this on another device, or clear the progress saved here.</p><div style="display:flex;flex-wrap:wrap;gap:10px"><button id="export-progress" class="button secondary">Download progress</button><label class="button secondary" for="import-progress" style="cursor:pointer">Import progress</label><input type="file" id="import-progress" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0"><button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div><p id="progress-notice" class="tiny" aria-live="polite" style="margin:12px 0 0;color:#3d7281"></p></div></div><aside><div class="privacy-note"><strong>Privacy and saving</strong><p style="margin:9px 0 0">ThinkLab requires no student login. Your scores and answers are saved locally in this browser, not sent to a teacher or server. Clearing site data or switching browsers may remove them. Export a backup if needed.</p></div></aside></div></section>`,'progress');
     bindProgress();
   }
   function bindProgress() {
@@ -903,6 +1121,29 @@
           if(draft && typeof draft==='object' && !Array.isArray(draft))
             clean.drafts[id]={text:String(draft.text||'').slice(0,9000)};
         }
+        const w3Arr=imported.attempts?.[W3_ID];
+        if(Array.isArray(w3Arr)) clean.attempts[W3_ID]=w3Arr.slice(-15).filter(x=>x && typeof x.text==='string').map(x=>({
+          at:typeof x.at==='string'?x.at:new Date().toISOString(),
+          text:x.text.slice(0,6000),wordCount:w3WordCount(x.text.slice(0,6000)),
+          points:w3ValidPoints(x.points),
+          checks:Object.fromEntries(['job','details','purpose','email','mediation'].map(k=>[k,x.checks?.[k]===true]))
+        }));
+        const w3D=imported.drafts?.[W3_ID];
+        if(w3D && typeof w3D==='object' && !Array.isArray(w3D)) clean.drafts[W3_ID]={
+          text:String(w3D.text||'').slice(0,6000),points:w3ValidPoints(w3D.points)
+        };
+        for(const level of [2,3]) {
+          const task=W3_EXAMS[level],id=task.id,arr=imported.attempts?.[id],d=imported.drafts?.[id];
+          if(Array.isArray(arr))clean.attempts[id]=arr.slice(-15).filter(x=>x && typeof x.text==='string' && ['A','B'].includes(x.choice)).map(x=>({
+            at:typeof x.at==='string'?x.at:new Date().toISOString(),choice:x.choice,
+            text:x.text.slice(0,9000),wordCount:w3WordCount(x.text.slice(0,9000)),
+            checks:Object.fromEntries(['main','details','relevant','english','email'].map(k=>[k,x.checks?.[k]===true]))
+          }));
+          if(d && typeof d==='object' && !Array.isArray(d))clean.drafts[id]={
+            choice:['A','B'].includes(d.choice)?d.choice:'',
+            texts:{A:String(d.texts?.A||'').slice(0,9000),B:String(d.texts?.B||'').slice(0,9000)}
+          };
+        }
         if(!window.confirm('Import this file? It will replace progress currently saved in this browser.')) return;
         store=clean;saveStore();progressPage();
       } catch(_) {document.getElementById('progress-notice').textContent='That file is not a valid ThinkLab progress backup.';}
@@ -939,6 +1180,11 @@
     else if(p[0]==='writing'&&p[1]==='part-2'&&p[2]==='level-1'&&p[3]==='feedback'&&p.length===4)w2FeedbackPage();
     else if(p[0]==='writing'&&p[1]==='part-2'&&['level-2','level-3'].includes(p[2])&&p.length===3)w2ExamPage(Number(p[2].slice(-1)));
     else if(p[0]==='writing'&&p[1]==='part-2'&&['level-2','level-3'].includes(p[2])&&p[3]==='feedback'&&p.length===4)w2ExamFeedback(Number(p[2].slice(-1)));
+    else if(p[0]==='writing'&&p[1]==='part-3'&&p.length===2)w3PartPage();
+    else if(p[0]==='writing'&&p[1]==='part-3'&&p[2]==='level-1'&&p.length===3)w3LevelPage();
+    else if(p[0]==='writing'&&p[1]==='part-3'&&p[2]==='level-1'&&p[3]==='feedback'&&p.length===4)w3FeedbackPage();
+    else if(p[0]==='writing'&&p[1]==='part-3'&&['level-2','level-3'].includes(p[2])&&p.length===3)w3ExamPage(Number(p[2].slice(-1)));
+    else if(p[0]==='writing'&&p[1]==='part-3'&&['level-2','level-3'].includes(p[2])&&p[3]==='feedback'&&p.length===4)w3ExamFeedback(Number(p[2].slice(-1)));
     else if(p[0]==='progress')progressPage();
     else notFound();
     window.scrollTo({top:0,behavior:'instant'});
