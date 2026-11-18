@@ -56,14 +56,19 @@
       <a class="brand" href="#/home" aria-label="ThinkLab MSA Prep home"><img src="assets/thinklab-bulb.png" alt=""><div><div class="brand-name">Think<span>Lab</span></div><div class="brand-tag">LEARN · CREATE · EXPLORE · GROW</div></div></a>
       <nav class="nav-links" aria-label="Main navigation">${nav.map(n=>`<a class="nav-link ${active===n[2]?'active':''}" ${active===n[2]?'aria-current="page"':''} href="${n[1]}">${n[0]}</a>`).join('')}</nav>
       <a href="#/progress" class="header-progress" aria-label="Review your saved progress"><span class="round-indicator">✓</span> ${progress} / ${allLevels.length} Reading levels</a>
-    </div></header><main id="main">${page}</main><footer class="site-footer"><div class="container footer-inner"><div><div class="brand-name">Think<span>Lab</span> · MSA Prep</div><div class="brand-tag">LEARN · CREATE · EXPLORE · GROW</div></div><p>Original practice tasks inspired by the Berlin MSA English format, not official exam questions. ${localSavingAvailable?'Progress is stored on this device only.':'Progress saving may be unavailable in this browser.'}</p></div></footer>`;
+    </div></header><main id="main">${page}</main><footer class="site-footer"><div class="container footer-inner"><div><div class="brand-name">Think<span>Lab</span> · MSA Prep</div><div class="brand-tag">LEARN · CREATE · EXPLORE · GROW</div></div><p><strong>Created by SKD</strong><br>Original practice tasks inspired by the Berlin MSA English format, not official exam questions. ${localSavingAvailable?'Progress is stored on this device only.':'Progress saving may be unavailable in this browser.'}</p></div></footer>`;
     document.title = 'ThinkLab MSA Prep — ' + ({home:'Home',reading:'Reading',writing:'Writing',listening:'Listening',progress:'My progress'}[active] || 'Practice');
   }
   function home() {
+    const icons = {
+      reading: '<path d="M12 6C9 4 5 4 2 5v14c3-1 7-1 10 1 3-2 7-2 10-1V5c-3-1-7-1-10 1zm0 0v14"/>',
+      writing: '<path d="m4 16-1 5 5-1L20 8l-4-4L4 16zm10-10 4 4M4 16l4 4"/>',
+      listening: '<path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="3" y="13" width="5" height="7" rx="2"/><rect x="16" y="13" width="5" height="7" rx="2"/>'
+    };
     const cards=[
-      ['reading','Reading','3 parts','Read to find the meaning, identify evidence and match the right details.',['Match people to activities','Understand short texts','Read a longer article'],'✓','live'],
-      ['writing','Writing','3 parts','Communicate clearly, organise ideas and respond for the right reader.',['Respond to a photo · All 3 levels ready','Discussion replies · All 3 levels ready','Mediation · All 3 levels ready'],'✎','live'],
-      ['listening','Listening','4 parts','Listen for meaning, follow speakers and recognise the important clues.',['Match messages to pictures','Match podcast intros to titles','Complete notes and tables','Understand a radio discussion'],'◉','planned']
+      ['reading','Reading','3 parts','Read to find the meaning, identify evidence and match the right details.',['Match people to activities','Understand short texts','Read a longer article'],'live'],
+      ['writing','Writing','3 parts','Communicate clearly, organise ideas and respond for the right reader.',['Respond to a photo · All 3 levels ready','Discussion replies · All 3 levels ready','Mediation · All 3 levels ready'],'live'],
+      ['listening','Listening','4 parts','Listen for meaning, follow speakers and recognise the important clues.',['Match messages to pictures','Match podcast intros to titles','Complete notes and tables','Understand a radio discussion'],'planned']
     ];
     const html=`<section class="hero"><div class="container hero-grid"><div>
       <div class="eyebrow"><span class="accent-dot"></span>Grade 10 · English · MSA Prep</div><h1>Practise smarter.<span>Feel ready.</span></h1>
@@ -71,15 +76,14 @@
       <div class="hero-buttons"><a class="button primary" href="#/reading/part-1">Start Reading Part 1 <span aria-hidden="true">→</span></a><a class="button secondary" href="#/reading/part-2">Try Reading Part 2 →</a><a class="button subtle-btn" href="#/reading/part-3">Read Part 3 →</a><a class="button subtle-btn" href="#/how">How it works</a></div>
       <div class="benefit"><strong>✓</strong> No logins, no pressure. Progress and feedback saved on this device.</div>
     </div><div class="journey-wrap"><div class="journey-card"><div class="eyebrow">Your learning journey</div><h3>Learn it. Try it. <em>Own it.</em></h3>
-       ${['Learn with clues','Practise like the exam','Take the challenge'].map((s,i)=>`<div class="journey-step"><span class="num">0${i+1}</span><div><strong>${s}</strong><p>${['Short examples + helpful guidance','Fresh tasks with the real exam structure','More demanding practice'][i]}</p></div><span style="margin-left:auto;color:#bad2dd">›</span></div>`).join('')}
+       ${['Learn with clues','Practise like the exam','Take the challenge'].map((s,i)=>`<div class="journey-step"><span class="num">0${i+1}</span><div><strong>${s}</strong><p>${['Short examples + helpful guidance','Fresh tasks with the real exam structure','More demanding practice'][i]}</p></div></div>`).join('')}
        <div class="bottom-note">✓ Reading tasks give scores and evidence. Writing tasks give word-count checks and self-review.</div>
     </div></div></div></section>
     <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels · 9 Writing levels</div></div></div>
     <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore Reading Parts 1–3 and Writing Parts 1–3, with three levels in each.')}
-      <div class="skill-grid">${cards.map(([route,title,parts,desc,items,ico,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon">${ico}</div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':route==='writing'?'Start Writing':'View the plan'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
+      <div class="skill-grid">${cards.map(([route,title,parts,desc,items,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${icons[route]}</svg></div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':route==='writing'?'Start Writing':'View the plan'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
     </div></section><section class="section alt"><div class="container">${titleBlock('One simple route','Three levels. Real progress.','Every part follows the same learning path so you always know what comes next.')}
     <div class="path-grid">${levels.map((l,i)=>`<a class="level-card" href="#/reading/part-1/${l.id}"><div class="topline"><span class="level-number">0${i+1}</span><div><div class="tiny muted" style="font-weight:800">LEVEL ${i+1}</div><h3 style="margin:0">${stepTitle(i)}</h3></div></div><p>${e(l.description)}</p><div class="tiny"><span class="pill ${getAttempts(l.id).length?'ready':''}">${getAttempts(l.id).length?'Best '+scoreLabel(l):'Not completed'}</span></div></a>`).join('')}</div>
-    <div class="feedback-ribbon"><strong>Writing Part 1 · Three levels ready:</strong> Choose football, a park proposal or a mountain hike. Write 30–50 words and review your response against MSA criteria. <a href="#/writing/part-1" style="font-weight:850;color:#0B2D56;text-decoration:underline">Try the photo task →</a></div>
     </div></section>`;
     shell(html,'home');
   }
