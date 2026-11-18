@@ -1,4 +1,4 @@
-/* Original, shortened German mediation practice adaptations for ThinkLab MSA Prep.
+/* Original, shortened German mediation practice adaptations for ThinkLab MSA English Prep.
    Texts were approved for classroom use; source credits appear with each article.
    Only the English email is marked; learners choose ONE article per level. */
 window.THINKLAB_MEDIATION_EXAMS = {
@@ -20,7 +20,7 @@ window.THINKLAB_MEDIATION_EXAMS = {
             'Das Geld spendete sie der Organisation „Aktion Warmes Essen“ in Zehlendorf. Diese bietet bedürftigen Menschen Mahlzeiten an. Magdalena wollte aber nicht nur Geld sammeln. Während der Schulferien half sie auch persönlich bei der Essensausgabe. Besonders gefielen ihr die Gespräche mit den Gästen. Sie stellte fest, dass viele Menschen sehr offen und freundlich waren.',
             'Während ihres Projekts bemerkte Magdalena außerdem, dass manche Jugendliche wenig über Obdachlosigkeit wissen. Deshalb nutzte sie die Verkaufsaktionen, um ihren Mitschülern zu erklären, warum sie Geld sammelte. Die Erfahrungen haben ihr gezeigt, dass junge Menschen Verantwortung übernehmen und in ihrer Umgebung etwas verändern können.'
           ],
-          credit: 'Nach Boris Buchholz, „16-jährige Berlinerin spendet 1100 Euro an Suppenküche“, Der Tagesspiegel, 18.03.2024. Für ThinkLab MSA Prep gekürzt und sprachlich bearbeitet. Zugriff am 17.11.2026.',
+          credit: 'Nach Boris Buchholz, „16-jährige Berlinerin spendet 1100 Euro an Suppenküche“, Der Tagesspiegel, 18.03.2024. Für ThinkLab MSA English Prep gekürzt und sprachlich bearbeitet. Zugriff am 17.11.2026.',
           url: 'https://www.tagesspiegel.de/berlin/bezirke/16-jahrige-berlinerin-spendet-1100-euro-an-suppenkuche-eher-ungewohnlich-dass-schuler-bei-der-essensausgabe-mithelfen-11372152.html',
           main: 'Magdalena raised funds for people in need by selling homemade baked goods at school.',
           points: [
@@ -44,7 +44,7 @@ window.THINKLAB_MEDIATION_EXAMS = {
             'Die Werkstatt ist aber mehr als ein Ort für Reparaturen. Jugendliche können dort lernen, mit Werkzeug umzugehen, und gemeinsam praktische Probleme lösen. Sie erleben, dass ihre Arbeit für andere Menschen wichtig ist.',
             'Eine Schwierigkeit besteht darin, genügend Freiwillige zu finden. Vor allem Menschen, die Fahrräder reparieren können, werden gebraucht. Das Projekt zeigt, wie Umweltschutz, praktisches Lernen und Hilfe für die Nachbarschaft miteinander verbunden werden können.'
           ],
-          credit: 'Nach Dominik Lenze und Robert Klages, „Marzahner Jugend-Fahrradwerkstatt: Schrauben für die Nachbarschaft“, Der Tagesspiegel, 05.12.2023. Für ThinkLab MSA Prep gekürzt und sprachlich bearbeitet. Zugriff am 17.11.2026.',
+          credit: 'Nach Dominik Lenze und Robert Klages, „Marzahner Jugend-Fahrradwerkstatt: Schrauben für die Nachbarschaft“, Der Tagesspiegel, 05.12.2023. Für ThinkLab MSA English Prep gekürzt und sprachlich bearbeitet. Zugriff am 17.11.2026.',
           url: 'https://www.tagesspiegel.de/berlin/marzahner-jugend-fahrradwerkstatt-schrauben-fur-die-nachbarschaft-10834114.html',
           main: 'Power Pedale is a Berlin neighbourhood project where young volunteers repair donated bikes for other people to use.',
           points: [
@@ -79,7 +79,7 @@ window.THINKLAB_MEDIATION_EXAMS = {
             'Die Jugendlichen haben unterschiedliche Aufgaben übernommen. Einige kümmern sich um die Produktion, andere um Werbung, die Internetseite oder die Buchhaltung. Unterstützung erhielten sie unter anderem von einem ausgebildeten Schneider, der ihnen das Nähen beibrachte. Mit dem Geld aus dem Verkauf kaufen sie neue Materialien wie Reißverschlüsse.',
             'Das Projekt ist allerdings zeitaufwendig. Die Unterrichtszeit allein reicht nicht aus, weshalb die Jugendlichen auch nach der Schule arbeiten. Ihre Geschäftsidee war erfolgreich: 2026 gewann „Carry Again“ einen Wettbewerb in Brandenburg und qualifizierte sich für den Bundeswettbewerb der Schülerfirmen.'
           ],
-          credit: 'Nach Elvira Minack, „Die Firma ist mein Hobby: Potsdamer Schüler entwerfen Upcycling-Taschen aus alten Jeans“, Potsdamer Neueste Nachrichten / Der Tagesspiegel, 03.06.2026. Für ThinkLab MSA Prep gekürzt und sprachlich bearbeitet. Zugriff am 17.11.2026.',
+          credit: 'Nach Elvira Minack, „Die Firma ist mein Hobby: Potsdamer Schüler entwerfen Upcycling-Taschen aus alten Jeans“, Potsdamer Neueste Nachrichten / Der Tagesspiegel, 03.06.2026. Für ThinkLab MSA English Prep gekürzt und sprachlich bearbeitet. Zugriff am 17.11.2026.',
           url: 'https://www.tagesspiegel.de/potsdam/landeshauptstadt/die-firma-ist-mein-hobby-potsdamer-schuler-entwerfen-upcycling-taschen-aus-alten-jeans-15669564.html',
           main: 'Carry Again is a student business in Potsdam that makes and sells bags from old jeans.',
           points: [
@@ -104,7 +104,7 @@ window.THINKLAB_MEDIATION_EXAMS = {
             '„Roots Radicals“ ist nicht nur ein Umweltprojekt, sondern ein richtiges Unternehmen. Die Produkte werden auf Märkten, in Geschäften und über einen eigenen Onlineshop verkauft. Inzwischen arbeiten dort zwölf Menschen aus verschiedenen Ländern. Das Unternehmen zeigt, dass Umweltschutz und wirtschaftliche Tätigkeit miteinander verbunden werden können.',
             'Monica Kisic möchte außerdem ihr Wissen über Lebensmittel und deren Verarbeitung weitergeben. Ihr Beispiel macht deutlich, dass eine nachhaltige Geschäftsidee nicht unbedingt neue Rohstoffe benötigt. Manchmal besteht die eigentliche Innovation darin, vorhandene Dinge anders zu nutzen.'
           ],
-          credit: 'Nach Nora Tschepe-Wiesinger, „Zero-Waste-Start-up in Berlin-Tempelhof: Wie Roots Radicals Lebensmittel rettet“, Der Tagesspiegel, 22.11.2024. Für ThinkLab MSA Prep gekürzt und sprachlich bearbeitet. Zugriff am 17.11.2026.',
+          credit: 'Nach Nora Tschepe-Wiesinger, „Zero-Waste-Start-up in Berlin-Tempelhof: Wie Roots Radicals Lebensmittel rettet“, Der Tagesspiegel, 22.11.2024. Für ThinkLab MSA English Prep gekürzt und sprachlich bearbeitet. Zugriff am 17.11.2026.',
           url: 'https://www.tagesspiegel.de/berlin/bezirke/zero-waste-start-up-in-berlin-tempelhof-wie-roots-radicals-lebensmittel-rettet-12741386.html',
           main: 'Roots Radicals is a Berlin business that turns food which might be thrown away into products that can be sold.',
           points: [

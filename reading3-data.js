@@ -11,7 +11,7 @@ window.THINKLAB_READING3 = {
       "articleSubtitle": "Two short perspectives on phones and friendships",
       "source": {
         "kind": "original",
-        "label": "Source: Original practice texts written for ThinkLab MSA Prep, 2026."
+        "label": "Source: Original practice texts written for ThinkLab MSA English Prep, 2026."
       },
       "passages": [
         {

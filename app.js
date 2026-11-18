@@ -1,5 +1,5 @@
 
-/* ThinkLab MSA Prep — static, offline-friendly student app.
+/* ThinkLab MSA English Prep — static, offline-friendly student app.
    All questions are original practice content. Progress remains on the user's device. */
 (() => {
   'use strict';
@@ -50,14 +50,15 @@
     return `<section class="page-hero"><div class="container">${crumbs(bread)}<div class="eyebrow">${e(eyebrow)}</div><h1>${e(heading)}</h1><p>${e(desc)}</p></div></section>`;
   }
   function shell(page, active) {
+    const brand = `<img src="assets/thinklab-bulb.png" alt=""><div><div class="brand-name">Think<span>Lab</span> <small class="brand-subtitle">MSA English Prep</small></div><div class="brand-tag">LEARN · CREATE · EXPLORE · GROW</div></div>`;
     const nav=[['Home','#/home','home'],['Reading','#/reading','reading'],['Writing','#/writing','writing'],['Listening','#/listening','listening'],['My progress','#/progress','progress']];
     const progress=completedTotal();
     APP.innerHTML = `<header class="site-header"><div class="container header-inner">
-      <a class="brand" href="#/home" aria-label="ThinkLab MSA Prep home"><img src="assets/thinklab-bulb.png" alt=""><div><div class="brand-name">Think<span>Lab</span></div><div class="brand-tag">LEARN · CREATE · EXPLORE · GROW</div></div></a>
+      <a class="brand" href="#/home" aria-label="ThinkLab MSA English Prep home">${brand}</a>
       <nav class="nav-links" aria-label="Main navigation">${nav.map(n=>`<a class="nav-link ${active===n[2]?'active':''}" ${active===n[2]?'aria-current="page"':''} href="${n[1]}">${n[0]}</a>`).join('')}</nav>
       <a href="#/progress" class="header-progress" aria-label="Review your saved progress"><span class="round-indicator">✓</span> ${progress} / ${allLevels.length} Reading levels</a>
-    </div></header><main id="main">${page}</main><footer class="site-footer"><div class="container footer-inner"><div><div class="brand-name">Think<span>Lab</span> · MSA Prep</div><div class="brand-tag">LEARN · CREATE · EXPLORE · GROW</div></div><p><strong>Created by SKD</strong><br>Original practice tasks inspired by the Berlin MSA English format, not official exam questions. ${localSavingAvailable?'Progress is stored on this device only.':'Progress saving may be unavailable in this browser.'}</p></div></footer>`;
-    document.title = 'ThinkLab MSA Prep — ' + ({home:'Home',reading:'Reading',writing:'Writing',listening:'Listening',progress:'My progress'}[active] || 'Practice');
+    </div></header><main id="main">${page}</main><footer class="site-footer"><div class="container footer-inner"><div class="brand">${brand}</div><p><strong>Created by SKD</strong><br>Original practice tasks inspired by the Berlin MSA English format, not official exam questions. ${localSavingAvailable?'Progress is stored on this device only.':'Progress saving may be unavailable in this browser.'}</p></div></footer>`;
+    document.title = 'ThinkLab MSA English Prep — ' + ({home:'Home',reading:'Reading',writing:'Writing',listening:'Listening',progress:'My progress'}[active] || 'Practice');
   }
   function home() {
     const icons = {
@@ -71,7 +72,7 @@
       ['listening','Listening','4 parts','Listen for meaning, follow speakers and recognise the important clues.',['Match messages to pictures','Match podcast intros to titles','Complete notes and tables','Understand a radio discussion'],'planned']
     ];
     const html=`<section class="hero"><div class="container hero-grid"><div>
-      <div class="eyebrow"><span class="accent-dot"></span>Grade 10 · English · MSA Prep</div><h1>Practise smarter.<span>Feel ready.</span></h1>
+      <div class="eyebrow"><span class="accent-dot"></span>Grade 10 · English</div><h1>Practise smarter.<span>Feel ready.</span></h1>
       <p class="hero-sub">A clear path from guided practice to exam-style challenges. Build confidence in Reading, Writing and Listening—one skill at a time.</p>
       <div class="hero-buttons"><a class="button primary" href="#/reading/part-1">Start Reading Part 1 <span aria-hidden="true">→</span></a><a class="button secondary" href="#/reading/part-2">Try Reading Part 2 →</a><a class="button subtle-btn" href="#/reading/part-3">Read Part 3 →</a><a class="button subtle-btn" href="#/how">How it works</a></div>
       <div class="benefit"><strong>✓</strong> No logins, no pressure. Progress and feedback saved on this device.</div>
@@ -88,7 +89,7 @@
     shell(html,'home');
   }
   function howPage() {
-    shell(pageHero([['Home','#/home'],['How it works','#/how']],'Your learning path','Learn. Practise. Improve.','Here is how ThinkLab guides you through MSA-style tasks.')+`<section class="section"><div class="container"><div class="path-grid">${levels.map((l,i)=>`<div class="panel"><span class="level-number">0${i+1}</span><h3 style="margin-top:15px">${stepTitle(i)}</h3><p class="muted">${e(l.description)}</p></div>`).join('')}</div><div class="panel" style="margin-top:20px"><h3>How marking works</h3><p>For Reading, choose matching activities or correct statements and receive one point per correct answer, with evidence-based feedback. For Writing, write clear responses to photo, discussion and mediation tasks. Use the MSA content and language criteria to review your work. Open-ended writing does not receive an automatic exam mark.</p><p>No account is required. Your attempts stay in this browser; use <strong>My progress</strong> to download a backup if you want to keep a copy.</p><a class="button primary" href="#/reading/part-1">Start Reading Part 1 →</a></div></div></section>`,'home');
+    shell(pageHero([['Home','#/home'],['How it works','#/how']],'Your learning path','Learn. Practise. Improve.','Here is how ThinkLab MSA English Prep guides you through MSA-style tasks.')+`<section class="section"><div class="container"><div class="path-grid">${levels.map((l,i)=>`<div class="panel"><span class="level-number">0${i+1}</span><h3 style="margin-top:15px">${stepTitle(i)}</h3><p class="muted">${e(l.description)}</p></div>`).join('')}</div><div class="panel" style="margin-top:20px"><h3>How marking works</h3><p>For Reading, choose matching activities or correct statements and receive one point per correct answer, with evidence-based feedback. For Writing, write clear responses to photo, discussion and mediation tasks. Use the MSA content and language criteria to review your work. Open-ended writing does not receive an automatic exam mark.</p><p>No account is required. Your attempts stay in this browser; use <strong>My progress</strong> to download a backup if you want to keep a copy.</p><a class="button primary" href="#/reading/part-1">Start Reading Part 1 →</a></div></div></section>`,'home');
   }
   const skills = {
     reading: [['Reading Part 1','Match people to activities','Ready'],['Reading Part 2','Understand short texts','Ready'],['Reading Part 3','Longer reading comprehension','Ready']],
@@ -414,7 +415,7 @@
   }
   function w1WordCount(text) { return (String(text||'').match(/[\p{L}\p{N}]+(?:[’'\-][\p{L}\p{N}]+)*/gu) || []).length; }
   function w1PhotoCaption() {
-    return '<figcaption>Image credit: AI-generated image created with <strong>ChatGPT (OpenAI), 2026</strong>, for ThinkLab MSA Prep. Not taken from an examination paper or a third-party website.</figcaption>';
+    return '<figcaption>Image credit: AI-generated image created with <strong>ChatGPT (OpenAI), 2026</strong>, for ThinkLab MSA English Prep. Not taken from an examination paper or a third-party website.</figcaption>';
   }
   function w1PhotoHtml() {
     return `<figure class="w1-photo"><img src="assets/neighbourhood-football-chatgpt.jpg" loading="eager" alt="Three teenagers playing football on a grassy neighbourhood field, with goalposts, trees and houses behind them.">${w1PhotoCaption()}</figure>`;
@@ -855,7 +856,7 @@
       <p>Meine Aufgaben waren einfach: Ich nahm Bestellungen auf, gab Eis aus und machte die Tische sauber. Am ersten Tag war ich sehr nervös, weil ich die vielen Eissorten noch nicht kannte. Einmal habe ich einem Kunden sogar die falsche Sorte gegeben. Zum Glück blieb meine Chefin freundlich und erklärte mir alles noch einmal.</p>
       <p>Besonders an heißen Tagen gab es lange Schlangen. Dann musste ich schnell arbeiten und trotzdem höflich bleiben. Nach einigen Tagen wurde ich sicherer und verstand mich gut mit meinen Kollegen.</p>
       <p>Ich bekam acht Euro pro Stunde und sparte das Geld für ein neues Fahrrad. Der Job war anstrengender als erwartet, aber ich habe gelernt, Verantwortung zu übernehmen und mit unterschiedlichen Menschen umzugehen.</p>
-      <div class="w3-source-credit">Source: Original German practice text written for ThinkLab MSA Prep, 2026.</div>
+      <div class="w3-source-credit">Source: Original German practice text written for ThinkLab MSA English Prep, 2026.</div>
       </article>`;
   }
   function w3PartPage() {
@@ -1150,7 +1151,7 @@
         }
         if(!window.confirm('Import this file? It will replace progress currently saved in this browser.')) return;
         store=clean;saveStore();progressPage();
-      } catch(_) {document.getElementById('progress-notice').textContent='That file is not a valid ThinkLab progress backup.';}
+      } catch(_) {document.getElementById('progress-notice').textContent='That file is not a valid ThinkLab MSA English Prep progress backup.';}
       ev.target.value='';
     });
     document.getElementById('clear-progress')?.addEventListener('click',()=>{
@@ -1158,7 +1159,7 @@
       store={version:1,attempts:{},drafts:{}};saveStore();progressPage();
     });
   }
-  function notFound(){ shell(pageHero([['Home','#/home'],['Page not found','#/home']],'ThinkLab','Page not found','The page you requested is not available.')+`<section class="section"><div class="container"><a href="#/home" class="button primary">Go home →</a></div></section>`,'home');}
+  function notFound(){ shell(pageHero([['Home','#/home'],['Page not found','#/home']],'ThinkLab MSA English Prep','Page not found','The page you requested is not available.')+`<section class="section"><div class="container"><a href="#/home" class="button primary">Go home →</a></div></section>`,'home');}
   function render(){
     if(!DATA?.levels){APP.innerHTML='<p>Learning materials are unavailable. Please check that data.js is installed.</p>';return;}
     const p=normPath();
