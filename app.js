@@ -69,7 +69,7 @@
     const cards=[
       ['reading','Reading','3 parts','Read to find the meaning, identify evidence and match the right details.',['Match people to activities','Understand short texts','Read a longer article'],'live'],
       ['writing','Writing','3 parts','Communicate clearly, organise ideas and respond for the right reader.',['Respond to a photo · All 3 levels ready','Discussion replies · All 3 levels ready','Mediation · All 3 levels ready'],'live'],
-      ['listening','Listening','4 parts','Listen for meaning, follow speakers and recognise the important clues.',['Match messages to pictures','Match podcast intros to titles','Complete notes and tables','Understand a radio discussion'],'planned']
+      ['listening','Listening','4 parts','Listen for meaning, follow speakers and recognise the important clues.',['Match messages to pictures','Match podcast intros to titles','Complete notes and tables','Listening practice · Levels 1–3 ready'],'live']
     ];
     const html=`<section class="hero"><div class="container hero-grid"><div>
       <div class="eyebrow"><span class="accent-dot"></span>Grade 10 · English</div><h1>Practise smarter.<span>Feel ready.</span></h1>
@@ -82,7 +82,7 @@
     </div></div></div></section>
     <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels · 9 Writing levels</div></div></div>
     <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore Reading Parts 1–3 and Writing Parts 1–3, with three levels in each.')}
-      <div class="skill-grid">${cards.map(([route,title,parts,desc,items,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${icons[route]}</svg></div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':route==='writing'?'Start Writing':'View the plan'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
+      <div class="skill-grid">${cards.map(([route,title,parts,desc,items,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${icons[route]}</svg></div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':route==='writing'?'Start Writing':'Explore Listening'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
     </div></section><section class="section alt"><div class="container">${titleBlock('One simple route','Three levels. Real progress.','Every part follows the same learning path so you always know what comes next.')}
     <div class="path-grid">${levels.map((l,i)=>`<a class="level-card" href="#/reading/part-1/${l.id}"><div class="topline"><span class="level-number">0${i+1}</span><div><div class="tiny muted" style="font-weight:800">LEVEL ${i+1}</div><h3 style="margin:0">${stepTitle(i)}</h3></div></div><p>${e(l.description)}</p><div class="tiny"><span class="pill ${getAttempts(l.id).length?'ready':''}">${getAttempts(l.id).length?'Best '+scoreLabel(l):'Not completed'}</span></div></a>`).join('')}</div>
     </div></section>`;
@@ -94,15 +94,162 @@
   const skills = {
     reading: [['Reading Part 1','Match people to activities','Ready'],['Reading Part 2','Understand short texts','Ready'],['Reading Part 3','Longer reading comprehension','Ready']],
     writing: [['Writing Part 1','Photo response · Three levels','Ready'],['Writing Part 2','Discussion reply · Three levels','Ready'],['Writing Part 3','Mediation · Guided Level 1 available','Ready']],
-    listening: [['Listening Part 1','Voicemail and picture matching','Planned'],['Listening Part 2','Podcast intro matching','Planned'],['Listening Part 3','Information completion','Planned'],['Listening Part 4','Radio programme comprehension','Planned']]
+    listening: [['Listening Part 1','Voicemail and picture matching','Planned'],['Listening Part 2','Podcast intro matching','Planned'],['Listening Part 3','Information completion','Planned'],['Listening Part 4','Listening practice · Levels 1–3 available','Ready']]
   };
   function subjectPage(skill) {
     if(skill==='writing')return writingSubjectPage();
     const title=skill[0].toUpperCase()+skill.slice(1);
-    const helper={reading:'Choose any of the three Reading parts: matching, short texts or longer articles.',writing:'The Writing pathway will include task planning, independent writing and feedback against content and language criteria.',listening:'The Listening pathway will include original recordings, two play-throughs and evidence-based explanations.'}[skill];
+    const helper={reading:'Choose any of the three Reading parts: matching, short texts or longer articles.',writing:'The Writing pathway will include task planning, independent writing and feedback against content and language criteria.',listening:'Practise following spoken English and choosing the answer supported by what you hear.'}[skill];
     const ready=skill==='reading';
     const done=completedTotal();
-    shell(pageHero([['Home','#/home'],[title,'#/'+skill]],'Your practice hub',title,helper)+`<section class="section"><div class="container work-layout"><div><div class="module-parts">${skills[skill].map((part,i)=>`<div class="module-part ${part[2]==='Ready'?'active':''}"><div class="module-part-left"><span class="mini-num">0${i+1}</span><div><h3>${e(part[0])}</h3><p>${e(part[1])}</p>${ready?`<div class="tiny muted" style="margin-top:7px">${[completedCount(),completedPart2Count(),completedPart3Count()][i]} of 3 levels completed</div>`:''}</div></div>${part[2]==='Ready'?`<a class="button primary small" href="#/reading/part-${i+1}">Open →</a>`:'<span class="pill planned">In development</span>'}</div>`).join('')}</div></div><aside class="path-summary"><div class="label">Live content</div><strong>${ready?'Reading Parts 1–3 · 9 levels':'Modules being prepared'}</strong><p style="font-size:.85rem;margin-top:10px">${ready?'Start with clues, then complete an exam-style set and a harder challenge in each part.':'This section is part of the site plan; it is not yet an interactive practice module.'}</p>${ready?`<div class="small-progress"><span style="width:${Math.round(done/9*100)}%"></span></div><p class="tiny" style="margin-top:9px">${done} of 9 levels completed</p>`:''}</aside></div></section>` ,skill);
+    shell(pageHero([['Home','#/home'],[title,'#/'+skill]],'Your practice hub',title,helper)+`<section class="section"><div class="container work-layout"><div><div class="module-parts">${skills[skill].map((part,i)=>`<div class="module-part ${part[2]==='Ready'?'active':''}"><div class="module-part-left"><span class="mini-num">0${i+1}</span><div><h3>${e(part[0])}</h3><p>${e(part[1])}</p>${ready?`<div class="tiny muted" style="margin-top:7px">${[completedCount(),completedPart2Count(),completedPart3Count()][i]} of 3 levels completed</div>`:''}</div></div>${!ready && part[2]==='Ready'?`<div class="actions"><a class="button secondary small" href="${listeningLevel1Route}">Level 1</a><a class="button secondary small" href="${listeningPart4Route}">Level 2</a><a class="button primary small" href="${listeningLevel3Route}">Level 3</a></div>`:part[2]==='Ready'?`<a class="button primary small" href="#/reading/part-${i+1}">Open →</a>`:'<span class="pill planned">In development</span>'}</div>`).join('')}</div></div><aside class="path-summary"><div class="label">Live content</div><strong>${ready?'Reading Parts 1–3 · 9 levels':'Listening Part 4 · Levels 1–3'}</strong><p style="font-size:.85rem;margin-top:10px">${ready?'Start with clues, then complete an exam-style set and a harder challenge in each part.':'Listen to a podcast excerpt and answer eight exam-style questions.'}</p>${ready?`<div class="small-progress"><span style="width:${Math.round(done/9*100)}%"></span></div><p class="tiny" style="margin-top:9px">${done} of 9 levels completed</p>`:''}</aside></div></section>` ,skill);
+  }
+  const listeningPart4Route = '#/listening/part-4/level-2';
+  const listeningEpisode = 'https://greatergood.berkeley.edu/podcasts/item/how_smell_shapes_memory';
+  const listeningQuestions = [
+    ['What does Samin’s example of the beets in the oven show?',
+      ['Smell tells her which ingredients go well together.', 'Smell tells her how fresh a vegetable is.', 'Smell tells her what is happening to food as it cooks.'], 2,
+      'From across the room, Samin can smell when the moisture has evaporated and the juices are starting to caramelise.'],
+    ['Why does Samin sometimes put scented oil on her collar or scarf?',
+      ['It reminds her to breathe and helps her calm down.', 'It brings back memories of working in the kitchen.', 'It helps her get better at recognising scents.'], 0,
+      'Samin uses the scent as a reminder to breathe, which helps her relax.'],
+    ['Why did Samin choose Berkeley Marina for her scent walk?',
+      ['She wanted to compare it with the coast she knew as a child.', 'She wanted to find out which scents her dog preferred.', 'She expected to find at least one scent she could easily notice.'], 2,
+      'She chose the marina because she expected to pick up the smell of salty bay water.'],
+    ['What does Samin notice about the way her dog explores?',
+      ['She looks mainly for familiar smells.', 'She investigates scents almost everywhere she goes.', 'She moves on when a smell is hard to identify.'], 1,
+      'Samin describes her dog as curious and says she finds information in almost everything she smells.'],
+    ['What does the smell of seawater bring back for Samin?',
+      ['Memories of spending time on the coast as a child.', 'Memories of her first cooking job.', 'Memories of exploring the coast as an adult.'], 0,
+      'The salty smell takes Samin back to tide pooling as a child.'],
+    ['What period in Samin’s life does the smell of wild fennel bring to mind?',
+      ['A period when she was recreating the food she ate as a child.', 'A period when she was discovering what kind of cook she wanted to become.', 'A period when she was gaining confidence as a teacher.'], 1,
+      'Fennel reminds her of a time of curiosity and discovery as she worked out what she cared about as a cook.'],
+    ['How does Samin say a scent walk can help her?',
+      ['It gives her a chance to think through difficult decisions.', 'It shifts her attention from her thoughts to what she feels physically.', 'It gives her time to plan ideas for her work.'], 1,
+      'She says the walk helps her move her attention from her thoughts to her body.'],
+    ['Which statement best sums up this part of the interview?',
+      ['Smell is useful mainly in cooking.', 'A scent matters only if you can identify where it comes from.', 'Smells can bring back memories and help us pay attention to the present.'], 2,
+      'The walk brings back memories for Samin and gives her a way to notice her immediate surroundings and physical experience.']
+  ];
+  const listeningLevel3Route = '#/listening/part-4/level-3';
+  const listeningLevel3Questions = [
+    ['What does Kimmel emphasise about the bullying he experienced as a teenager?',
+      ['It became more physical as he got older, while the humiliation continued.', 'It became mainly psychological once the physical attacks grew less frequent.', 'It became more serious when people from outside the neighbourhood joined in.'], 0,
+      'The bullying started with words and became physically serious, alongside ongoing humiliation.'],
+    ['In the introduction, how does Kimmel describe the purpose of forgiveness?',
+      ['It gives the person responsible a chance to explain what happened.', 'It helps the person who was hurt recover from what happened.', 'It helps both people agree on how the harm should be put right.'], 1,
+      'Kimmel presents forgiveness as a way to care for yourself and heal from past harm.'],
+    ['What made Kimmel decide to drive home that night?',
+      ['He realised the people he had followed had no idea how angry he was.', 'He thought that leaving would give him time to plan a better response.', 'He saw that acting on his anger could cost him the future he wanted.'], 2,
+      'He imagined losing his freedom and changing the course of his life. Those consequences made him turn back.'],
+    ['What does Kimmel mean when he says he wanted revenge “on discount”?',
+      ['He wanted to help people pursue claims they could otherwise not afford.', 'He wanted the satisfaction of getting even at a lower personal cost.', 'He wanted to use negotiation to reduce what both sides stood to lose.'], 1,
+      'He still wanted payback and looked for a way to get it that would cost him less personally.'],
+    ['What did Kimmel notice about small victories during a legal case?',
+      ['His clients took more satisfaction from the final result than from individual setbacks for the other side.', 'His clients became less emotionally involved once someone else was handling the dispute.', 'His clients could enjoy the other side’s setbacks through his reports, and he enjoyed those moments too.'], 2,
+      'His clients enjoyed hearing about setbacks for the other side, and Kimmel felt brief bursts of pleasure himself.'],
+    ['How did Kimmel’s behaviour at work affect his home life?',
+      ['He began looking for reasons to feel offended so that getting even could make him feel better.', 'He spent more time discussing his cases at home because his family’s reactions reassured him.', 'He avoided disagreements at home because he was tired of arguing at work.'], 0,
+      'He began seeking out grievances at home so that retaliating could give him a temporary sense of relief.'],
+    ['What made it difficult for Kimmel to stay away from litigation?',
+      ['He missed the sense of responsibility that came with helping clients.', 'He believed that winning one more case would give him a sense of closure.', 'He missed the brief feelings of pleasure, and the work paid well.'], 2,
+      'He says both the money and the intense feelings he missed drew him back.'],
+    ['What point does Keltner make about prison sentences before turning to brain research?',
+      ['The severity of a sentence has little effect on whether someone offends again.', 'Shorter sentences are effective mainly for people who have offended just once.', 'The length of a sentence matters more than the reasons someone offended.'], 0,
+      'Keltner says sentence severity makes little difference to reoffending.']
+  ];
+  const listeningLevel1Route = '#/listening/part-4/level-1';
+  const listeningLevel1Questions = [
+    ["What did the study find about UK consumers?", ["Most preferred to spend money on things they could keep.", "Most preferred to spend money on experiences.", "Most preferred to save their money for later."], 1, "Six in ten means 60%. More than half of those surveyed preferred experiences.", "Listen for “six in ten”. What did those people prefer?"],
+    ["Which age group reported spending the most on fun activities?", ["People aged 18–34.", "People aged 35–49.", "People aged 50 and over."], 0, "The speaker identifies the 18–34 age group.", "Listen for an age range just after the survey result."],
+    ["Why might a new phone stop feeling special after a while?", ["You forget why you decided to buy it.", "You stop using it as often as you expected.", "You get used to having it."], 2, "The excitement can fade once the new object becomes part of daily life.", "Listen for what happens when something new becomes part of everyday life."],
+    ["How can other people affect how you feel about something you own?", ["You may feel less satisfied if someone else has something better.", "You may enjoy it more if someone else buys the same thing.", "You may find it easier to decide what to buy next."], 0, "Comparing what we own with what someone else owns can make us feel envious.", "Listen for the comparison between what you have and what someone else has."],
+    ["How can a day out make you happy before it happens?", ["Planning the day helps you save money.", "Looking forward to it can feel exciting.", "Having a plan helps the time pass more quickly."], 1, "The speaker contrasts waiting for a delivery with the excitement of looking forward to an event.", "The speaker compares two kinds of waiting. Listen for how each feels."],
+    ["Why can a short experience give you pleasure for years?", ["You can usually repeat it whenever you want.", "You can keep something you bought on the day.", "You can enjoy remembering it long afterward."], 2, "An experience can be brief, and remembering it can still make us happy years later.", "Listen for what you still have after the event is over."],
+    ["Who might get more benefit from buying an object?", ["Someone who already owns many things.", "Someone who owns very few things.", "Someone who regularly replaces the things they own."], 1, "The speaker says someone with few possessions may gain more from buying an object.", "Near the end, listen for what the speaker says about how much someone already owns."],
+    ["Which statement best sums up the recording?", ["Experiences often bring more lasting pleasure, though it depends on the person.", "Buying things usually brings more pleasure because they last longer.", "People get the same pleasure from spending money on things and experiences."], 0, "The speaker favours experiences for many people and allows for differences in personality and circumstances.", "Listen for the speaker’s final point. Does the same advice apply to everyone?"]
+  ];
+  function listeningPart4Page(level) {
+    const guided = level === 1;
+    const challenge = level === 3;
+    const route = guided ? listeningLevel1Route : challenge ? listeningLevel3Route : listeningPart4Route;
+    const questions = guided ? listeningLevel1Questions : challenge ? listeningLevel3Questions : listeningQuestions;
+    const episode = guided ? 'https://downloads.bbc.co.uk/learningenglish/features/the_reading_room/trr_the_benefits_of_spending_money_on_a_good_time_download.mp3' : challenge ? 'https://greatergood.berkeley.edu/podcasts/item/why_revenge_feels_so_goodand_why_it_hurts_us' : listeningEpisode;
+    const title = guided ? 'The Benefits of Spending Money on a Good Time' : challenge ? 'Why Revenge Feels So Good—and Why It Hurts Us' : 'How Smell Shapes Memory';
+    const guest = challenge ? 'James Kimmel Jr.' : 'Samin Nosrat';
+    const date = challenge ? '16 July 2026' : '24 September 2026';
+    const letters = ['A', 'B', 'C'];
+    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], [`Part 4 · Level ${level}`, route]],
+      `Listening Part 4 · Level ${level}`, title, guided ? 'Use listening strategies and optional cues to answer eight questions.' : 'Listen to part of a podcast interview and answer eight questions.') +
+      `<section class="section"><div class="container work-layout">
+        <div>
+          ${guided ? `<section class="panel" aria-labelledby="listening-instructions">
+            <h2 id="listening-instructions">Before you listen</h2>
+            <p>Imagine you have €40 to spend. Would you buy something you’ve wanted for a while or use the money for a day out? Think of one reason for your choice.</p>
+            <h3>Three words to know</h3>
+            <ul>
+              <li><strong>Possessions</strong> — things you own</li>
+              <li><strong>Anticipation</strong> — excitement about something that hasn’t happened yet</li>
+              <li><strong>Disposable income</strong> — money you can spend after paying for essentials</li>
+            </ul>
+            <h3>How to listen</h3>
+            <ol>
+              <li><strong>First listen — get the main idea.</strong> Play the whole recording. Decide what two ways of spending money the speaker compares.</li>
+              <li><strong>Second listen — listen for evidence.</strong> Read the questions and pick a keyword in each. Choose the answer that matches what the speaker means. You might hear the same idea in different words.</li>
+              <li><strong>Check a difficult answer.</strong> Open its listening cue to find the right part of the recording. Replay that part and listen for a number, a reason, or a change in direction such as <em>however</em>.</li>
+            </ol>
+            <audio class="listening-audio" controls preload="metadata" aria-label="The Benefits of Spending Money on a Good Time" src="${e(episode)}"></audio>
+            <p><a href="${e(episode)}" target="_blank" rel="noopener noreferrer">Open the BBC recording in a new tab ↗</a></p>
+            <p class="tiny muted">Audio source — BBC Learning English, <cite>The Reading Room</cite>, “The Benefits of Spending Money on a Good Time”, 16 September 2025. 2 minutes 30 seconds.</p>
+          </section>` : `<section class="panel" aria-labelledby="listening-instructions">
+            <h2 id="listening-instructions">Before you listen</h2>
+            <ol>
+              <li>Read questions 1–8. Then open the episode in a new tab and use the audio player near the top of the page.</li>
+              ${challenge ? `<li>Listen from <strong>0:00 to 10:00</strong>.</li>
+              <li>Replay the same section once to check your answers.</li>` : `<li>Start at <strong>7:27</strong>, just before Dacher Keltner asks, “Does scent tell you different things about dishes than taste?”</li>
+              <li>Stop at <strong>14:23</strong>, just before Keltner begins thanking Samin Nosrat. Return to the start of the excerpt and listen once more to check your answers.</li>`}
+              <li>Choose one answer (A, B or C) for each question and submit your answers.</li>
+            </ol>
+            <p><a class="button primary small" href="${e(episode)}" target="_blank" rel="noopener noreferrer">Open podcast episode ↗</a></p>
+            <p class="tiny muted">Audio source: “${e(title)},” <cite>The Science of Happiness</cite>, hosted by Dacher Keltner, featuring ${e(guest)}. UC Berkeley’s Greater Good Science Center and PRX, ${e(date)}.</p>
+          </section>`}
+          <form id="listening-part-4-form">
+            ${questions.map(([question, options, , , cue], index) => `<fieldset class="panel listening-question">
+              <legend>${index + 1}. ${e(question)}</legend>
+              <div class="r2-options">${options.map((option, choice) => `<label class="listening-option">
+                <input type="radio" name="q${index}" value="${choice}" required>
+                <span><strong>${letters[choice]}.</strong> ${e(option)}</span>
+              </label>`).join('')}</div>
+              ${cue ? `<details class="listening-cue"><summary>Show listening cue</summary><p>${e(cue)}</p></details>` : ''}
+            </fieldset>`).join('')}
+            <div class="actions listening-actions">
+              <button type="submit" class="button primary">Check answers</button>
+              <button type="reset" class="button secondary">Start again</button>
+            </div>
+          </form>
+          <section class="panel listening-question" id="listening-result" aria-labelledby="listening-score" hidden></section>
+        </div>
+        <aside class="path-summary"><div class="label">${guided ? 'Guided practice' : 'Exam-style practice'}</div><strong>8 questions · 8 marks</strong></aside>
+      </div></section>`, 'listening');
+    const form = document.getElementById('listening-part-4-form');
+    const result = document.getElementById('listening-result');
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const choices = new FormData(form);
+      let score = 0;
+      const feedback = questions.map(([, options, correct, explanation], index) => {
+        const chosen = Number(choices.get(`q${index}`));
+        const isCorrect = chosen === correct;
+        score += Number(isCorrect);
+        return `<li><strong>${isCorrect ? 'Correct' : `You chose ${letters[chosen]}`}.</strong> ${letters[correct]}. ${e(options[correct])} <p>${e(explanation)}</p></li>`;
+      });
+      result.innerHTML = `<h2 id="listening-score" tabindex="-1">Your score is ${score} out of 8</h2><ol>${feedback.join('')}</ol>`;
+      result.hidden = false;
+      document.getElementById('listening-score').focus();
+    });
+    form.addEventListener('change', () => { result.hidden = true; });
+    form.addEventListener('reset', () => { result.hidden = true; });
   }
   function partPage() {
     shell(pageHero([['Home','#/home'],['Reading','#/reading'],['Part 1','#/reading/part-1']],'Reading · Part 1','Match people to activities','Read five people’s wishes and choose matching activities. Practise how to find the meaning behind the words.')+
@@ -1166,6 +1313,9 @@
     if(p[0]==='home'||!p[0]) home();
     else if(p[0]==='how') howPage();
     else if(['reading','writing','listening'].includes(p[0]) && p.length===1)subjectPage(p[0]);
+    else if(currentHash()===listeningPart4Route.slice(1)) listeningPart4Page(2);
+    else if(currentHash()===listeningLevel1Route.slice(1)) listeningPart4Page(1);
+    else if(currentHash()===listeningLevel3Route.slice(1)) listeningPart4Page(3);
     else if(p[0]==='reading'&&p[1]==='part-1'&&p.length===2)partPage();
     else if(p[0]==='reading'&&p[1]==='part-2'&&p.length===2)part2Page();
     else if(p[0]==='reading'&&p[1]==='part-3'&&p.length===2)r3PartPage();

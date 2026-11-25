@@ -338,3 +338,48 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{cur
 .w3-feedback-aside .w3-marking{position:static}
 @media(max-width:1020px){.w3-exam-layout .w3-left{position:static}}
 @media(max-width:540px){.w3-article-tabs{grid-template-columns:1fr}.w3-article-tab{min-height:62px}.w3-exam-editor{min-height:270px}}
+
+.listening-question {
+  margin: 1.25rem 0;
+  min-width: 0;
+}
+
+.listening-question legend {
+  padding: 0 .4rem;
+  font-weight: 700;
+}
+
+.listening-option {
+  display: flex;
+  align-items: baseline;
+  gap: .65rem;
+  padding: .65rem .8rem;
+  border: 1px solid #d7e2ea;
+  border-radius: .65rem;
+  cursor: pointer;
+}
+
+.listening-option:has(input:checked) {
+  border-color: #157b83;
+  background: #e9f7f7;
+}
+
+.listening-audio {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.listening-cue {
+  margin-top: .85rem;
+}
+
+.listening-cue summary {
+  color: #0b5260;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.listening-cue[open] summary {
+  margin-bottom: .5rem;
+}
