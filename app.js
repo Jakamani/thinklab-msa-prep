@@ -94,7 +94,7 @@
   const skills = {
     reading: [['Reading Part 1','Match people to activities','Ready'],['Reading Part 2','Understand short texts','Ready'],['Reading Part 3','Longer reading comprehension','Ready']],
     writing: [['Writing Part 1','Photo response · Three levels','Ready'],['Writing Part 2','Discussion reply · Three levels','Ready'],['Writing Part 3','Mediation · Guided Level 1 available','Ready']],
-    listening: [['Listening Part 1','Voicemail and picture matching','Planned'],['Listening Part 2','Podcast intro matching','Planned'],['Listening Part 3','Information completion','Planned'],['Listening Part 4','Listening practice · Levels 1–3 available','Ready']]
+    listening: [['Listening Part 1','Voicemail and picture matching','Planned'],['Listening Part 2','Podcast intro matching','Planned'],['Listening Part 3','Information completion','Ready'],['Listening Part 4','Listening practice · Levels 1–3 available','Ready']]
   };
   function subjectPage(skill) {
     if(skill==='writing')return writingSubjectPage();
@@ -102,7 +102,108 @@
     const helper={reading:'Choose any of the three Reading parts: matching, short texts or longer articles.',writing:'The Writing pathway will include task planning, independent writing and feedback against content and language criteria.',listening:'Practise following spoken English and choosing the answer supported by what you hear.'}[skill];
     const ready=skill==='reading';
     const done=completedTotal();
-    shell(pageHero([['Home','#/home'],[title,'#/'+skill]],'Your practice hub',title,helper)+`<section class="section"><div class="container work-layout"><div><div class="module-parts">${skills[skill].map((part,i)=>`<div class="module-part ${part[2]==='Ready'?'active':''}"><div class="module-part-left"><span class="mini-num">0${i+1}</span><div><h3>${e(part[0])}</h3><p>${e(part[1])}</p>${ready?`<div class="tiny muted" style="margin-top:7px">${[completedCount(),completedPart2Count(),completedPart3Count()][i]} of 3 levels completed</div>`:''}</div></div>${!ready && part[2]==='Ready'?`<div class="actions"><a class="button secondary small" href="${listeningLevel1Route}">Level 1</a><a class="button secondary small" href="${listeningPart4Route}">Level 2</a><a class="button primary small" href="${listeningLevel3Route}">Level 3</a></div>`:part[2]==='Ready'?`<a class="button primary small" href="#/reading/part-${i+1}">Open →</a>`:'<span class="pill planned">In development</span>'}</div>`).join('')}</div></div><aside class="path-summary"><div class="label">Live content</div><strong>${ready?'Reading Parts 1–3 · 9 levels':'Listening Part 4 · Levels 1–3'}</strong><p style="font-size:.85rem;margin-top:10px">${ready?'Start with clues, then complete an exam-style set and a harder challenge in each part.':'Listen to a podcast excerpt and answer eight exam-style questions.'}</p>${ready?`<div class="small-progress"><span style="width:${Math.round(done/9*100)}%"></span></div><p class="tiny" style="margin-top:9px">${done} of 9 levels completed</p>`:''}</aside></div></section>` ,skill);
+    shell(pageHero([['Home','#/home'],[title,'#/'+skill]],'Your practice hub',title,helper)+`<section class="section"><div class="container work-layout"><div><div class="module-parts">${skills[skill].map((part,i)=>`<div class="module-part ${part[2]==='Ready'?'active':''}"><div class="module-part-left"><span class="mini-num">0${i+1}</span><div><h3>${e(part[0])}</h3><p>${e(part[1])}</p>${ready?`<div class="tiny muted" style="margin-top:7px">${[completedCount(),completedPart2Count(),completedPart3Count()][i]} of 3 levels completed</div>`:''}</div></div>${!ready && i===2?`<div class="actions"><a class="button primary small" href="${listeningPart3Level1Route}">Level 1</a><a class="button secondary small" href="${listeningPart3Route}">Level 2</a><a class="button secondary small" href="${listeningPart3Level3Route}">Level 3</a></div>`:!ready && part[2]==='Ready'?`<div class="actions"><a class="button secondary small" href="${listeningLevel1Route}">Level 1</a><a class="button secondary small" href="${listeningPart4Route}">Level 2</a><a class="button primary small" href="${listeningLevel3Route}">Level 3</a></div>`:part[2]==='Ready'?`<a class="button primary small" href="#/reading/part-${i+1}">Open →</a>`:'<span class="pill planned">In development</span>'}</div>`).join('')}</div></div><aside class="path-summary"><div class="label">Live content</div><strong>${ready?'Reading Parts 1–3 · 9 levels':'Listening Parts 3 and 4'}</strong><p style="font-size:.85rem;margin-top:10px">${ready?'Start with clues, then complete an exam-style set and a harder challenge in each part.':'Complete a listening table or answer exam-style multiple-choice questions.'}</p>${ready?`<div class="small-progress"><span style="width:${Math.round(done/9*100)}%"></span></div><p class="tiny" style="margin-top:9px">${done} of 9 levels completed</p>`:''}</aside></div></section>` ,skill);
+  }
+  const listeningPart3Level1Route = '#/listening/part-3/level-1';
+  const listeningPart3Route = '#/listening/part-3/level-2';
+  const listeningPart3Level3Route = '#/listening/part-3/level-3';
+  function listeningPart3Page(level = 2) {
+    const guided = level === 1;
+    const challenge = level === 3;
+    const route = guided ? listeningPart3Level1Route : challenge ? listeningPart3Level3Route : listeningPart3Route;
+    const title = guided ? 'Small Changes at School' : challenge ? 'Quirky Places Around the World' : 'Young People Helping Their Communities';
+    const columns = guided ? ['Problem', 'What they did', 'Difficulty', 'One sign of success'] : challenge ? ['Unusual feature', 'Reason, benefit or rule', 'Opening year', 'Other detail'] : ['Problem they wanted to solve', 'What they did to improve the situation (name one)', 'Difficulty they faced', 'What shows their success (name one)'];
+    const stories = guided ? [['Maya', [1, null, 2, 3]], ['Noah', [4, 5, 6, 7]], ['Lina', ['Example: New pupils sat alone', 8, null, 9]]] : challenge ? [
+      ['La Paz, Bolivia', ['Example: Cable cars used for everyday journeys', 1, 2, 3]],
+      ['Coober Pedy, Australia', [4, 5, null, 6]],
+      ['Baarle, Belgium and the Netherlands', [7, 8, null, 9]]
+    ] : [
+      ['Amira', ['Some children couldn’t afford bikes.', 1, 2, 3]],
+      ['Leo', [4, 5, null, 6]],
+      ['Nia', [7, 8, null, 9]]
+    ];
+    const key = guided ? ["No quiet place at lunchtime / noisy playground", "Finding a free room", "Fifteen pupils used it / open every lunchtime", "Useful school supplies thrown away", "Put out a collection box", "Broken pens in the box / had to test pens", "Thirty notebooks found new owners", "Started a lunchtime buddy group", "New pupils made friends / two offered to become buddies"] : challenge ? [
+      'Road congestion / heavy traffic between the cities', '2014', 'El Alto',
+      'Underground homes / dugouts / below ground',
+      'Keeps temperatures more stable / slows changes in temperature',
+      'Underground church / underground hotel', 'A road / a street / a building',
+      'The front door’s location / location of the front door',
+      'A small national flag / the flag'
+    ] : [
+      'Asked neighbours for bikes / repaired donated bikes',
+      'Difficulty finding replacement parts',
+      '24 children received bikes / got a permanent workshop',
+      'Older people had difficulty using phones',
+      'Started free drop-in sessions / taught people video calling',
+      'A second weekly session was added / another library wanted help',
+      'Edible food was thrown away / market food waste',
+      'Asked stallholders for unsold produce / made soup for families',
+      '40 portions a week / stalls wasted less food'
+    ];
+    const cueTimes = [[22, 28], [35, 41], [49, 56], [59, 65], [70, 77], [83, 93], [96, 102], [115, 124], [124, 135]];
+    const clock = seconds => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+    const replayCue = cell => {
+      const [start, end] = cueTimes[cell - 1];
+      return `<details class="listening-cue"><summary>Show clue</summary><button class="button secondary small" type="button" data-replay-start="${start}" data-replay-end="${end}">Replay ${clock(start)}–${clock(end)}</button></details>`;
+    };
+    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], [`Part 3 · Level ${level}`, route]],
+      `Listening Part 3 · Level ${level}`, title, 'Listen for details and complete the table.') +
+      `<section class="section"><div class="container">
+        <section class="panel" aria-labelledby="part3-instructions">
+          <h2 id="part3-instructions">Before you listen</h2>
+          ${guided ? `<p>“Some new pupils sat alone at lunch because they didn’t know anyone.” This describes what Lina noticed before she helped. In the <strong>Problem</strong> column, we can write <strong>New pupils sat alone</strong>.</p>
+          <ol><li>Read the table first. On the first listen, follow the three stories and write down what you catch.</li><li>Listen again to check your notes and fill the gaps. Use <strong>one to five words or numbers</strong> for each answer. For each success, give one example.</li><li>If you’re stuck, select <strong>Show clue</strong> to replay a short section. Leave the crossed-out cells blank.</li></ol>` : `<p>Read the table first. You will hear ${challenge ? 'about three unusual places' : 'three stories about young people who worked to improve their communities'}. Listen twice. Use <strong>1 to 5 words or numbers</strong> for each answer.${challenge ? ' Give one example where asked. Leave the crossed-out cells blank.' : ''}</p>`}
+          <audio id="part3-audio" class="listening-audio" controls preload="metadata" aria-label="${e(title)}" src="assets/listening-part-3-level-${level}.mp3"></audio>
+          <p class="tiny muted">Original ThinkLab practice recording · Narrated by George (ElevenLabs). Play the recording again for your second listen.</p>
+        </section>
+        <form id="part3-notes" class="listening-question">
+          <div class="panel" style="overflow-x:auto" role="region" aria-label="Response table" tabindex="0">
+            <table style="width:100%; min-width:760px; border-spacing:12px; text-align:left">
+              <caption>Complete items 1–9 · 9 marks</caption>
+              <thead><tr><th scope="col">${challenge ? 'Place' : 'Young person'}</th>${columns.map(column => `<th scope="col">${e(column)}</th>`).join('')}</tr></thead>
+              <tbody>${stories.map(([name, cells]) => `<tr><th scope="row">${e(name)}</th>${cells.map((cell, index) => `<td style="vertical-align:top">${typeof cell === 'number' ? `<label><strong>${cell}</strong><input type="text" name="q${cell}" aria-label="${cell}. ${name} — ${e(columns[index])}" style="width:100%; padding:.5rem; border:1px solid #7895a6; border-radius:.35rem" autocomplete="off"></label>${guided ? replayCue(cell) : ''}` : cell === null && (guided || challenge) ? '<span aria-label="Crossed out">✕</span>' : e(cell ?? '—')}</td>`).join('')}</tr>`).join('')}</tbody>
+            </table>
+          </div>
+          <div class="actions" style="margin-top:1rem"><button type="submit" class="button primary">Submit answers</button><button type="reset" class="button secondary">Start again</button></div>
+        </form>
+        <section class="panel" id="part3-review" hidden></section>
+      </div></section>`, 'listening');
+    const form = document.getElementById('part3-notes');
+    const review = document.getElementById('part3-review');
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const answers = new FormData(form);
+      review.innerHTML = `<h2 tabindex="-1">Compare your answers</h2><p>Give yourself one mark for each answer that conveys the same meaning. If you wrote several details, count the mark only if they are all correct.</p><ol>${key.map((sample, index) => `<li><strong>Example:</strong> ${e(sample)}<br><strong>Your answer:</strong> ${e(answers.get(`q${index + 1}`)?.trim() || 'Blank')}</li>`).join('')}</ol>`;
+      if (challenge) {
+        review.innerHTML += `<p class="tiny muted">Sources: <a href="https://www.bmv.de/SharedDocs/DE/Publikationen/G/urban-cable-cars-in-local-public-transport.pdf?__blob=publicationFile">La Paz transport</a> · <a href="https://www.cooberpedy.sa.gov.au/community">Coober Pedy council</a> · <a href="https://www.cooberpedy.com/attractions/">Coober Pedy attractions</a> · <a href="https://geonames.nga.mil/GNSSearch/GNSDocs/policies/Netherlands_Country_Policy_webversion_Latest.pdf">Baarle border and addresses</a></p>`;
+      }
+      review.hidden = false;
+      review.querySelector('h2').focus();
+    });
+    form.addEventListener('input', () => { review.hidden = true; });
+    form.addEventListener('reset', () => {
+      review.hidden = true;
+      if (guided) form.querySelectorAll('details').forEach(cue => { cue.open = false; });
+    });
+    if (guided) {
+      const player = document.getElementById('part3-audio');
+      let stopAt = null;
+      form.querySelectorAll('[data-replay-start]').forEach(button => {
+        button.addEventListener('click', async () => {
+          stopAt = Number(button.dataset.replayEnd);
+          try {
+            player.currentTime = Number(button.dataset.replayStart);
+            await player.play();
+          } catch {
+            stopAt = null;
+          }
+        });
+      });
+      player.addEventListener('timeupdate', () => {
+        if (stopAt !== null && player.currentTime >= stopAt) player.pause();
+      });
+      player.addEventListener('pause', () => { stopAt = null; });
+    }
   }
   const listeningPart4Route = '#/listening/part-4/level-2';
   const listeningEpisode = 'https://greatergood.berkeley.edu/podcasts/item/how_smell_shapes_memory';
@@ -1313,6 +1414,9 @@
     if(p[0]==='home'||!p[0]) home();
     else if(p[0]==='how') howPage();
     else if(['reading','writing','listening'].includes(p[0]) && p.length===1)subjectPage(p[0]);
+    else if(currentHash()===listeningPart3Level1Route.slice(1)) listeningPart3Page(1);
+    else if(currentHash()===listeningPart3Level3Route.slice(1)) listeningPart3Page(3);
+    else if(currentHash()===listeningPart3Route.slice(1)) listeningPart3Page();
     else if(currentHash()===listeningPart4Route.slice(1)) listeningPart4Page(2);
     else if(currentHash()===listeningLevel1Route.slice(1)) listeningPart4Page(1);
     else if(currentHash()===listeningLevel3Route.slice(1)) listeningPart4Page(3);
