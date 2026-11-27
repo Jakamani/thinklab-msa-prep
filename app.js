@@ -80,7 +80,7 @@
        ${['Learn with clues','Practise like the exam','Take the challenge'].map((s,i)=>`<div class="journey-step"><span class="num">0${i+1}</span><div><strong>${s}</strong><p>${['Short examples + helpful guidance','Fresh tasks with the real exam structure','More demanding practice'][i]}</p></div></div>`).join('')}
        <div class="bottom-note">✓ Reading tasks give scores and evidence. Writing tasks give word-count checks and self-review.</div>
     </div></div></div></section>
-    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> planned exam parts</div><div class="metric"><strong>9</strong> Reading levels · 9 Writing levels</div></div></div>
+    <div class="metrics"><div class="container metric-grid"><div class="metric"><strong>3</strong> core skills</div><div class="metric"><strong>10</strong> exam parts</div><div class="metric"><strong>30</strong> practice tasks</div></div></div>
     <section class="section"><div class="container">${titleBlock('Your practice hub','Choose where to begin','Explore Reading Parts 1–3 and Writing Parts 1–3, with three levels in each.')}
       <div class="skill-grid">${cards.map(([route,title,parts,desc,items,st])=>`<a class="skill-card ${route==='reading'?'':route==='writing'?'orange':'navy'}" href="#/${route}"><div class="skill-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${icons[route]}</svg></div><div style="position:absolute;right:22px;top:21px"><span class="pill ${st==='live'?'ready':'planned'}">${st==='live'?'Start now':'In development'}</span></div><h3>${title}</h3><p>${desc}</p><ul>${items.map(x=>`<li>${x}</li>`).join('')}</ul><div class="skill-action">${route==='reading'?'Explore Reading':route==='writing'?'Start Writing':'Explore Listening'} <span aria-hidden="true">→</span></div></a>`).join('')}</div>
     </div></section><section class="section alt"><div class="container">${titleBlock('One simple route','Three levels. Real progress.','Every part follows the same learning path so you always know what comes next.')}
@@ -138,6 +138,12 @@
       heading, title, titles ? 'Choose a level.' : 'Listen to short voice messages and match them to pictures.') +
       `<section class="section"><div class="container">${content}</div></section>`, 'listening');
   }
+  function markListeningCompleted(part, level) {
+    const id = `listening-${part}-${level}`;
+    if (getAttempts(id).length) return;
+    store.attempts[id] = [{at: new Date().toISOString()}];
+    saveStore();
+  }
   function listeningPart1Page(level) {
     const part = '#/listening/part-1';
     const {section, key, explanations} = listeningPart1Data[level - 1];
@@ -169,6 +175,7 @@
         item.textContent = 'You chose ' + choice + '. Correct photo: ' + answer + '. ' + explanations[index];
         list.append(item);
       });
+      markListeningCompleted(1, level);
       heading.textContent = 'Your score is ' + score + ' out of 4';
       result.replaceChildren(heading, list);
       result.hidden = false;
@@ -335,6 +342,7 @@
       if (level === 3 && new Set(choices).size !== key.length) {
         result.textContent = 'Use each title at most once, then submit again.';
       } else {
+        markListeningCompleted(2, level);
         const score = key.filter(([correct], index) => correct === choices[index]).length;
         result.innerHTML = `<h2>Your score is ${score} out of 4</h2><ol start="${cues ? 5 : 1}">${key.map(([correct, explanation], index) =>
           `<li>You chose ${e(choices[index])}. <strong>Correct: ${correct} — ${e(titles[correct])}.</strong> ${e(explanation)}</li>`).join('')}</ol>`;
@@ -417,6 +425,7 @@
       if (challenge) {
         review.innerHTML += `<p class="tiny muted">Sources: <a href="https://www.bmv.de/SharedDocs/DE/Publikationen/G/urban-cable-cars-in-local-public-transport.pdf?__blob=publicationFile">La Paz transport</a> · <a href="https://www.cooberpedy.sa.gov.au/community">Coober Pedy council</a> · <a href="https://www.cooberpedy.com/attractions/">Coober Pedy attractions</a> · <a href="https://geonames.nga.mil/GNSSearch/GNSDocs/policies/Netherlands_Country_Policy_webversion_Latest.pdf">Baarle border and addresses</a></p>`;
       }
+      markListeningCompleted(3, level);
       review.hidden = false;
       review.querySelector('h2').focus();
     });
@@ -586,6 +595,7 @@
         score += Number(isCorrect);
         return `<li><strong>${isCorrect ? 'Correct' : `You chose ${letters[chosen]}`}.</strong> ${letters[correct]}. ${e(options[correct])} <p>${e(explanation)}</p></li>`;
       });
+      markListeningCompleted(4, level);
       result.innerHTML = `<h2 id="listening-score" tabindex="-1">Your score is ${score} out of 8</h2><ol>${feedback.join('')}</ol>`;
       result.hidden = false;
       document.getElementById('listening-score').focus();
@@ -1541,14 +1551,52 @@
       }).join('')}<p class="tiny muted">Give your writing to your teacher for a score out of 10.</p></div>`;
   }
   function progressPage() {
-    const done=completedTotal(),totalAttempts=allLevels.reduce((n,l)=>n+getAttempts(l.id).length,0);
-    const avg=done?Math.round(allLevels.reduce((sum,l)=>sum+(getAttempts(l.id).length?bestScore(l.id)/l.questions.length:0),0)/done*100):0;
+    const writingIds = [...W1_ALL_IDS, ...W2_ALL_IDS, W3_ID, W3_EXAMS[2].id, W3_EXAMS[3].id];
+    const listeningParts = listeningLevelTitles.map((titles, index) => titles.map((title, i) => {
+      const part = index + 1, level = i + 1;
+      return {title, level, route: `#/listening/part-${part}/level-${level}`, done: getAttempts(`listening-${part}-${level}`).length > 0};
+    }));
+    const listening = listeningParts.flat();
+    const metrics = [
+      ['Reading', completedTotal(), allLevels.length],
+      ['Writing', writingIds.filter(id => getAttempts(id).length).length, writingIds.length],
+      ['Listening', listening.filter(task => task.done).length, listening.length]
+    ];
+    const cards = metrics.map(([skill, done, total]) => {
+      const ratio = total ? done / total : 0;
+      return `<article class="panel skill-progress-card">
+        <h2>${skill}</h2>
+        <div class="progress-gauge progress-gauge-${skill.toLowerCase()}" style="--sweep:${ratio * 180}deg">
+          <span class="progress-gauge-arc" aria-hidden="true"></span>
+          <strong class="progress-gauge-percent">${Math.round(ratio * 100)}%</strong>
+        </div>
+        <p><strong>${done} of ${total}</strong> completed</p>
+        <a href="#/${skill.toLowerCase()}">Practise ${skill.toLowerCase()}</a>
+      </article>`;
+    }).join('');
+    const expandable = (title, content) => `<details class="panel progress-details"><summary>${title}</summary><div class="progress-details-body">${content}</div></details>`;
+    const listeningDetails = listeningParts.map((tasks, index) => `<section class="panel">
+      <h3>Listening Part ${index + 1}</h3>
+      ${tasks.map(task => `<div class="attempt-row"><div><strong>Level ${task.level} · ${e(task.title)}</strong><div><span>${task.done ? 'Completed' : 'Not started yet'}</span></div></div><a class="button small secondary" href="${task.route}">${task.done ? 'Try again' : 'Start'}</a></div>`).join('')}
+    </section>`).join('');
     const progressSection=(title,part,arr)=>`<div class="panel" style="margin-bottom:18px"><h2>${e(title)}</h2><p class="muted" style="font-size:.87rem">${part===3?'Longer-text reading comprehension':part===2?'Short-text reading comprehension':'Matching people and activities'} · ${arr.filter(l=>getAttempts(l.id).length).length} of 3 levels completed</p>${arr.map((l,i)=>{
       const tries=getAttempts(l.id),last=latestAttempt(l.id),url=`#/reading/part-${part}/${l.id}`;
       return `<div class="attempt-row"><div><strong>Level ${i+1}: ${e(l.title)}</strong><div><span>${tries.length?`${tries.length} attempt${tries.length>1?'s':''} · Latest: ${last.score}/${l.questions.length} · Best: ${scoreLabel(l)}`:'Not started yet'}</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${last?`<a class="button small secondary" href="${url}/feedback">Feedback</a>`:''}<a class="button small primary" href="${url}">${tries.length?'Try again':'Start'} →</a></div></div>`;
     }).join('')}</div>`;
-    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','Review Reading Parts 1–3 and Writing Parts 1–3, or continue where you left off.')+
-      `<section class="section"><div class="container work-layout"><div><div class="progress-stats"><div class="progress-card"><strong>${done}/${allLevels.length}</strong><span>Reading levels completed</span></div><div class="progress-card"><strong>${totalAttempts}</strong><span>Total attempts</span></div><div class="progress-card"><strong>${avg}%</strong><span>Average best score</span></div></div>${progressSection('Reading Part 1',1,levels)}${progressSection('Reading Part 2',2,part2Levels)}${progressSection('Reading Part 3',3,part3Levels)}${writingProgressBlock()}${writing2ProgressBlock()}${writing3ProgressBlock()}<div class="panel" style="margin-top:18px"><h3>Back up or clear your progress</h3><p class="muted" style="font-size:.87rem">Download a JSON backup of your scores and answers. You can import this on another device, or clear the progress saved here.</p><div style="display:flex;flex-wrap:wrap;gap:10px"><button id="export-progress" class="button secondary">Download progress</button><label class="button secondary" for="import-progress" style="cursor:pointer">Import progress</label><input type="file" id="import-progress" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0"><button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div><p id="progress-notice" class="tiny" aria-live="polite" style="margin:12px 0 0;color:#3d7281"></p></div></div><aside><div class="privacy-note"><strong>Privacy and saving</strong><p style="margin:9px 0 0">ThinkLab requires no student login. Your scores and answers are saved locally in this browser, not sent to a teacher or server. Clearing site data or switching browsers may remove them. Export a backup if needed.</p></div></aside></div></section>`,'progress');
+    shell(pageHero([['Home','#/home'],['My progress','#/progress']],'Saved on this device','My progress','See how many practice tasks you’ve completed in each skill.') +
+      `<section class="section"><div class="container">
+        <div class="skill-progress-grid">${cards}</div>
+        <div class="progress-detail-list">
+          ${expandable('Reading details', progressSection('Reading Part 1',1,levels) + progressSection('Reading Part 2',2,part2Levels) + progressSection('Reading Part 3',3,part3Levels))}
+          ${expandable('Writing details', writingProgressBlock() + writing2ProgressBlock() + writing3ProgressBlock())}
+          ${expandable('Listening details', listeningDetails)}
+          ${expandable('Manage saved progress', `<p>Download a backup to keep your progress or move it to another browser.</p>
+            <div class="actions"><button id="export-progress" class="button secondary">Download progress</button>
+            <label for="import-progress">Import progress</label><input type="file" id="import-progress" accept="application/json,.json">
+            <button id="clear-progress" class="button subtle-btn">Clear saved progress</button></div>
+            <p id="progress-notice" class="tiny" aria-live="polite"></p>`)}
+        </div>
+      </div></section>`, 'progress');
     bindProgress();
   }
   function bindProgress() {
@@ -1638,6 +1686,13 @@
             texts:{A:String(d.texts?.A||'').slice(0,9000),B:String(d.texts?.B||'').slice(0,9000)}
           };
         }
+        listeningLevelTitles.forEach((titles, index) => titles.forEach((_, i) => {
+          const id = `listening-${index + 1}-${i + 1}`;
+          const attempts = imported.attempts[id];
+          if (Array.isArray(attempts) && typeof attempts[0]?.at === 'string') {
+            clean.attempts[id] = [{at: attempts[0].at}];
+          }
+        }));
         if(!window.confirm('Import this file? It will replace progress currently saved in this browser.')) return;
         store=clean;saveStore();progressPage();
       } catch(_) {document.getElementById('progress-notice').textContent='That file is not a valid ThinkLab MSA English Prep progress backup.';}
