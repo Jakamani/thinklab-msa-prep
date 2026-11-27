@@ -94,15 +94,86 @@
   const skills = {
     reading: [['Reading Part 1','Match people to activities','Ready'],['Reading Part 2','Understand short texts','Ready'],['Reading Part 3','Longer reading comprehension','Ready']],
     writing: [['Writing Part 1','Photo response · Three levels','Ready'],['Writing Part 2','Discussion reply · Three levels','Ready'],['Writing Part 3','Mediation · Guided Level 1 available','Ready']],
-    listening: [['Listening Part 1','Voicemail and picture matching','Planned'],['Listening Part 2','Radio ads and podcast intros','Ready'],['Listening Part 3','Information completion','Ready'],['Listening Part 4','Listening practice · Levels 1–3 available','Ready']]
+    listening: [['Listening Part 1','Voicemail and picture matching','Ready'],['Listening Part 2','Radio ads and podcast intros','Ready'],['Listening Part 3','Information completion','Ready'],['Listening Part 4','Listening practice · Levels 1–3 available','Ready']]
   };
   function subjectPage(skill) {
     if(skill==='writing')return writingSubjectPage();
+    if(skill==='listening')return listeningHubPage();
     const title=skill[0].toUpperCase()+skill.slice(1);
     const helper={reading:'Choose any of the three Reading parts: matching, short texts or longer articles.',writing:'The Writing pathway will include task planning, independent writing and feedback against content and language criteria.',listening:'Practise following spoken English and choosing the answer supported by what you hear.'}[skill];
     const ready=skill==='reading';
     const done=completedTotal();
-    shell(pageHero([['Home','#/home'],[title,'#/'+skill]],'Your practice hub',title,helper)+`<section class="section"><div class="container work-layout"><div><div class="module-parts">${skills[skill].map((part,i)=>`<div class="module-part ${part[2]==='Ready'?'active':''}"><div class="module-part-left"><span class="mini-num">0${i+1}</span><div><h3>${e(part[0])}</h3><p>${e(part[1])}</p>${ready?`<div class="tiny muted" style="margin-top:7px">${[completedCount(),completedPart2Count(),completedPart3Count()][i]} of 3 levels completed</div>`:''}</div></div>${!ready && i===1?`<div class="actions">${[1,2,3].map(level=>`<a class="button secondary small" href="#/listening/part-2/level-${level}">Level ${level}</a>`).join('')}</div>`:!ready && i===2?`<div class="actions"><a class="button primary small" href="${listeningPart3Level1Route}">Level 1</a><a class="button secondary small" href="${listeningPart3Route}">Level 2</a><a class="button secondary small" href="${listeningPart3Level3Route}">Level 3</a></div>`:!ready && part[2]==='Ready'?`<div class="actions"><a class="button secondary small" href="${listeningLevel1Route}">Level 1</a><a class="button secondary small" href="${listeningPart4Route}">Level 2</a><a class="button primary small" href="${listeningLevel3Route}">Level 3</a></div>`:part[2]==='Ready'?`<a class="button primary small" href="#/reading/part-${i+1}">Open →</a>`:'<span class="pill planned">In development</span>'}</div>`).join('')}</div></div><aside class="path-summary"><div class="label">Live content</div><strong>${ready?'Reading Parts 1–3 · 9 levels':'Listening Parts 2–4'}</strong><p style="font-size:.85rem;margin-top:10px">${ready?'Start with clues, then complete an exam-style set and a harder challenge in each part.':'Match recordings to titles, complete a listening table or answer multiple-choice questions.'}</p>${ready?`<div class="small-progress"><span style="width:${Math.round(done/9*100)}%"></span></div><p class="tiny" style="margin-top:9px">${done} of 9 levels completed</p>`:''}</aside></div></section>` ,skill);
+    shell(pageHero([['Home','#/home'],[title,'#/'+skill]],'Your practice hub',title,helper)+`<section class="section"><div class="container work-layout"><div><div class="module-parts">${skills[skill].map((part,i)=>`<div class="module-part ${part[2]==='Ready'?'active':''}"><div class="module-part-left"><span class="mini-num">0${i+1}</span><div><h3>${e(part[0])}</h3><p>${e(part[1])}</p>${ready?`<div class="tiny muted" style="margin-top:7px">${[completedCount(),completedPart2Count(),completedPart3Count()][i]} of 3 levels completed</div>`:''}</div></div>${part[2]==='Ready'?`<a class="button primary small" href="#/reading/part-${i+1}">Open →</a>`:'<span class="pill planned">In development</span>'}</div>`).join('')}</div></div><aside class="path-summary"><div class="label">Live content</div><strong>${ready?'Reading Parts 1–3 · 9 levels':'Listening Parts 2–4'}</strong><p style="font-size:.85rem;margin-top:10px">${ready?'Start with clues, then complete an exam-style set and a harder challenge in each part.':'Match recordings to titles, complete a listening table or answer multiple-choice questions.'}</p>${ready?`<div class="small-progress"><span style="width:${Math.round(done/9*100)}%"></span></div><p class="tiny" style="margin-top:9px">${done} of 9 levels completed</p>`:''}</aside></div></section>` ,skill);
+  }
+  const listeningLevelTitles = [
+    ['Voicemail Messages', 'Voicemail Messages', 'Voicemail Messages'],
+    ['Radio Ads', 'Podcast Intros', 'Podcast Intros'],
+    ['Small Changes at School', 'Young People Helping Their Communities', 'Quirky Places Around the World'],
+    ['The Benefits of Spending Money on a Good Time', 'How Smell Shapes Memory', 'Why Revenge Feels So Good—and Why It Hurts Us']
+  ];
+  function listeningHubPage() {
+    const descriptions = ['Match voice messages to pictures.', 'Match radio ads and podcast intros to titles.', 'Listen for details and complete a table.', 'Listen to a longer recording and answer multiple-choice questions.'];
+    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening']], 'Your practice hub',
+      'Listening', 'Choose a part to find your practice activities.') +
+      `<section class="section"><div class="container"><div class="module-parts">
+        ${skills.listening.map(([name], index) => `<div class="module-part active">
+          <div class="module-part-left"><span class="mini-num">0${index + 1}</span><div><h3>${e(name)}</h3><p>${e(descriptions[index])}</p></div></div>
+          <a class="button primary small" href="#/listening/part-${index + 1}" aria-label="Open ${e(name)}">Open</a>
+        </div>`).join('')}
+      </div></div></section>`, 'listening');
+  }
+  function listeningPartPage(part) {
+    const route = '#/listening/part-' + part;
+    const heading = 'Listening Part ' + part;
+    const title = ['Voicemail and picture matching', 'Radio ads and podcast intros', 'Complete a listening table', 'Extended listening'][part - 1];
+    const titles = listeningLevelTitles[part - 1];
+    const content = titles ? `<div class="level-list">${titles.map((activity, index) => {
+      const level = index + 1;
+      return `<div class="level-choice"><div class="level-number">0${level}</div><div class="level-desc">
+        <div class="eyebrow">Level ${level} · ${stepTitle(index)}</div><h3>${e(activity)}</h3>
+        <div class="actions"><a class="button ${index === 0 ? 'primary' : 'secondary'} small" href="${route}/level-${level}" aria-label="Start Level ${level}, ${e(activity)}">Start level →</a></div>
+      </div></div>`;
+    }).join('')}</div>` : '<div class="panel"><h2>In development</h2><p>Picture-matching activities are being prepared for this part.</p></div>';
+    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], [`Part ${part}`, route]],
+      heading, title, titles ? 'Choose a level.' : 'Listen to short voice messages and match them to pictures.') +
+      `<section class="section"><div class="container">${content}</div></section>`, 'listening');
+  }
+  function listeningPart1Page(level) {
+    const part = '#/listening/part-1';
+    const {section, key, explanations} = listeningPart1Data[level - 1];
+    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], ['Part 1', part], [`Level ${level}`, `${part}/level-${level}`]],
+      `Listening Part 1 · Level ${level}`, 'Voicemail Messages', 'Match each voicemail to the photo the speaker is reacting to.') +
+      `<section class="section listening-part-one">${section}</section>`, 'listening');
+
+    const form = document.getElementById('voicemail-form');
+    const result = document.getElementById('voicemail-result');
+    function clearResult() {
+      result.hidden = true;
+      result.replaceChildren();
+    }
+    form.addEventListener('change', clearResult);
+    form.addEventListener('reset', () => {
+      clearResult();
+      form.querySelectorAll('details').forEach(clue => { clue.open = false; });
+    });
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const choices = new FormData(form);
+      const heading = document.createElement('h2');
+      const list = document.createElement('ol');
+      let score = 0;
+      key.forEach((answer, index) => {
+        const choice = choices.get('message' + (index + 1));
+        if (choice === answer) score += 1;
+        const item = document.createElement('li');
+        item.textContent = 'You chose ' + choice + '. Correct photo: ' + answer + '. ' + explanations[index];
+        list.append(item);
+      });
+      heading.textContent = 'Your score is ' + score + ' out of 4';
+      result.replaceChildren(heading, list);
+      result.hidden = false;
+      result.focus();
+    });
   }
   const listeningPart2Data = {
     "1": {
@@ -230,9 +301,10 @@
       const clue = cues ? `<td class="cue"><details><summary>Show clue</summary><p><strong>Keywords</strong><br>${e(cues[index][0])}</p><p><strong>Expressions</strong><br>${e(cues[index][1])}</p><p>${e(cues[index][2])}</p></details></td>` : '';
       return `<tr><th scope="row">${number + (cues ? 4 : 0)}. ${label}</th>${options}${clue}</tr>`;
     }).join('');
-    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], [`Part 2 · Level ${level}`, route]],
+    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], ['Part 2', '#/listening/part-2'], [`Level ${level}`, route]],
       `Listening Part 2 · Level ${level}`, title, `Match four ${cues ? 'radio ads' : 'podcast intros'} to their titles.`) +
       `<section class="section"><div class="container radio-wrap">
+        <div class="actions" style="margin-bottom:1rem"><a class="button secondary small" href="#/listening/part-2">All levels</a></div>
         ${workedExample}
         <section class="panel radio-panel"><h2>Listen and match</h2><ol>
           <li>Read the six titles before listening.${cues ? ' Open Show clue to see keywords and expressions to listen for.' : ''}</li>
@@ -313,9 +385,10 @@
       const [start, end] = cueTimes[cell - 1];
       return `<details class="listening-cue"><summary>Show clue</summary><button class="button secondary small" type="button" data-replay-start="${start}" data-replay-end="${end}">Replay ${clock(start)}–${clock(end)}</button></details>`;
     };
-    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], [`Part 3 · Level ${level}`, route]],
+    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], ['Part 3', '#/listening/part-3'], [`Level ${level}`, route]],
       `Listening Part 3 · Level ${level}`, title, 'Listen for details and complete the table.') +
       `<section class="section"><div class="container">
+        <div class="actions" style="margin-bottom:1rem"><a class="button secondary small" href="#/listening/part-3">All levels</a></div>
         <section class="panel" aria-labelledby="part3-instructions">
           <h2 id="part3-instructions">Before you listen</h2>
           ${guided ? `<p>“Some new pupils sat alone at lunch because they didn’t know anyone.” This describes what Lina noticed before she helped. In the <strong>Problem</strong> column, we can write <strong>New pupils sat alone</strong>.</p>
@@ -448,10 +521,11 @@
     const guest = challenge ? 'James Kimmel Jr.' : 'Samin Nosrat';
     const date = challenge ? '16 July 2026' : '24 September 2026';
     const letters = ['A', 'B', 'C'];
-    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], [`Part 4 · Level ${level}`, route]],
+    shell(pageHero([['Home', '#/home'], ['Listening', '#/listening'], ['Part 4', '#/listening/part-4'], [`Level ${level}`, route]],
       `Listening Part 4 · Level ${level}`, title, guided ? 'Use listening strategies and optional cues to answer eight questions.' : 'Listen to part of a podcast interview and answer eight questions.') +
       `<section class="section"><div class="container work-layout">
         <div>
+          <div class="actions" style="margin-bottom:1rem"><a class="button secondary small" href="#/listening/part-4">All levels</a></div>
           ${guided ? `<section class="panel" aria-labelledby="listening-instructions">
             <h2 id="listening-instructions">Before you listen</h2>
             <p>Imagine you have €40 to spend. Would you buy something you’ve wanted for a while or use the money for a day out? Think of one reason for your choice.</p>
@@ -1581,6 +1655,8 @@
     if(p[0]==='home'||!p[0]) home();
     else if(p[0]==='how') howPage();
     else if(['reading','writing','listening'].includes(p[0]) && p.length===1)subjectPage(p[0]);
+    else if(p[0]==='listening' && p.length===2 && /^part-[1-4]$/.test(p[1])) listeningPartPage(Number(p[1].slice(-1)));
+    else if(p[0]==='listening' && p[1]==='part-1' && p.length===3 && /^level-[123]$/.test(p[2])) listeningPart1Page(Number(p[2].slice(-1)));
     else if(p[0]==='listening' && p[1]==='part-2' && p.length===3 && /^level-[123]$/.test(p[2])) listeningPart2Page(Number(p[2].slice(-1)));
     else if(currentHash()===listeningPart3Level1Route.slice(1)) listeningPart3Page(1);
     else if(currentHash()===listeningPart3Level3Route.slice(1)) listeningPart3Page(3);
